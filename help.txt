@@ -1,0 +1,100 @@
+
+运行项目(连个cmd窗口分别执行)
+1. bower install  下载安装依赖
+2. gulp     文件改变会自动打包
+3. npm run watch   文件改变会自动重启
+
+
+全局安装项目
+npm install -g nodemon   用于自动重启
+
+npm install -g bower     用安装依赖
+
+安装====================================================={{
+
+mkdir test
+npm init
+
+express
+npm install --save express body-parser
+
+Babel
+npm install -g babel-core
+npm install --save-dev babel-core babel-preset-es2015
+.babelrc  文件内容   {"presets": ["es2015"]}
+
+
+gulp
+npm install -g gulp-cli
+npm install --save-dev gulp gulp-babel gulp-watch
+npm install --save-dev gulp-cssmin gulp-less gulp-autoprefixer
+npm install --save-dev gulp-uglify gulp-if
+
+react
+npm install --save react react-dom
+webpack
+npm install --save-dev webpack webpack-dev-server
+npm install --save-dev style-loader css-loader  autoprefixer-loader less-loader
+npm install --save-dev url-loader
+为了编译jsx，我们还需要其他一些模块
+npm install --save-dev babel-loader babel-preset-react
+
+npm install --save react-router 
+npm install --save redux react-redux react-router-redux  redux-thunk
+
+安装=====================================================}}
+
+
+源码更改自动更新
+npm install --save-dev webpack-dev-server react-hot-loader
+
+
+style+css+less加载Bootstrap less版本：
+require('style!css!less!./bower_components/bootstrap/bootstrap.less');
+
+style+css 加载一般样式文件：
+require('style!css!./styles/main.css');
+
+url 加载图片资源文件：
+require('url!./images/logo.png');
+
+json loader加载json格式文件:
+require('json!./data.json');
+
+js后缀的文件不需要使用加载器
+require('./scripts/main.js');
+
+coffee script加载
+require('coffee!./scripts/main.coffee');
+
+通过Babel loader体验ES6/7特性：
+require('babel!./scripts/es6.js');
+
+
+动态加载css和js
+require.ensure(['需要动态加载的module'], function(require) {
+    require('需要动态加载的module');
+});
+或者
+require(['./a','./b'], function(a, b) {
+    var c = a + b;
+});
+
+
+gulp是工具链，可以配合各种插件做js压缩，css压缩，less编译等工作
+webpack是文件打包工具，可以把项目的各种js文、css文件等打包合并成一个或多个文件
+bower是包管理器，用来管理你项目里的那些外部依赖的。
+
+
+Webpack 模块加载器兼打包工具
+能做: 打包、压缩混淆、图片转base64等。
+在 Webpack 当中, 所有的资源都被当作是模块, js, css, 图片等等
+Webpack 对 CommonJS 的 AMD 的语法做了兼容
+
+
+
+
+
+
+
+

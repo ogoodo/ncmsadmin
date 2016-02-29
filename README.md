@@ -12,9 +12,26 @@ gulp webpack-dev-server
 浏览器访问
 http://localhost:3001
 
+
+npm install --save antd  安装阿里reactUi组件
+
+
 https://segmentfault.com/a/1190000003499526
 https://github.com/chemdemo/webpack-bootstrap
 ejs-loader
 
 https://segmentfault.com/a/1190000004104496
 https://github.com/TongchengQiu/webpack-best-practice
+
+redux
+npm install --save redux react-redux
+npm install --save-dev redux-devtools
+http://www.cnblogs.com/lewis617/p/5145073.html
+
+
+UI方案
+http://lobos.github.io/react-ui/#/tree
+http://amazeui.org/
+http://amazeui.org/react/components/dropdown  例子
+http://ant.design/  阿里出品
+https://github.com/callemall/material-ui
