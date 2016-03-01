@@ -42,6 +42,10 @@ npm install --save-dev babel-loader babel-preset-react
 npm install --save react-router 
 npm install --save redux react-redux react-router-redux  redux-thunk
 
+npm install --save-dev webpack-hot-middleware webpack-dev-middleware
+
+// Redux bindings for React Router — keep your router state inside your Redux Store
+npm install --save redux-react-router  
 安装=====================================================}}
 
 

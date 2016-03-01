@@ -4,6 +4,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { createHashHistory, useBasename } from 'history';
 import './app.css'
+import { DatePicker } from 'antd'
+import 'antd/lib/index.css'//
 //import App from './components/App.js'
 // import Page1 from './components/Page1.js'
 // import Page2 from './components/Page2.js'
@@ -11,7 +13,9 @@ import './app.css'
 // import Tab2 from './components/Tab2.js'
 // import routes from './config/routes.js'
 
+//ReactDOM.render(<Tree />, document.getElementById('example'));
 
+/* */
 // const rootRoute = {
 //     //component: 'App',
 //     childRoutes: [{
@@ -26,7 +30,7 @@ import './app.css'
 // }
 const rootRoute = {
     path: '/',
-    component: require('./components/App.js'),
+    component: require('./components/Main.js'),
     childRoutes: [
         require('./routes/Page1'),
         require('./routes/Page2')
@@ -39,14 +43,18 @@ const history = useBasename(createHashHistory)({
   queryKey: false,//queryKey: '_key',
   basename: '/',
 });
+
+import createBrowserHistory from 'history/lib/createBrowserHistory'
+const history2  = createBrowserHistory()
 render(
     //<Router history={history}  routes={rootRoute}/>,
-    <Router history={browserHistory} routes={rootRoute}/>,
+    //<Router history={history2}  routes={rootRoute}/>,
+    <Router history={browserHistory} routes={rootRoute}/>,//这个配置文件可以
     //<Router history={hashHistory} routes={rootRoute}/>,
     //<Router  routes={rootRoute} />,
     document.getElementById('example')
 )
-
+//*/
 // render((
 //   <Router history={browserHistory}>
 //     <Route path="/" component={App}>
