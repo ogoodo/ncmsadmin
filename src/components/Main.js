@@ -4,6 +4,10 @@ import { browserHistory, Router, Route, Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Tree from '../components/Tree.js'
+
+import { connect } from 'react-redux'
+import * as ItemsActions from './actions'
+import { bindActionCreators } from 'redux'
 import configureStore from './configureStore'
 const store = configureStore()
 const __DEBUG__ = false;
@@ -52,5 +56,11 @@ class Main extends React.Component {
   }
 }
 
-module.exports = Main
-//export default Page1
+//module.exports = Main
+
+export default connect(state => ({
+    items: state.items,
+    filter: state.filter
+}), dispatch => ({
+    actions: bindActionCreators(ItemsActions, dispatch)
+}))(Main)
