@@ -5,24 +5,11 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Tree from '../components/Tree.js'
 
-import { connect } from 'react-redux'
-import * as ItemsActions from './actions'
-import { bindActionCreators } from 'redux'
-import configureStore from './configureStore'
-const store = configureStore()
-const __DEBUG__ = false;
-function renderDevTools(store) {
-    if (__DEBUG__) {
-        let {DevTools, DebugPanel, LogMonitor} = require('redux-devtools/lib/react')
 
-        return (
-            <DebugPanel top right bottom>
-            <DevTools store={store} monitor={LogMonitor} />
-            </DebugPanel>
-        )
-    }
-    return null
-}
+import App from './containers/App'
+import { connect } from 'react-redux'
+import configureStore from './store/configureStore'
+const store = configureStore()
 
 class Main extends React.Component {
   render() {
@@ -32,8 +19,11 @@ class Main extends React.Component {
     const key = pathname.split('/')[1] || 'root'
 
     return (
-      <div>
         <Provider store={store}>
+      <div>
+        <div>
+            <App />
+        </div>
         <div>
             <Tree />
         </div>
@@ -49,18 +39,11 @@ class Main extends React.Component {
             {React.cloneElement(this.props.children || <div />, { key: key })}
             </ReactCSSTransitionGroup>
         </div>
-        </Provider>
-        {renderDevTools(store)}
       </div>
+        </Provider>
     )
   }
 }
 
-//module.exports = Main
+module.exports = Main
 
-export default connect(state => ({
-    items: state.items,
-    filter: state.filter
-}), dispatch => ({
-    actions: bindActionCreators(ItemsActions, dispatch)
-}))(Main)

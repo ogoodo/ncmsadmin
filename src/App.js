@@ -5,7 +5,7 @@ import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { createHashHistory, useBasename } from 'history';
 import './app.css'
 //import { DatePicker } from 'antd'
-//import 'antd/lib/index.css'//
+import 'antd/lib/index.css'//
 //import App from './components/App.js'
 // import Page1 from './components/Page1.js'
 // import Page2 from './components/Page2.js'

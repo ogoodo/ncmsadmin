@@ -27,7 +27,7 @@ redux
 npm install --save redux react-redux
 npm install --save-dev redux-devtools
 http://www.cnblogs.com/lewis617/p/5145073.html
-
+https://github.com/lewis617/react-redux-tutorial  教程不错
 
 UI方案
 http://lobos.github.io/react-ui/#/tree

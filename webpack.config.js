@@ -13,15 +13,21 @@ const isProduction = function () {
  *  ProvidePlugin 插件可以定义一个共用的入口，比如 下面加的 React ,他会在每个文件自动require了react，所以你在文件中不需要 require('react')，也可以使用 React。
  */
 let plugins = [
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'commons',
-    filename: 'common/commons.js',
-  }),
-  new webpack.ProvidePlugin({
-    React: 'react',
-    ReactDOM: 'react-dom',
-    reqwest: 'reqwest',
-  }),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: 'commons',
+        filename: 'common/commons.js',
+    }),
+    new webpack.ProvidePlugin({
+        React: 'react',
+        ReactDOM: 'react-dom',
+        reqwest: 'reqwest',
+    }),
+    //维持构建编译代码
+    new webpack.optimize.OccurenceOrderPlugin(),
+    //热替换，热替换和dev-server的hot有什么区别？不用刷新页面，可用于生产环境
+    new webpack.HotModuleReplacementPlugin(),
+    // 保证编译后的代码永远是对的，因为不对的话会自动停掉
+    new webpack.NoErrorsPlugin(),
 ];
 if( isProduction() ) {
   plugins.push(
@@ -37,9 +43,10 @@ if( isProduction() ) {
 
 let config = {
   //devtool: 'eval',
-  devtool: isProduction()?null:'source-map',//规定了在开发环境下才使用 source-map
+  devtool: 'cheap-module-eval-source-map',
+  //devtool: isProduction()?null:'source-map',//规定了在开发环境下才使用 source-map
   entry: {
-    public: './src/App.js'
+    public: ['webpack-hot-middleware/client', './src/App.js']
   },
   output: {
     //path: path.join(__dirname, 'public/dist'),
