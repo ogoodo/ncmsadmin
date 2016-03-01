@@ -34,6 +34,7 @@ react
 npm install --save react react-dom
 webpack
 npm install --save-dev webpack webpack-dev-server
+npm install --save-dev redux-devtools
 npm install --save-dev style-loader css-loader  autoprefixer-loader less-loader
 npm install --save-dev url-loader
 为了编译jsx，我们还需要其他一些模块

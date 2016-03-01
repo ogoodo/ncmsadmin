@@ -4,6 +4,21 @@ import { browserHistory, Router, Route, Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Tree from '../components/Tree.js'
+import configureStore from './configureStore'
+const store = configureStore()
+const __DEBUG__ = false;
+function renderDevTools(store) {
+    if (__DEBUG__) {
+        let {DevTools, DebugPanel, LogMonitor} = require('redux-devtools/lib/react')
+
+        return (
+            <DebugPanel top right bottom>
+            <DevTools store={store} monitor={LogMonitor} />
+            </DebugPanel>
+        )
+    }
+    return null
+}
 
 class Main extends React.Component {
   render() {
@@ -14,6 +29,7 @@ class Main extends React.Component {
 
     return (
       <div>
+        <Provider store={store}>
         <div>
             <Tree />
         </div>
@@ -29,6 +45,8 @@ class Main extends React.Component {
             {React.cloneElement(this.props.children || <div />, { key: key })}
             </ReactCSSTransitionGroup>
         </div>
+        </Provider>
+        {renderDevTools(store)}
       </div>
     )
   }

@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 
 var buildStore
-
+const __DEBUG__ = false;
 if (__DEBUG__) {
     buildStore = compose(
         applyMiddleware(thunk),
