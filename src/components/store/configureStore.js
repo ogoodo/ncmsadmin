@@ -23,7 +23,7 @@ export default function configureStore(initialState) {
         reducers,
         routing: routerReducer
     };
-  const store = createStore(combineReducers(obj2))
+  const store = createStoreWithMiddleware(combineReducers(obj2))
 
   //热替换选项
   if (module.hot) {
