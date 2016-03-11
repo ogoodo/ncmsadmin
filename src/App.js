@@ -1,8 +1,10 @@
 import React from 'react'
 import { render } from 'react-dom'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import { Provider } from 'react-redux'
 import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { createHashHistory, useBasename } from 'history';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import './app.css'
 //import { DatePicker } from 'antd'
 import 'antd/lib/index.css'//
@@ -12,6 +14,9 @@ import 'antd/lib/index.css'//
 // import Tab1 from './components/Tab1.js'
 // import Tab2 from './components/Tab2.js'
 // import routes from './config/routes.js'
+
+import configureStore from './components/store/configureStore'
+const store = configureStore()
 
 //ReactDOM.render(<Tree />, document.getElementById('example'));
 
@@ -46,14 +51,21 @@ const history = useBasename(createHashHistory)({
 
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 const history2  = createBrowserHistory()
+const history3 = syncHistoryWithStore(browserHistory, store)
 render(
-    //<Router history={history}  routes={rootRoute}/>,
-    //<Router history={history2}  routes={rootRoute}/>,
-    <Router history={browserHistory} routes={rootRoute}/>,//这个配置文件可以
-    //<Router history={hashHistory} routes={rootRoute}/>,
-    //<Router  routes={rootRoute} />,
-    document.getElementById('example')
+    <Provider store={store}>
+        <Router history={history3} routes={rootRoute}/>
+    </Provider>
+    ,document.getElementById('example')
 )
+
+        //<Router history={browserHistory} routes={rootRoute}/>//这个配置文件可以
+        //<Router history={history}  routes={rootRoute}/>
+        //<Router history={history2}  routes={rootRoute}/>
+        //<Router history={hashHistory} routes={rootRoute}/>
+        //<Router  routes={rootRoute} />    
+        
+        
 //*/
 // render((
 //   <Router history={browserHistory}>

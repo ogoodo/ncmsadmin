@@ -1,15 +1,12 @@
 import React from 'react'
-import { Provider } from 'react-redux'
 import { browserHistory, Router, Route, Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Tree from '../components/Tree.js'
 
 
-import AppContainer from './containers/AppContainer'
-import { connect } from 'react-redux'
-import configureStore from './store/configureStore'
-const store = configureStore()
+import CounterContainer from './containers/CounterContainer'
+//import { connect } from 'react-redux'
 
 class Main extends React.Component {
   render() {
@@ -19,10 +16,9 @@ class Main extends React.Component {
     const key = pathname.split('/')[1] || 'root'
 
     return (
-        <Provider store={store}>
       <div>
         <div>
-            <AppContainer />
+            <CounterContainer />
         </div>
         <div>
             <Tree />
@@ -40,7 +36,6 @@ class Main extends React.Component {
             </ReactCSSTransitionGroup>
         </div>
       </div>
-        </Provider>
     )
   }
 }
