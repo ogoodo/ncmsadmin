@@ -6,7 +6,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Tree from '../components/Tree.js'
 
 
-import App from './containers/App'
+import AppContainer from './containers/AppContainer'
 import { connect } from 'react-redux'
 import configureStore from './store/configureStore'
 const store = configureStore()
@@ -22,7 +22,7 @@ class Main extends React.Component {
         <Provider store={store}>
       <div>
         <div>
-            <App />
+            <AppContainer />
         </div>
         <div>
             <Tree />
