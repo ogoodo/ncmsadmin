@@ -1,7 +1,9 @@
 import {parseString} from 'xml2js'
 import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
-import { Tree } from 'antd';
-const TreeNode = Tree.TreeNode;
+import { Tree } from 'antd'
+//import fetch from 'fetch'
+import 'whatwg-fetch'
+const TreeNode = Tree.TreeNode
 
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 const history  = createBrowserHistory()
@@ -85,6 +87,13 @@ const LeftTree = React.createClass({
   },
   onSelect(key, event) {
         browserHistory.replace(key[0])
+        //fetch('http://www.baidu.com/')
+        fetch('http://127.0.0.1:3001')        
+        .then(function(response) {
+            return response.text()
+        }).then(function(body) {
+            document.body.innerHTML = body
+        })
         //browserHistory.replace('/Page2/Tab2')
         //history.replace(null, '/Page2/Tab2')
         //alert(info);

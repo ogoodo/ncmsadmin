@@ -21,7 +21,10 @@ let plugins = [
         React: 'react',
         ReactDOM: 'react-dom',
         reqwest: 'reqwest',
+        fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
     }),
+    // 使用whatwg-fetch在webpack的
+    //new webpack.ProvidePlugin({'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'}),
     //维持构建编译代码
     new webpack.optimize.OccurenceOrderPlugin(),
     //热替换，热替换和dev-server的hot有什么区别？不用刷新页面，可用于生产环境
