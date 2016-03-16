@@ -5,10 +5,82 @@ import { Tree } from 'antd'
 import 'whatwg-fetch'
 const TreeNode = Tree.TreeNode
 
-import createBrowserHistory from 'history/lib/createBrowserHistory'
-const history  = createBrowserHistory()
-//export default createBrowserHistory()
+//import createBrowserHistory from 'history/lib/createBrowserHistory'
 
+const gData = [
+    {
+        key:'/Page1',
+        title:'Page1',
+        path:'testpath',
+        children:[
+            {   key:'/Page1/Tab1', title:'Page1-Tab1' },
+            {   key:'/Page1/Tab2', title:'Page1-Tab2' },
+        ]
+    },
+    {
+        key:'/Page2',
+        title:'Page2',
+        children:[
+            {   key:'/Page2/Tab1', title:'Page2-Tab1' },
+            {   key:'/Page2/Tab2', title:'Page2-Tab2' },
+        ]
+    },
+];
+console.log(gData);
+const LeftTree = React.createClass({
+  getInitialState() {
+    return {
+      gData,
+      //expandedKeys: ['0-0', '0-0-0', '0-0-0-0'],
+    };
+  },
+  onSelect(key, event) {
+        browserHistory.replace(key[0])
+        //fetch('http://www.baidu.com/')
+        fetch('http://127.0.0.1:3001')        
+        .then(function(response) {
+            return response.text()
+        }).then(function(body) {
+            alert('body:\r\n' + body);
+            //document.body.innerHTML = body
+        })
+        //browserHistory.replace('/Page2/Tab2')
+        //history.replace(null, '/Page2/Tab2')
+        //alert(info);
+  },
+  render() {
+    const loop = data => data.map((item) => {
+      if (item.children) {
+        return <TreeNode key={item.key} title={item.key}>
+                    {loop(item.children)}
+               </TreeNode>;
+      }
+      return <TreeNode key={item.key} title={item.key} _path={item.key} />;
+    });
+    return (
+      <Tree defaultExpandedKeys={this.state.expandedKeys} openAnimation={{}} onSelect={this.onSelect} >
+        {loop(this.state.gData)}
+      </Tree>
+    );
+  },
+});
+
+//声明引用Provider和RouterContext.js定义的数据
+LeftTree.contextTypes = {
+    history:  React.PropTypes.object,
+    location: React.PropTypes.object.isRequired,
+    router:   React.PropTypes.object.isRequired,
+    store:    React.PropTypes.object
+    //store: storeShape
+  }
+  
+module.exports = LeftTree
+//ReactDOM.render(<Demo />, mountNode);
+
+
+
+// const history  = createBrowserHistory()
+// //export default createBrowserHistory()
 /*
 const x = 3;
 const y = 2;
@@ -58,75 +130,6 @@ generateData(z);
 //     gData = [result.children];
 //     console.dir(gData);
 // });
-const gData = [
-    {
-        key:'/Page1',
-        title:'Page1',
-        path:'testpath',
-        children:[
-            {   key:'/Page1/Tab1', title:'Page1-Tab1' },
-            {   key:'/Page1/Tab2', title:'Page1-Tab2' },
-        ]
-    },
-    {
-        key:'/Page2',
-        title:'Page2',
-        children:[
-            {   key:'/Page2/Tab1', title:'Page2-Tab1' },
-            {   key:'/Page2/Tab2', title:'Page2-Tab2' },
-        ]
-    },
-];
-console.log(gData);
-const LeftTree = React.createClass({
-  getInitialState() {
-    return {
-      gData,
-      //expandedKeys: ['0-0', '0-0-0', '0-0-0-0'],
-    };
-  },
-  onSelect(key, event) {
-        browserHistory.replace(key[0])
-        //fetch('http://www.baidu.com/')
-        fetch('http://127.0.0.1:3001')        
-        .then(function(response) {
-            return response.text()
-        }).then(function(body) {
-            document.body.innerHTML = body
-        })
-        //browserHistory.replace('/Page2/Tab2')
-        //history.replace(null, '/Page2/Tab2')
-        //alert(info);
-  },
-  render() {
-    const loop = data => data.map((item) => {
-      if (item.children) {
-        return <TreeNode key={item.key} title={item.key}>
-                    {loop(item.children)}
-               </TreeNode>;
-      }
-      return <TreeNode key={item.key} title={item.key} _path={item.key} />;
-    });
-    return (
-      <Tree defaultExpandedKeys={this.state.expandedKeys} openAnimation={{}} onSelect={this.onSelect} >
-        {loop(this.state.gData)}
-      </Tree>
-    );
-  },
-});
-
-//声明引用Provider和RouterContext.js定义的数据
-LeftTree.contextTypes = {
-    history:  React.PropTypes.object,
-    location: React.PropTypes.object.isRequired,
-    router:   React.PropTypes.object.isRequired,
-    store:    React.PropTypes.object
-    //store: storeShape
-  }
-  
-module.exports = LeftTree
-//ReactDOM.render(<Demo />, mountNode);
-
 
 
   

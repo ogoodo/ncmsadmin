@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 // 定义函数判断是否是在当前生产环境，这个很重要，开发环境和生产环境配置上有一些区别
@@ -21,6 +22,8 @@ let plugins = [
         React: 'react',
         ReactDOM: 'react-dom',
         reqwest: 'reqwest',
+        //以下两项为了使用fetch
+        Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
         fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
     }),
     // 使用whatwg-fetch在webpack的
@@ -31,6 +34,12 @@ let plugins = [
     new webpack.HotModuleReplacementPlugin(),
     // 保证编译后的代码永远是对的，因为不对的话会自动停掉
     new webpack.NoErrorsPlugin(),
+    new CopyWebpackPlugin([
+            //{ from: 'src/index.html', to: '../../to/test.html' },
+            { from: 'src/index.html', to: '/test.html' },
+            ],
+            {ignore:[ '*.txt',]}
+     ),
 ];
 if( isProduction() ) {
   plugins.push(
