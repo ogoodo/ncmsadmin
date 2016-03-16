@@ -76,7 +76,7 @@ const gData = [
     },
 ];
 console.log(gData);
-const Demo = React.createClass({
+const LeftTree = React.createClass({
   getInitialState() {
     return {
       gData,
@@ -106,7 +106,16 @@ const Demo = React.createClass({
   },
 });
 
-module.exports = Demo
+//声明引用Provider和RouterContext.js定义的数据
+LeftTree.contextTypes = {
+    history:  React.PropTypes.object,
+    location: React.PropTypes.object.isRequired,
+    router:   React.PropTypes.object.isRequired,
+    store:    React.PropTypes.object
+    //store: storeShape
+  }
+  
+module.exports = LeftTree
 //ReactDOM.render(<Demo />, mountNode);
 
 

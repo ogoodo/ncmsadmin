@@ -18,7 +18,7 @@ export function decrement() {
 export function incrementIfOdd() {
   return (dispatch, getState) => {
     //获取state对象中的counter属性值
-    const { counter } = getState()
+    const { counter } = getState().reducers
 
     //偶数则返回
     if (counter % 2 === 0) {

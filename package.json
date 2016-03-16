@@ -1,11 +1,11 @@
 {
-  "name": "ncmsa",
+  "name": "ncmsadmin",
   "version": "1.0.0",
   "description": "ncms admin",
-  "main": "server/app.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server/app.js"
+    "dev": "node server/server.js"
   },
   "keywords": [
     "react",

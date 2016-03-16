@@ -9,6 +9,13 @@ myConfig.devtool = 'eval';
 myConfig.debug = true;
 var app = express()
 
+
+app.use(function(res, req, next){
+    //console.log('网址访问'); //要运行下gulp p
+    next();
+    //debugger;
+});
+
 var serverOptions = {  
     //contentBase: 'http://' + host + ':' + port,
     // quiet: true,

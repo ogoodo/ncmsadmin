@@ -16,23 +16,8 @@ import 'antd/lib/index.css'//
 // import routes from './config/routes.js'
 
 import configureStore from './components/store/configureStore'
-const store = configureStore()
+const store = configureStore(browserHistory)
 
-//ReactDOM.render(<Tree />, document.getElementById('example'));
-
-/* */
-// const rootRoute = {
-//     //component: 'App',
-//     childRoutes: [{
-//         path: '/',
-//         component: require('./components/App'),
-//         childRoutes: [
-//             require('./routes/Page1'),
-//             require('./routes/Page2')
-//             //require('./routes/Page2/index.js')
-//         ]
-//     }]
-// }
 const rootRoute = {
     path: '/',
     component: require('./components/Main.js'),
@@ -42,16 +27,8 @@ const rootRoute = {
         //require('./routes/Page2/index.js')
     ]
 }
-// 作用:  干掉React url 的_k=xxxx
-// 此处用于添加根路径
-const history = useBasename(createHashHistory)({
-  queryKey: false,//queryKey: '_key',
-  basename: '/',
-});
-
-import createBrowserHistory from 'history/lib/createBrowserHistory'
-const history2  = createBrowserHistory()
 const history3 = syncHistoryWithStore(browserHistory, store)
+history3.listen(location => console.log('路由: ' + location.pathname))
 render(
     <Provider store={store}>
         <Router history={history3} routes={rootRoute}/>
@@ -65,7 +42,31 @@ render(
         //<Router history={hashHistory} routes={rootRoute}/>
         //<Router  routes={rootRoute} />    
         
-        
+
+// // 作用:  干掉React url 的_k=xxxx
+// // 此处用于添加根路径
+// const history = useBasename(createHashHistory)({
+//   queryKey: false,//queryKey: '_key',
+//   basename: '/',
+// });
+// import createBrowserHistory from 'history/lib/createBrowserHistory'
+// const history2  = createBrowserHistory()
+
+
+// const rootRoute = {
+//     //component: 'App',
+//     childRoutes: [{
+//         path: '/',
+//         component: require('./components/App'),
+//         childRoutes: [
+//             require('./routes/Page1'),
+//             require('./routes/Page2')
+//             //require('./routes/Page2/index.js')
+//         ]
+//     }]
+// }
+
+
 //*/
 // render((
 //   <Router history={browserHistory}>
