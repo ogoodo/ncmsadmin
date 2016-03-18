@@ -3,7 +3,7 @@ var rewrite = require('express-urlrewrite')
 var path = require('path')
 var webpack = require('webpack')
 //var webpackDevMiddleware = require('webpack-dev-middleware')
-var webpackConfig = require('../webpack.config.js')
+var webpackConfig = require('../webpack.dev.config.js')
 var myConfig = Object.create(webpackConfig);
 myConfig.devtool = 'eval';
 myConfig.debug = true;
@@ -29,12 +29,12 @@ var serverOptions = {
     stats: {colors: true}
 }
 //会自动用webpack构建到内存
-var compiler = webpack(myConfig);
-app.use(require('webpack-dev-middleware')(compiler, serverOptions))
-app.use(require('webpack-hot-middleware')(compiler));
+// var compiler = webpack(myConfig);
+// app.use(require('webpack-dev-middleware')(compiler, serverOptions))
+// app.use(require('webpack-hot-middleware')(compiler));
 
 //url重写支持http://127.0.0.1:3001/page1/tab2这种类型加载
-app.use(rewrite(/(^\/(\w+))+/, '/index.html'));
+//app.use(rewrite(/(^\/(\w+))+/, '/index.html'));
 
 app.use(express.static(path.join(__dirname, '../build')))
 

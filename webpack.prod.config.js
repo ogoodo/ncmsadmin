@@ -3,21 +3,30 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+//const BUILD_PATH = path.resolve(__dirname, "build/dist/js/");
+const BUILD_PATH = path.resolve(__dirname, "build");
+const PUBLIC_PATH = '/';
+//const PUBLIC_PATH = '/dist/js/';//path.resolve(__dirname, "build/dist/js/");
+const minSize = 500*1000;
 
 // 定义函数判断是否是在当前生产环境，这个很重要，开发环境和生产环境配置上有一些区别
 const isProduction = function () {
-   // return false;
-  return process.env.NODE_ENV === 'production';
+  return process.env.NODE_ENV.toString().trim() === 'production';
 };
-/** 定义插件
- *  CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
- *  ProvidePlugin 插件可以定义一个共用的入口，比如 下面加的 React ,他会在每个文件自动require了react，所以你在文件中不需要 require('react')，也可以使用 React。
- */
 let plugins = [
+    // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
+    // new webpack.optimize.CommonsChunkPlugin({
+    //     name: 'commons',
+    //     minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
+    //     filename: 'dist/js/common/commons.js',
+    // }),
     new webpack.optimize.CommonsChunkPlugin({
-        name: 'commons',
-        filename: 'common/commons.js',
+        name: 'vendors',
+        minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
+        filename: 'dist/js/common/vendors.js',
     }),
+    // ProvidePlugin 插件可以定义一个共用的入口，比如 下面加的 React ,
+    // 他会在每个文件自动require了react，所以你在文件中不需要 require('react')，也可以使用 React。
     new webpack.ProvidePlugin({
         React: 'react',
         ReactDOM: 'react-dom',
@@ -29,9 +38,9 @@ let plugins = [
     // 使用whatwg-fetch在webpack的
     //new webpack.ProvidePlugin({'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'}),
     //维持构建编译代码
-    new webpack.optimize.OccurenceOrderPlugin(),
+    //new webpack.optimize.OccurenceOrderPlugin(),
     //热替换，热替换和dev-server的hot有什么区别？不用刷新页面，可用于生产环境
-    new webpack.HotModuleReplacementPlugin(),
+    //new webpack.HotModuleReplacementPlugin(),
     // 保证编译后的代码永远是对的，因为不对的话会自动停掉
     new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
@@ -41,34 +50,42 @@ let plugins = [
             {ignore:[ '*.txt',]}
      ),
 ];
+// console.warn('========== process.env.NODE_ENV=', process.env.NODE_ENV );
+console.warn('========== isProduction()=', isProduction() );
 if( isProduction() ) {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      test: /(\.jsx|\.js)$/,
-      compress: {
-        warnings: false
-      },
-    })
-  );
+    plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+        test: /(\.jsx|\.js)$/,
+        minimize: true,
+        compress: {
+            warnings: false
+        },
+        })
+    );
+    plugins.push(
+        new webpack.DefinePlugin({ "process.env": { NODE_ENV: JSON.stringify("production")} })
+    );
+    //plugins.push(  new webpack.optimize.MinChunkSizePlugin(minSize)  );
 }
-
 
 let config = {
   //devtool: 'eval',
-  devtool: 'cheap-module-eval-source-map',
+  //devtool: 'cheap-module-eval-source-map',
   //devtool: isProduction()?null:'source-map',//规定了在开发环境下才使用 source-map
   entry: {
-    public: ['webpack-hot-middleware/client', './src/App.js']
+    vendors: ["react", "react-dom"],
+    //public: ['webpack-hot-middleware/client', './src/App.js']
+    public: [ './src/App.js']
   },
   output: {
     //path: path.join(__dirname, 'public/dist'),
     //path: path.join(__dirname, 'dist/'),
-    path: path.resolve(__dirname, "build/dist/js/"),
-    filename: 'bundle.js',
-    chunkFilename: '[chunkhash:8].[id].chunk.js',
+    path: BUILD_PATH,
+    filename: 'dist/js/bundle.js',
+    chunkFilename: 'dist/js/[id].[chunkhash:8].chunk.js',
     //chunkFilename: debug ? '[chunkhash:8].chunk.js' : 'js/[chunkhash:8].chunk.min.js',
     //publicPath: 'public/dist'
-    publicPath: '/dist/js/'
+    publicPath: PUBLIC_PATH,
     //publicPath: isProduction()? 'http://******' : 'http://localhost:3000',
   },
   plugins: plugins,
@@ -120,6 +137,6 @@ let config = {
             // <=8k图片被转化成 base64 格式的 dataUrl
         }
     ]
-  }
+  },
 };
 module.exports = config;

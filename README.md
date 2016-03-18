@@ -1,7 +1,7 @@
 
 
 发布项目
-gulp p  将build目录copy到node服务器的静态资源目录就行(注意网址可能要改下)
+gulp prod  将build目录copy到node服务器的静态资源目录就行(注意网址可能要改下)
 
 本机调试
 node server/app.js

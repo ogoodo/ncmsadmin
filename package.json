@@ -5,7 +5,10 @@
   "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server/server.js"
+    "dev": "node server/server.js  --hot --inline",
+    "start": "webpack-dev-server --hot --inline",
+    "gulp": "set NODE_ENV=production && gulp prod",
+    "build": "set NODE_ENV=production && gulp prod"
   },
   "keywords": [
     "react",
@@ -43,6 +46,7 @@
     "copy-webpack-plugin": "^1.1.1",
     "css-loader": "^0.23.1",
     "exports-loader": "^0.6.3",
+    "extract-text-webpack-plugin": "^1.0.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-babel": "^6.1.2",

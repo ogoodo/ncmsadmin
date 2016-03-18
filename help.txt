@@ -53,6 +53,7 @@ npm install --save redux-react-router
 npm install --save es6-promise   在whatwg-fetch库IE里支持要使用
 npm install  --save-dev imports-loader exports-loader    加载库whatwg-fetch使用
 npm install --save-dev copy-webpack-plugin  复制文件
+npm install --save-dev extract-text-webpack-plugin   webpack分离css单独打包
 安装=====================================================}}
 
 

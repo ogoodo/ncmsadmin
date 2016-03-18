@@ -5,7 +5,14 @@ import babel from 'gulp-babel';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import webpackConfig from './webpack.config.js';
+import webpackConfigProd from './webpack.prod.config.js';
+import webpackConfigDev from './webpack.dev.config.js';
+
+
+console.warn('gulp********** process.env.NODE_ENV=', process.env.NODE_ENV );
+const isProduction = function () {
+  return process.env.NODE_ENV.toString().trim() === 'production';
+};
 
 gulp.task('html', function () {  
     return gulp
@@ -32,22 +39,23 @@ gulp.task('watch-transform', () => {
 
 gulp.task('webpack:build', (callback) => {
   // modify some webpack config options
-  var myConfig = Object.create(webpackConfig);
-  myConfig.plugins = myConfig.plugins.concat(
-    new webpack.DefinePlugin({
-      'process.env': {
-        // This has effect on the react lib size
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
-  );
+  var myConfig = Object.create(isProduction ? webpackConfigProd : webpackConfigDev);
+//   myConfig.plugins = myConfig.plugins.concat(
+//     new webpack.DefinePlugin({
+//       'process.env': {
+//         // This has effect on the react lib size
+//         'NODE_ENV': JSON.stringify('production')
+//       }
+//     }),
+//     new webpack.optimize.DedupePlugin(),
+//     new webpack.optimize.UglifyJsPlugin()
+//   );
 
   // run webpack
   webpack(myConfig, (err, stats) => {
-    if (err)
-      throw new gutil.PluginError('webpack:build', err);
+    if (err){
+        throw new gutil.PluginError('webpack:build', err);
+    }
     gutil.log('[webpack:build]', stats.toString({
       colors: true
     }));
@@ -73,7 +81,8 @@ gulp.task('webpack-dev-server', (callback) => {
   });
 });
 
+
 gulp.task('default', ['watch-transform', 'webpack-dev-server']);
 
-//执行 gulp p 打包到dist目录， 部署直接部署dist目录即可
-gulp.task('p', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
+//执行 gulp prod 打包到dist目录， 部署直接部署dist目录即可
+gulp.task('prod', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
