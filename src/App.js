@@ -6,8 +6,10 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { createHashHistory, useBasename } from 'history';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import './app.css'
-//import { DatePicker } from 'antd'
 import 'antd/lib/index.css'//
+require('./app.css');
+require('antd/lib/index.css');
+//import { DatePicker } from 'antd'
 //import App from './components/App.js'
 // import Page1 from './components/Page1.js'
 // import Page2 from './components/Page2.js'

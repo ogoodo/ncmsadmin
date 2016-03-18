@@ -2,6 +2,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 //const BUILD_PATH = path.resolve(__dirname, "build/dist/js/");
 const BUILD_PATH = path.resolve(__dirname, "build");
@@ -15,16 +16,13 @@ const isProduction = function () {
 };
 let plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
-    // new webpack.optimize.CommonsChunkPlugin({
-    //     name: 'commons',
-    //     minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
-    //     filename: 'dist/js/common/commons.js',
-    // }),
     new webpack.optimize.CommonsChunkPlugin({
         name: 'vendors',
         minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
         filename: 'dist/js/common/vendors.js',
     }),
+    //分离css单独打包
+    new ExtractTextPlugin("dist/css/styles.css"),
     // ProvidePlugin 插件可以定义一个共用的入口，比如 下面加的 React ,
     // 他会在每个文件自动require了react，所以你在文件中不需要 require('react')，也可以使用 React。
     new webpack.ProvidePlugin({
@@ -42,7 +40,9 @@ let plugins = [
     //热替换，热替换和dev-server的hot有什么区别？不用刷新页面，可用于生产环境
     //new webpack.HotModuleReplacementPlugin(),
     // 保证编译后的代码永远是对的，因为不对的话会自动停掉
-    new webpack.NoErrorsPlugin(),
+    //new webpack.NoErrorsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
     new CopyWebpackPlugin([
             //{ from: 'src/index.html', to: '../../to/test.html' },
             { from: 'src/index.html', to: '/test.html' },
@@ -51,17 +51,20 @@ let plugins = [
      ),
 ];
 // console.warn('========== process.env.NODE_ENV=', process.env.NODE_ENV );
-console.warn('========== isProduction()=', isProduction() );
+// console.warn('========== isProduction()=', isProduction() );
 if( isProduction() ) {
     plugins.push(
         new webpack.optimize.UglifyJsPlugin({
         test: /(\.jsx|\.js)$/,
         minimize: true,
         compress: {
+            unused: true,
+            dead_code: true,
             warnings: false
         },
         })
     );
+    // 压缩 React
     plugins.push(
         new webpack.DefinePlugin({ "process.env": { NODE_ENV: JSON.stringify("production")} })
     );
@@ -73,7 +76,8 @@ let config = {
   //devtool: 'cheap-module-eval-source-map',
   //devtool: isProduction()?null:'source-map',//规定了在开发环境下才使用 source-map
   entry: {
-    vendors: ["react", "react-dom"],
+    vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux", "react-redux", "redux-thunk",
+                "react-addons-css-transition-group"],
     //public: ['webpack-hot-middleware/client', './src/App.js']
     public: [ './src/App.js']
   },
@@ -108,8 +112,32 @@ let config = {
             exclude: /node_modules/,
             loader: 'babel',
             query: {
-                //presets: ['react', 'es2015']  
-                presets: ["es2015", "react"]
+                //presets: ['es2015', 'react', 'stage-0']  
+                presets: ["es2015", "react"],
+                // 好像没效果
+                // env: {
+                //     development: {
+                //         plugins: [
+                //         ['react-transform', {
+                //             transforms: [{
+                //             transform: 'react-transform-hmr',
+                //             imports: ['react'],
+                //             locals: ['module']
+                //             }, {
+                //             transform: 'react-transform-catch-errors',
+                //             imports: ['react', 'redbox-react']
+                //             }]
+                //         }]
+                //         ]
+                //     },
+                //     production: {
+                //         plugins: [
+                //         'transform-react-remove-prop-types',
+                //         'transform-react-constant-elements'
+                //         ]
+                //     }
+                // }
+                // //env end
             }
         },
         // {
@@ -129,7 +157,9 @@ let config = {
         },
         {
             test: /\.css$/, 
-            loader: "style!css"
+            //loader: "style!css"
+            //分离css单独打包
+            loader: ExtractTextPlugin.extract("style-loader", "css-loader")
         },
         {
             test: /\.(png|jpg)$/, 

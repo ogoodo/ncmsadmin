@@ -21,9 +21,9 @@ const isProduction = function () {
  */
 let plugins = [
     new webpack.optimize.CommonsChunkPlugin({
-        name: 'commons',
+        name: 'vendors',
         minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
-        filename: 'dist/js/common/commons.js',
+        filename: 'dist/js/common/vendors.js',
     }),
     new webpack.ProvidePlugin({
         React: 'react',
@@ -36,7 +36,7 @@ let plugins = [
     // 使用whatwg-fetch在webpack的
     //new webpack.ProvidePlugin({'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'}),
     //维持构建编译代码
-    new webpack.optimize.OccurenceOrderPlugin(),
+    //new webpack.optimize.OccurenceOrderPlugin(),
     //热替换，热替换和dev-server的hot有什么区别？不用刷新页面，可用于生产环境
     new webpack.HotModuleReplacementPlugin(),
     // 保证编译后的代码永远是对的，因为不对的话会自动停掉
@@ -69,7 +69,7 @@ let config = {
   devtool: 'cheap-module-eval-source-map',
   //devtool: isProduction()?null:'source-map',//规定了在开发环境下才使用 source-map
   entry: {
-    //vendor: ["react", "react-dom"],
+    vendors: ["react", "react-dom"],
     //public: ['webpack-hot-middleware/client', './src/App.js']
     public: ['webpack/hot/dev-server', './src/App.js']
   },
