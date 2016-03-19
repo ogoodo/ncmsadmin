@@ -53,7 +53,6 @@ let plugins = [
         __PRODUCTION__: true,
         React: 'react',
         ReactDOM: 'react-dom',
-        // reqwest: 'reqwest',
         //以下两项为了使用fetch
         Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
         fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
