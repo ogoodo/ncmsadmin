@@ -6,9 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node server/server.js  --hot --inline",
-    "start": "webpack-dev-server --hot --inline",
+    "dev2": "webpack-dev-server --hot --inline",
+    "start": "node server/server.js",
     "gulp": "set NODE_ENV=production && gulp prod",
-    "build": "set NODE_ENV=production && gulp prod"
+    "build": "set NODE_ENV=production && gulp prod",
+    "new": "npm run build && npm run start"
   },
   "keywords": [
     "react",
@@ -55,6 +57,8 @@
     "gulp-less": "^3.0.5",
     "gulp-uglify": "^1.5.3",
     "gulp-watch": "^4.3.5",
+    "html-webpack-plugin": "^2.10.0",
+    "html-webpack-template": "^4.0.0",
     "imports-loader": "^0.6.5",
     "less-loader": "^2.2.2",
     "redux-devtools": "^3.1.1",

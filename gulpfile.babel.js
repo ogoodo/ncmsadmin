@@ -11,7 +11,7 @@ import webpackConfigDev from './webpack.dev.config.js';
 
 console.warn('gulp********** process.env.NODE_ENV=', process.env.NODE_ENV );
 const isProduction = function () {
-  return process.env.NODE_ENV.toString().trim() === 'production';
+    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='production' : false;
 };
 
 gulp.task('html', function () {  

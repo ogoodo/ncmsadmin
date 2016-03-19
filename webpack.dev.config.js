@@ -12,8 +12,7 @@ const minSize = 500*1000;
 console.warn('********** process.env.NODE_ENV=', process.env.NODE_ENV );
 // 定义函数判断是否是在当前生产环境，这个很重要，开发环境和生产环境配置上有一些区别
 const isProduction = function () {
-    const prod = process.env.NODE_ENV?process.env.NODE_ENV.trim():'';
-    return prod === 'production';
+    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='production' : false;
 };
 /** 定义插件
  *  CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。

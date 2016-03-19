@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -17,6 +18,7 @@ require('antd/lib/index.css');
 // import Tab2 from './components/Tab2.js'
 // import routes from './config/routes.js'
 
+    
 import configureStore from './components/store/configureStore'
 const store = configureStore(browserHistory)
 
@@ -35,7 +37,7 @@ render(
     <Provider store={store}>
         <Router history={history3} routes={rootRoute}/>
     </Provider>
-    ,document.getElementById('example')
+    ,document.getElementById('id_root')
 )
 
         //<Router history={browserHistory} routes={rootRoute}/>//这个配置文件可以
