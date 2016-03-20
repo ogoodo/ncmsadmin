@@ -11,6 +11,8 @@ const BUILD_PATH = path.resolve(__dirname, "build");
 const PUBLIC_PATH = 'http://127.0.0.1:3001/';
 //const PUBLIC_PATH = '/dist/js/';//path.resolve(__dirname, "build/dist/js/");
 const minSize = 500*1000;
+//const nodeModulesPath = path.join(path.resolve(__dirname, '..'), 'node_modules')
+const nodeModulesPath = path.join(path.resolve(__dirname, './'), 'node_modules')
 
 // 定义函数判断是否是在当前生产环境，这个很重要，开发环境和生产环境配置上有一些区别
 const isProduction = function () {
@@ -153,6 +155,7 @@ let config = {
   //devtool: 'cheap-module-eval-source-map',
   //devtool: isProduction()?null:'source-map',//规定了在开发环境下才使用 source-map
   entry: {
+     // 打包时分离第三方库
      vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux",
             "react-redux", "redux-thunk", "react-addons-css-transition-group"
             ],
@@ -179,9 +182,18 @@ let config = {
     //fallback: [path.join(__dirname, 'node_modules') ],
     //用于指明程序自动补全识别哪些后缀
     extensions: ['', '.js', '.jsx'],
+    // 快捷路径，可以直接 import 该目录下的文件
+	// modulesDirectories: ['node_modules', 'styles', 'static'],
     //别名, 其他可以直接用 require("js/main.js");加载
     alias: {
-        js: path.join(__dirname, "./app/components")
+        js: path.join(__dirname, "./app/components"),
+        // 指定公共库的位置，优化webpack搜索硬盘的速度
+        'react': path.join(nodeModulesPath, 'react'),
+        'react-dom': path.join(nodeModulesPath, 'react-dom'),
+        'react-router': path.join(nodeModulesPath, 'react-router'),
+        'redux': path.join(nodeModulesPath, 'redux'),
+        'react-redux': path.join(nodeModulesPath, 'react-redux'),
+        'react-router-redux': path.join(nodeModulesPath, 'react-router-redux')
     }
   },
   //resolveLoader: {fallback: [path.join(__dirname, 'node_modules')]},
@@ -194,6 +206,7 @@ let config = {
     'bootstrap':true,
   }
 };
+
 config.module.loaders = 
 [
     {
@@ -257,6 +270,10 @@ config.module.loaders =
         //loader: "url-loader?limit=8192",
         loaders: ['url?limit=8192&name=img/[name].[ext]'],
         // <=8k图片被转化成 base64 格式的 dataUrl
+    },
+    {
+        test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
+        loader: 'url-loader?importLoaders=1&limit=1000&name=/fonts/[name].[ext]'
     }
 ]
 module.exports = config;
