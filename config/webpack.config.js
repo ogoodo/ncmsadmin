@@ -1,6 +1,6 @@
 
 
-
+//console.log('process.env', process.env);
 
 console.warn('webpack.config.js********** process.env.NODE_ENV=', process.env.NODE_ENV );
 const isDevelopment = function () {

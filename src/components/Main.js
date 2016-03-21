@@ -25,8 +25,8 @@ class Main extends React.Component {
         </div>
         <div>
             <ul>
-            <li><Link to="/page1">Page 1</Link></li>
-            <li><Link to="/page2">Page 2</Link></li>
+            <li><Link to="/page1">Pagehh 111</Link></li>
+            <li><Link to="/page2">Pagehh 2</Link></li>
             </ul>
             <ReactCSSTransitionGroup
             component="div" transitionName="swap"

@@ -6,12 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev2": "webpack-dev-server --hot --inline",
-    "dev":   "set NODE_ENV=development && node server/server.js --hot --inline",
+    "dev": "set NODE_ENV=development && node server/server.js --hot --inline",
     "start": "set NODE_ENV=production  && node server/server.js",
     "devbd": "set NODE_ENV=development && gulp prod ",
     "build": "set NODE_ENV=production  && gulp prod ",
-    "new":   "npm run build && npm run start",
+    "new": "npm run build && npm run start",
     "debug": "npm run devbd && npm run start"
+    ,"dbg":"set NODE_ENV=development && node server/debug.js"
   },
   "keywords": [
     "react",
@@ -62,6 +63,7 @@
     "html-webpack-template": "^4.0.0",
     "imports-loader": "^0.6.5",
     "less-loader": "^2.2.2",
+    "react-hot-loader": "^1.3.0",
     "redux-devtools": "^3.1.1",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",

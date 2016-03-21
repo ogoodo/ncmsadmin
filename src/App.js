@@ -20,7 +20,7 @@ require('antd/lib/index.css');
 
 
 import configureStore from './components/store/configureStore'
-const store = configureStore(browserHistory)
+const store = configureStore(browserHistory)  
 
 const rootRoute = {
     path: '/',

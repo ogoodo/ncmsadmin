@@ -10,7 +10,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import webpackConfigProd from './config/webpack.config.js';
 import webpackConfigDev  from './config/webpack.config.js';
 
-console.log(webpackConfigDev)
+//console.log(webpackConfigDev)
 
 console.warn('gulp********** process.env.NODE_ENV=', process.env.NODE_ENV );
 const isDevelopment = function () {

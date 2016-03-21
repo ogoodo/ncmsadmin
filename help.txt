@@ -57,6 +57,7 @@ npm install --save-dev extract-text-webpack-plugin   webpack分离css单独打�
 npm install --save-dev html-webpack-plugin@2
 npm install --save-dev ejs-compiled-loader    ejs模板加载器
 npm install --save-dev html-webpack-template   做生成index.html的模板文件
+npm install --save-dev react-hot-loader    开发用
 安装=====================================================}}
 
 

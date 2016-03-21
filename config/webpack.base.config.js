@@ -17,7 +17,7 @@ const minSize = 500*1000;
 const nodeModulesPath = path.join(process.cwd(), 'node_modules')
 const srcPath = path.join(process.cwd(), 'src')
 //console.log('================================', nodeModulesPath2)
-
+const isDev = true;
 
 let plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
@@ -26,7 +26,7 @@ let plugins = [
         name: 'vendors',
         //name: ['common', 'vendors', 'vendors2', 'vendors3'],
         minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
-        filename: 'dist/js/vendors.[hash:8].js',
+        filename: isDev?'dist/js/vendors.js':'dist/js/vendors.[hash:8].js',
         //filename: 'dist/js/common/vendors.[hash:8].js',
     }),
     // new webpack.optimize.CommonsChunkPlugin({
@@ -48,7 +48,8 @@ let plugins = [
     //     filename: 'dist/js/vendors3.[hash:8].js',
     // }),
     //分离css单独打包
-    new ExtractTextPlugin('dist/css/[name].[hash:8].css'),
+    //new ExtractTextPlugin('dist/css/[name].[hash:8].css'),
+    new ExtractTextPlugin('dist/css/[name].css'),
     // ProvidePlugin 插件可以定义一个共用的入口，比如 下面加的 React ,
     // 他会在每个文件自动require了react，所以你在文件中不需要 require('react')，也可以使用 React。
     // 用法 https://github.com/webpack/webpack/tree/master/examples/multi-compiler
@@ -68,14 +69,12 @@ let plugins = [
     //new webpack.HotModuleReplacementPlugin(),
     // 保证编译后的代码永远是对的，因为不对的话会自动停掉
     //new webpack.NoErrorsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new CopyWebpackPlugin([
-            //{ from: 'src/index.html', to: '../../to/test.html' },
-            { from: 'src/index.html', to: '/test.html' },
-            ],
-            {ignore:[ '*.txt',]}
-     ),
+    // new CopyWebpackPlugin([
+    //         //{ from: 'src/index.html', to: '../../to/test.html' },
+    //         { from: 'src/index.html', to: '/test.html' },
+    //         ],
+    //         {ignore:[ '*.txt',]}
+    //  ),
      
     // 模板试试用这个 https://github.com/jaketrent/html-webpack-template
     // 生成及压缩HTML  //根据模板插入css/js等生成最终HTML
@@ -93,7 +92,7 @@ let plugins = [
             removeComments: true,    //移除HTML中的注释
             collapseWhitespace: true    //删除空白符与换行符
         },
-        // devServer: 3001,
+        //devServer: 3001,
         mobile: true,
         //这里写入浏览器window的变量
         window: {
@@ -121,8 +120,8 @@ let config = {
     //path: path.join(__dirname, 'public/dist'),
     //path: path.join(__dirname, 'dist/'),
     path: BUILD_PATH,
-    filename: 'dist/js/[name].[chunkhash:8].js',
-    chunkFilename: 'dist/js/[id].[chunkhash:8].chunk.js',
+    filename: isDev?'dist/js/[name].js':'dist/js/[name].[chunkhash:8].js',
+    chunkFilename: isDev?'dist/js/[id].chunk.js':'dist/js/[id].[chunkhash:8].chunk.js',
     //chunkFilename: debug ? '[chunkhash:8].chunk.js' : 'js/[chunkhash:8].chunk.min.js',
     //publicPath: 'public/dist'
     publicPath: PUBLIC_PATH,
@@ -165,10 +164,25 @@ config.module.loaders =
         test: /\.js$/,
         include: [srcPath],
         exclude: nodeModulesPath,
-        loader: 'babel',
+        loader: ['babel'],
+        //loader: ['react-hot', 'babel'],
         query: {
             //presets: ['es2015', 'react', 'stage-0']  
             presets: ["es2015", "react"],
+            "env": {
+                "development": {
+                    "presets": ["react-hmre"],
+                    "plugins": [
+                        ["react-transform", {
+                            "transforms": [{
+                                "transform": "react-transform-hmr",
+                                "imports": ["react"],
+                                "locals": ["module"]
+                            }]
+                        }]
+                    ]
+                }
+            },
             // 好像没效果
             // env: {
             //     development: {

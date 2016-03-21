@@ -10,7 +10,7 @@ const TreeNode = Tree.TreeNode
 const gData = [
     {
         key:'/Page1',
-        title:'Page1',
+        title:'TreePage1',
         path:'testpath',
         children:[
             {   key:'/Page1/Tab1', title:'Page1-Tab1' },
@@ -19,7 +19,7 @@ const gData = [
     },
     {
         key:'/Page2',
-        title:'Page2',
+        title:'TreePage2',
         children:[
             {   key:'/Page2/Tab1', title:'Page2-Tab1' },
             {   key:'/Page2/Tab2', title:'Page2-Tab2' },

@@ -9,7 +9,7 @@ class Counter extends Component {
       <p>
         Clicked: {counter} times
         {' '}
-        <button onClick={increment}>.+.</button>
+        <button onClick={increment}>.+...</button>
         {' '}
         <button onClick={decrement}>.-.</button>
         {' '}
