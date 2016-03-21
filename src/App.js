@@ -18,7 +18,7 @@ require('antd/lib/index.css');
 // import Tab2 from './components/Tab2.js'
 // import routes from './config/routes.js'
 
-    
+
 import configureStore from './components/store/configureStore'
 const store = configureStore(browserHistory)
 

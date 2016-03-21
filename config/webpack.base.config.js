@@ -18,10 +18,7 @@ const nodeModulesPath = path.join(process.cwd(), 'node_modules')
 const srcPath = path.join(process.cwd(), 'src')
 //console.log('================================', nodeModulesPath2)
 
-// 定义函数判断是否是在当前生产环境，这个很重要，开发环境和生产环境配置上有一些区别
-const isProduction = function () {
-    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='production' : false;
-};
+
 let plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
     // 参考: https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk
@@ -79,85 +76,36 @@ let plugins = [
             ],
             {ignore:[ '*.txt',]}
      ),
-];
-// console.warn('========== process.env.NODE_ENV=', process.env.NODE_ENV );
-// console.warn('========== isProduction()=', isProduction() );
-if( isProduction() ) {
-    // 压缩JS与CSS
-    plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-        test: /(\.jsx|\.js)$/,
-        minimize: true,
-        compress: {
-            unused: true,
-            dead_code: true,
-            warnings: false
-        },
-        //排除混淆关键词
-         except: ['$super', '$', 'exports', 'require'],
-        })
-    );
-    // 压缩React
-    plugins.push(
-        new webpack.DefinePlugin({ "process.env": { NODE_ENV: JSON.stringify("production")} })
-    );
+     
     // 模板试试用这个 https://github.com/jaketrent/html-webpack-template
     // 生成及压缩HTML  //根据模板插入css/js等生成最终HTML
-    // plugins.push(
-    //     new HtmlWebpackPlugin({
-    //         //favicon:'./src/img/favicon.ico', //favicon路径
-    //         filename: './index3.html',    //生成的html存放路径，相对于 path
-    //         template: './src/index.ejs',    //html模板路径
-    //         inject: true,    //允许插件修改哪些内容，包括head与body
-    //         //inject:false,
-    //         hash: true,    //为静态资源生成hash值
-    //         cache: false, //如果为 true, 这是默认值 仅仅在文件修改之后才会发布文件
-    //         //压缩HTML文件 传递 html-minifier 选项给 minify 输出
-    //         minify:{
-    //             removeComments: true,    //移除HTML中的注释
-    //             collapseWhitespace: true    //删除空白符与换行符
-    //         },
-    //         //minify: false,
-    //         chunks: ['vendors', 'bundle'],
-    //         title: '测试标题'
-    //     })
-    // );
-    plugins.push(
-        new HtmlWebpackPlugin({
-            title: 'ncms admin',
-            //favicon:'./src/img/favicon.ico', //favicon路径
-            inject: false, //允许插件修改哪些内容，包括head与body
-            cache: false, //如果为 true, 这是默认值 仅仅在文件修改之后才会发布文件
-            template: 'node_modules/html-webpack-template/index.ejs',
-            filename: './index.html',    //生成的html存放路径，相对于 path
-            appMountId: 'id_root',
-            baseHref: PUBLIC_PATH, // 'http://example.com/awesome',
-            //压缩HTML文件 传递 html-minifier 选项给 minify 输出
-            minify:{
-                removeComments: true,    //移除HTML中的注释
-                collapseWhitespace: true    //删除空白符与换行符
-            },
-            // devServer: 3001,
-            // googleAnalytics: {
-            //     trackingId: 'UA-XXXX-XX',
-            //     pageViewOnLoad: true
-            // },
-            mobile: true,
-            //这里写入浏览器window的变量
-            window: {
-                envex: {
-                    apiHost: 'http://myapi.com/api/v1'
-                }
+    new HtmlWebpackPlugin({
+        title: 'ncms admin',
+        //favicon:'./src/img/favicon.ico', //favicon路径
+        inject: false, //允许插件修改哪些内容，包括head与body
+        cache: false, //如果为 true, 这是默认值 仅仅在文件修改之后才会发布文件
+        template: 'node_modules/html-webpack-template/index.ejs',
+        filename: './index.html',    //生成的html存放路径，相对于 path
+        appMountId: 'id_root',
+        baseHref: PUBLIC_PATH, // 'http://example.com/awesome',
+        //压缩HTML文件 传递 html-minifier 选项给 minify 输出
+        minify:{
+            removeComments: true,    //移除HTML中的注释
+            collapseWhitespace: true    //删除空白符与换行符
+        },
+        // devServer: 3001,
+        mobile: true,
+        //这里写入浏览器window的变量
+        window: {
+            envex: {
+                apiHost: 'http://myapi.com/api/v1'
             }
-        })
-    );
-    //plugins.push(  new webpack.optimize.MinChunkSizePlugin(minSize)  );
-}
+        }
+    })
+];
+
 
 let config = {
-  //devtool: 'eval',
-  //devtool: 'cheap-module-eval-source-map',
-  //devtool: isProduction()?null:'source-map',//规定了在开发环境下才使用 source-map
   entry: {
      // 打包时分离第三方库
      vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux",
@@ -192,12 +140,12 @@ let config = {
     alias: {
         // js: path.join(__dirname, "./app/components"),
         // 指定公共库的位置，优化webpack搜索硬盘的速度
-        // 'react': path.join(nodeModulesPath, 'react'),
-        // 'react-dom': path.join(nodeModulesPath, 'react-dom'),
-        // 'react-router': path.join(nodeModulesPath, 'react-router'),
-        // 'redux': path.join(nodeModulesPath, 'redux'),
-        // 'react-redux': path.join(nodeModulesPath, 'react-redux'),
-        // 'react-router-redux': path.join(nodeModulesPath, 'react-router-redux')
+        'react': path.join(nodeModulesPath, 'react'),
+        'react-dom': path.join(nodeModulesPath, 'react-dom'),
+        'react-router': path.join(nodeModulesPath, 'react-router'),
+        'redux': path.join(nodeModulesPath, 'redux'),
+        'react-redux': path.join(nodeModulesPath, 'react-redux'),
+        'react-router-redux': path.join(nodeModulesPath, 'react-router-redux')
     }
   },
   //resolveLoader: {fallback: [path.join(__dirname, 'node_modules')]},

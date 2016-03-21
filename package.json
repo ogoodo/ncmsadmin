@@ -5,12 +5,13 @@
   "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server/server.js  --hot --inline",
     "dev2": "webpack-dev-server --hot --inline",
-    "start": "node server/server.js",
-    "gulp":  "set NODE_ENV=production && gulp prod ",
-    "build": "set NODE_ENV=production && gulp prod ",
-    "new": "npm run build && npm run start"
+    "dev":   "set NODE_ENV=development && node server/server.js --hot --inline",
+    "start": "set NODE_ENV=production  && node server/server.js",
+    "devbd": "set NODE_ENV=development && gulp prod ",
+    "build": "set NODE_ENV=production  && gulp prod ",
+    "new":   "npm run build && npm run start",
+    "debug": "npm run devbd && npm run start"
   },
   "keywords": [
     "react",

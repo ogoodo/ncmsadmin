@@ -134,7 +134,7 @@ let config = {
     ]
   },
   // 配置webpack-dev-server  当代码更新的时候自动刷新浏览器
-  devServer: { 
+  devServer: {
       historyApiFallback: true, 
       hot: true, 
       inline: true, 

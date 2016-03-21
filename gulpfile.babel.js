@@ -13,8 +13,8 @@ import webpackConfigDev  from './config/webpack.config.js';
 console.log(webpackConfigDev)
 
 console.warn('gulp********** process.env.NODE_ENV=', process.env.NODE_ENV );
-const isProduction = function () {
-    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='production' : false;
+const isDevelopment = function () {
+    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
 };
 
 gulp.task('html', function () {  
@@ -42,7 +42,7 @@ gulp.task('watch-transform', () => {
 
 gulp.task('webpack:build', (callback) => {
   // modify some webpack config options
-  var myConfig = Object.create(isProduction ? webpackConfigProd : webpackConfigDev);
+  var myConfig = Object.create(isDevelopment ? webpackConfigDev : webpackConfigProd);
 //   myConfig.plugins = myConfig.plugins.concat(
 //     new webpack.DefinePlugin({
 //       'process.env': {
