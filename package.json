@@ -8,8 +8,8 @@
     "dev": "node server/server.js  --hot --inline",
     "dev2": "webpack-dev-server --hot --inline",
     "start": "node server/server.js",
-    "gulp": "set NODE_ENV=production && gulp prod",
-    "build": "set NODE_ENV=production && gulp prod",
+    "gulp":  "set NODE_ENV=production && gulp prod ",
+    "build": "set NODE_ENV=production && gulp prod ",
     "new": "npm run build && npm run start"
   },
   "keywords": [

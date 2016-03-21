@@ -5,9 +5,12 @@ import babel from 'gulp-babel';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
-import webpackConfigProd from './webpack.prod.config.js';
-import webpackConfigDev from './webpack.dev.config.js';
+// import webpackConfigProd from './config/webpack.prod.1.config.js';
+// import webpackConfigDev from './config/webpack.dev.1.config.js';
+import webpackConfigProd from './config/webpack.config.js';
+import webpackConfigDev  from './config/webpack.config.js';
 
+console.log(webpackConfigDev)
 
 console.warn('gulp********** process.env.NODE_ENV=', process.env.NODE_ENV );
 const isProduction = function () {
