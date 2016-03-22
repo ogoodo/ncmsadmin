@@ -7,7 +7,6 @@ const isDevelopment = function () {
     return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
 };
 
-//console.log(wpconfig)
 var cfg;
 if (isDevelopment()){    
     var wpconfig2 = require('./webpack.dev.config.js')
@@ -16,5 +15,7 @@ if (isDevelopment()){
     var wpconfig = require('./webpack.prod.config.js')
     cfg = wpconfig;
 }
+
+//console.log(cfg)
 
 module.exports = cfg;

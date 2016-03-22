@@ -5,6 +5,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+var scfg = require("../config/env.config.js").server( )
+
+console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$scfg==', scfg)
+
 //const BUILD_PATH = path.resolve(__dirname, "build/dist/js/");
 //const BUILD_PATH = path.resolve(__dirname, "build");
 const BUILD_PATH = path.join(process.cwd(), 'build')
@@ -54,28 +58,14 @@ let plugins = [
     // 他会在每个文件自动require了react，所以你在文件中不需要 require('react')，也可以使用 React。
     // 用法 https://github.com/webpack/webpack/tree/master/examples/multi-compiler
     new webpack.ProvidePlugin({
-        __PRODUCTION__: true,
+        //__PRODUCTION__: true,
         React: 'react',
         ReactDOM: 'react-dom',
         //以下两项为了使用fetch
         Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
         fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
     }),
-    // 使用whatwg-fetch在webpack的
-    //new webpack.ProvidePlugin({'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'}),
-    //维持构建编译代码
-    //new webpack.optimize.OccurenceOrderPlugin(),
-    //热替换，热替换和dev-server的hot有什么区别？不用刷新页面，可用于生产环境
-    //new webpack.HotModuleReplacementPlugin(),
-    // 保证编译后的代码永远是对的，因为不对的话会自动停掉
-    //new webpack.NoErrorsPlugin(),
-    // new CopyWebpackPlugin([
-    //         //{ from: 'src/index.html', to: '../../to/test.html' },
-    //         { from: 'src/index.html', to: '/test.html' },
-    //         ],
-    //         {ignore:[ '*.txt',]}
-    //  ),
-     
+    // new CopyWebpackPlugin([ { from: 'src/index.html', to: '/test.html' },],{ignore:[ '*.txt',]} ),
     // 模板试试用这个 https://github.com/jaketrent/html-webpack-template
     // 生成及压缩HTML  //根据模板插入css/js等生成最终HTML
     new HtmlWebpackPlugin({

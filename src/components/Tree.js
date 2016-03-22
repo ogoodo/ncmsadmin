@@ -35,15 +35,25 @@ const LeftTree = React.createClass({
     };
   },
   onSelect(key, event) {
-        browserHistory.replace(key[0])
+        browserHistory.replace(key[0]);
         //fetch('http://www.baidu.com/')
         fetch('http://127.0.0.1:3001')        
         .then(function(response) {
             return response.text()
         }).then(function(body) {
-            alert('body:\r\n' + body);
+            console.log('body:::\r\n' + body);
             //document.body.innerHTML = body
         })
+        if(__DEV__){
+            console.log('__DEV__:调试版本=', __ENV__);
+        }
+        if(__ENV__){
+            console.log('__ENV__:注入变量测试=', __ENV__);
+        }
+        // if(ENV === "mobile"){
+        //     console.log('ENV.baseUrl=' + ENV2);
+        //     //console.log('ENV.baseUrl=', ENV.baseUrl);
+        // }
         //browserHistory.replace('/Page2/Tab2')
         //history.replace(null, '/Page2/Tab2')
         //alert(info);
