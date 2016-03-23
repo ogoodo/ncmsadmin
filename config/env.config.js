@@ -34,11 +34,21 @@ init.server = function(envName){
     let cfg = {}
     cfg['dev_'] = {};
     cfg['prod'] = {};
-    cfg['test'] = {};
     
-    cfg['dev_'].baseUrl = 'server .dev_'
-    cfg['prod'].baseUrl = 'server .prod'
-    cfg['test'].baseUrl = 'server .test'
+    cfg['dev_'].publicPath = '/'
+    cfg['prod'].publicPath = 'http://127.0.0.1:3001/'
+    
+    cfg['dev_'].vendorsFilename = 'dist/js/vendors.js'
+    cfg['prod'].vendorsFilename = 'dist/js/vendors.[hash:8].js'
+    
+    cfg['dev_'].cssFilename = 'dist/css/[name].css'
+    cfg['prod'].cssFilename = 'dist/css/[name].[hash:8].css'
+    
+    cfg['dev_'].outputFilename = 'dist/js/[name].js'
+    cfg['prod'].outputFilename = 'dist/js/[name].[chunkhash:8].js'
+    
+    cfg['dev_'].outputChunkFilename = 'dist/js/[id].chunk.js'
+    cfg['prod'].outputChunkFilename = 'dist/js/[id].[chunkhash:8].chunk.js'
     
     //console.log('===================000000000000000000000:', envName, ':',cfg[envName]);
     return cfg[envName];    

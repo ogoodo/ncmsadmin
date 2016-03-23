@@ -18,10 +18,9 @@ wpconfig.plugins.push(
     //new webpack.optimize.OccurenceOrderPlugin(), //1.0好像可以不要
     new webpack.HotModuleReplacementPlugin(),    
     new webpack.NoErrorsPlugin()  // 防止报错的插件
-    
 );
 wpconfig.entry.bundle.unshift('webpack-hot-middleware/client');
-console.log(wpconfig.entry.bundle)
+// console.log(wpconfig.entry.bundle)
 // wpconfig.devtool = 'eval'
 // wpconfig.devtool = 'cheap-module-eval-source-map'
 // wpconfig.devtool = 'source-map' //规定了在开发环境下才使用 source-map

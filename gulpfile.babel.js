@@ -7,15 +7,15 @@ import WebpackDevServer from 'webpack-dev-server';
 
 // import webpackConfigProd from './config/webpack.prod.1.config.js';
 // import webpackConfigDev from './config/webpack.dev.1.config.js';
-import webpackConfigProd from './config/webpack.config.js';
-import webpackConfigDev  from './config/webpack.config.js';
+//import webpackConfigProd from './config/webpack.config.js';
+import webpackConfig  from './config/webpack.config.js';
 
 //console.log(webpackConfigDev)
 
-console.warn('gulp********** process.env.NODE_ENV=', process.env.NODE_ENV );
-const isDevelopment = function () {
-    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
-};
+// console.warn('gulp********** process.env.NODE_ENV=', process.env.NODE_ENV );
+// const isDevelopment = function () {
+//     return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
+// };
 
 gulp.task('html', function () {  
     return gulp
@@ -42,7 +42,7 @@ gulp.task('watch-transform', () => {
 
 gulp.task('webpack:build', (callback) => {
   // modify some webpack config options
-  var myConfig = Object.create(isDevelopment ? webpackConfigDev : webpackConfigProd);
+  var myConfig = Object.create( webpackConfig);
 //   myConfig.plugins = myConfig.plugins.concat(
 //     new webpack.DefinePlugin({
 //       'process.env': {
@@ -55,15 +55,15 @@ gulp.task('webpack:build', (callback) => {
 //   );
 
   // run webpack
-  webpack(myConfig, (err, stats) => {
-    if (err){
-        throw new gutil.PluginError('webpack:build', err);
-    }
-    gutil.log('[webpack:build]', stats.toString({
-      colors: true
-    }));
-    callback();
-  });
+    webpack(myConfig, (err, stats) => {
+        if (err){
+            throw new gutil.PluginError('webpack:build', err);
+        }
+        gutil.log('[webpack:build]', stats.toString({
+            colors: true
+        }));
+        callback();
+    });
 });
 
 gulp.task('webpack-dev-server', (callback) => {

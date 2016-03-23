@@ -5,23 +5,23 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-var scfg = require("../config/env.config.js").server( )
+const envcfg = require("../config/env.config.js").server( )
 
-console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$scfg==', scfg)
+//console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$scfg==', envcfg)
 
 //const BUILD_PATH = path.resolve(__dirname, "build/dist/js/");
 //const BUILD_PATH = path.resolve(__dirname, "build");
-const BUILD_PATH = path.join(process.cwd(), 'build')
 //const PUBLIC_PATH = '/';
-const PUBLIC_PATH = 'http://127.0.0.1:3001/';
+//const PUBLIC_PATH = 'http://127.0.0.1:3001/';
 //const PUBLIC_PATH = '/dist/js/';//path.resolve(__dirname, "build/dist/js/");
-const minSize = 500*1000;
 //const nodeModulesPath = path.join(path.resolve(__dirname, '..'), 'node_modules')
 //const nodeModulesPath = path.join(path.resolve(__dirname, '../'), 'node_modules')
+const BUILD_PATH = path.join(process.cwd(), 'build')
 const nodeModulesPath = path.join(process.cwd(), 'node_modules')
 const srcPath = path.join(process.cwd(), 'src')
-//console.log('================================', nodeModulesPath2)
-const isDev = true;
+const imgPath = path.resolve(process.cwd(), 'src/img')
+console.log('imgPath================================', imgPath)
+//const isDev = true;
 
 let plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
@@ -30,7 +30,7 @@ let plugins = [
         name: 'vendors',
         //name: ['common', 'vendors', 'vendors2', 'vendors3'],
         minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
-        filename: isDev?'dist/js/vendors.js':'dist/js/vendors.[hash:8].js',
+        filename: envcfg.vendorsFilename,//isDev?'dist/js/vendors.js':'dist/js/vendors.[hash:8].js',
         //filename: 'dist/js/common/vendors.[hash:8].js',
     }),
     // new webpack.optimize.CommonsChunkPlugin({
@@ -53,7 +53,7 @@ let plugins = [
     // }),
     //分离css单独打包
     //new ExtractTextPlugin('dist/css/[name].[hash:8].css'),
-    new ExtractTextPlugin('dist/css/[name].css'),
+    new ExtractTextPlugin(envcfg.cssFilename ),
     // ProvidePlugin 插件可以定义一个共用的入口，比如 下面加的 React ,
     // 他会在每个文件自动require了react，所以你在文件中不需要 require('react')，也可以使用 React。
     // 用法 https://github.com/webpack/webpack/tree/master/examples/multi-compiler
@@ -65,18 +65,18 @@ let plugins = [
         Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
         fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
     }),
-    // new CopyWebpackPlugin([ { from: 'src/index.html', to: '/test.html' },],{ignore:[ '*.txt',]} ),
     // 模板试试用这个 https://github.com/jaketrent/html-webpack-template
     // 生成及压缩HTML  //根据模板插入css/js等生成最终HTML
     new HtmlWebpackPlugin({
         title: 'ncms admin',
-        //favicon:'./src/img/favicon.ico', //favicon路径
+        //favicon:'./build/img/favicon.ico', //favicon路径
+        favicon:'./src/img/favicon.ico', //favicon路径
         inject: false, //允许插件修改哪些内容，包括head与body
         cache: false, //如果为 true, 这是默认值 仅仅在文件修改之后才会发布文件
         template: 'node_modules/html-webpack-template/index.ejs',
         filename: './index.html',    //生成的html存放路径，相对于 path
         appMountId: 'id_root',
-        baseHref: PUBLIC_PATH, // 'http://example.com/awesome',
+        baseHref: envcfg.publicPath, // 'http://example.com/awesome',
         //压缩HTML文件 传递 html-minifier 选项给 minify 输出
         minify:{
             removeComments: true,    //移除HTML中的注释
@@ -90,7 +90,13 @@ let plugins = [
                 apiHost: 'http://myapi.com/api/v1'
             }
         }
-    })
+    }),
+    new CopyWebpackPlugin([ 
+            { from: imgPath, to: 'img', toType: 'dir' },
+            { from: 'src/img/favicon.ico', to: 'favicon.ico', toType: 'file' },
+        ])
+        //], {ignore:[ '*.txt',]} ),
+    //new CopyWebpackPlugin([ { from: 'src/img/favicon.ico', to: '/favicon.ico' },], {ignore:[ '*.txt',]} ),
 ];
 
 
@@ -110,11 +116,11 @@ let config = {
     //path: path.join(__dirname, 'public/dist'),
     //path: path.join(__dirname, 'dist/'),
     path: BUILD_PATH,
-    filename: isDev?'dist/js/[name].js':'dist/js/[name].[chunkhash:8].js',
-    chunkFilename: isDev?'dist/js/[id].chunk.js':'dist/js/[id].[chunkhash:8].chunk.js',
+    filename: envcfg.outputFilename, //isDev?'dist/js/[name].js':'dist/js/[name].[chunkhash:8].js',
+    chunkFilename: envcfg.outputChunkFilename, //isDev?'dist/js/[id].chunk.js':'dist/js/[id].[chunkhash:8].chunk.js',
     //chunkFilename: debug ? '[chunkhash:8].chunk.js' : 'js/[chunkhash:8].chunk.min.js',
     //publicPath: 'public/dist'
-    publicPath: PUBLIC_PATH,
+    publicPath: envcfg.publicPath,
     //publicPath: isProduction()? 'http://******' : 'http://localhost:3000',
   },
   plugins: plugins,
@@ -159,20 +165,20 @@ config.module.loaders =
         query: {
             //presets: ['es2015', 'react', 'stage-0']  
             presets: ["es2015", "react"],
-            "env": {
-                "development": {
-                    "presets": ["react-hmre"],
-                    "plugins": [
-                        ["react-transform", {
-                            "transforms": [{
-                                "transform": "react-transform-hmr",
-                                "imports": ["react"],
-                                "locals": ["module"]
-                            }]
-                        }]
-                    ]
-                }
-            },
+            // "env": {
+            //     "development": {
+            //         "presets": ["react-hmre"],
+            //         "plugins": [
+            //             ["react-transform", {
+            //                 "transforms": [{
+            //                     "transform": "react-transform-hmr",
+            //                     "imports": ["react"],
+            //                     "locals": ["module"]
+            //                 }]
+            //             }]
+            //         ]
+            //     }
+            // },
             // 好像没效果
             // env: {
             //     development: {
