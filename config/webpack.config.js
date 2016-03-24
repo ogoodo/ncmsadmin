@@ -1,4 +1,4 @@
-
+'use strict'
 
 //console.log('process.env', process.env);
 
@@ -7,12 +7,12 @@ const isDevelopment = function () {
     return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
 };
 
-var cfg;
+let cfg;
 if (isDevelopment()){    
-    var wpconfig2 = require('./webpack.dev.config.js')
-    cfg = wpconfig2;
+    let wpconfig = require('./webpack.dev.config.js')
+    cfg = wpconfig;
 }else{
-    var wpconfig = require('./webpack.prod.config.js')
+    let wpconfig = require('./webpack.prod.config.js')
     cfg = wpconfig;
 }
 

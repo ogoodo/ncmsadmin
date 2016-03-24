@@ -35,7 +35,9 @@ const LeftTree = React.createClass({
     };
   },
   onSelect(key, event) {
-        browserHistory.replace(key[0]);
+        //browserHistory.replace(key[0]);
+        //this.context.history.replace(key[0]);
+        this.context.router.replace(key[0]);
         //fetch('http://www.baidu.com/')
         fetch('http://127.0.0.1:3001')        
         .then(function(response) {

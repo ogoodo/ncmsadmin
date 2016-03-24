@@ -12,7 +12,8 @@ wpconfig.plugins.push(
         __ENV__: JSON.stringify(require("../config/env.config.js").client(process.env.NODE_ENV || "development")),
         __DEV__: JSON.stringify(true),
     }),
-    new OpenBrowserPlugin({ url: 'http://localhost:3001' }),
+    // 这句有可能冲突(webpack wait until bundle finished)
+    // new OpenBrowserPlugin({ url: 'http://localhost:3001' }),
     // 参考： https://github.com/glenjamin/webpack-hot-middleware
     // 热替换，热替换和dev-server的hot有什么区别？不用刷新页面，可用于生产环境    
     //new webpack.optimize.OccurenceOrderPlugin(), //1.0好像可以不要
