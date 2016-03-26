@@ -11,9 +11,9 @@ var onFinished = require('on-finished')
 app.use(logger('dev'));
 app.use(function(req, res, next){
     // console.log('服务器重写:', req.url );
-    if(req.url.indexOf('.')===-1){
+    // 能夠重写成功
+    if(req.url.indexOf('.')===-1 && req.url.indexOf('__webpack_hmr')===-1){
         req.url = '/index.html'
-        //req.originalUrl = '/index.html'
     }
     next();
     // //404后处理, 要编译成本地文件才行
@@ -30,7 +30,8 @@ app.use(function(req, res, next){
 });
 //url重写支持http://127.0.0.1:3001/page1/tab2这种类型加载
 //app.use(rewrite(/(^\/(\w+))+/, '/index.html'));
-app.use(rewrite('/page1', '/index.html'))
+// app.use(rewrite(/^[^.]+$/, '/index.html'));
+//app.use(rewrite('/page1', '/index.html'))
 
 app.use(express.static(path.join(__dirname, '../build')))
 

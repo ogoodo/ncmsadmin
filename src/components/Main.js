@@ -2,7 +2,7 @@ import React from 'react'
 import { browserHistory, Router, Route, Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-import Tree from '../components/Tree.js'
+import Tree from '../components/Tree.jsx'
 
 
 import CounterContainer from './containers/CounterContainer'

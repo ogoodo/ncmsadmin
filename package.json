@@ -27,8 +27,10 @@
     "es6-promise": "^3.1.2",
     "express": "^4.13.4",
     "express-urlrewrite": "^1.2.0",
+    "fetch-jsonp": "^1.0.0",
     "history": "^2.0.0",
     "immutable": "^3.7.6",
+    "isomorphic-fetch": "^2.2.1",
     "morgan": "^1.7.0",
     "react": "^0.14.7",
     "react-addons-css-transition-group": "^0.14.7",
@@ -38,7 +40,6 @@
     "react-router-redux": "^4.0.0",
     "redux": "^3.3.1",
     "redux-thunk": "^1.0.3",
-    "whatwg-fetch": "^0.11.0",
     "xml2js": "^0.4.16"
   },
   "devDependencies": {

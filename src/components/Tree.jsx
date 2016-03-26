@@ -1,38 +1,113 @@
 import {parseString} from 'xml2js'
 import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { Tree } from 'antd'
+//import fetchJsonp from 'fetch-jsonp'
 //import fetch from 'fetch'
-import 'whatwg-fetch'
+//import 'whatwg-fetch'
 const TreeNode = Tree.TreeNode
 
 //import createBrowserHistory from 'history/lib/createBrowserHistory'
 
-const gData = [
-    {
-        key:'/Page1',
-        title:'TreePage1',
-        path:'testpath',
-        children:[
-            {   key:'/Page1/Tab1', title:'Page1-Tab1' },
-            {   key:'/Page1/Tab2', title:'Page1-Tab2' },
-        ]
-    },
-    {
-        key:'/Page2',
-        title:'TreePage2',
-        children:[
-            {   key:'/Page2/Tab1', title:'Page2-Tab1' },
-            {   key:'/Page2/Tab2', title:'Page2-Tab2' },
-        ]
-    },
-];
-console.log(gData);
+const gData = [];
+/*  */
+class LeftTree extends React.Component{
+  constructor(props){
+      super(props)
+      this.state = {gData}
+      this.onSelect = this.onSelect.bind(this)
+  }
+  componentDidMount(){
+    const that = this;
+    fetch('http://127.0.0.1:3001/json/tree.json')
+    .then(function(response) {
+        return response.text()
+        //return response.json()
+    }).then(function(body) {
+        that.setState({gData:JSON.parse(body)})
+        console.log('componentDidMount.body:::\r\n' + body)
+        //document.body.innerHTML = body
+    })
+    // fetchJsonp('http://127.0.0.1:3001/json/tree.json')
+    // .then(function(response) {
+    //     return response.json()
+    // }).then(function(body) {
+    //     that.setState({gData:body});
+    // })
+  }
+  onSelect(key, event) {
+        this.context.router.replace(key[0]);
+        fetch('http://127.0.0.1:3001')        
+        .then(function(response) {
+            return response.text()
+        }).then(function(body) {
+            console.log('body:::\r\n' + body);
+            //document.body.innerHTML = body
+        })
+        if(__DEV__){
+            console.log('__DEV__:调试版本=', __ENV__);
+        }
+        if(__ENV__){
+            console.log('__ENV__:注入变量测试=', __ENV__);
+        }
+  }
+  render() {
+    const loop = data => data.map((item) => {
+      if (item.children) {
+        return <TreeNode key={item.key} title={item.key}>
+                    {loop(item.children)}
+               </TreeNode>;
+      }
+      return <TreeNode key={item.key} title={item.key} _path={item.key} />;
+    });
+    return (
+      <Tree defaultExpandedKeys={this.state.expandedKeys} openAnimation={{}} onSelect={this.onSelect} >
+        {loop(this.state.gData)}
+      </Tree>
+    );
+  }
+}
+
+//声明引用Provider和RouterContext.js定义的数据
+LeftTree.contextTypes = {
+    history:  React.PropTypes.object,
+    location: React.PropTypes.object.isRequired,
+    router:   React.PropTypes.object.isRequired,
+    store:    React.PropTypes.object
+    //store: storeShape
+  }
+  
+module.exports = LeftTree
+//*/
+/* *
 const LeftTree = React.createClass({
   getInitialState() {
     return {
       gData,
       //expandedKeys: ['0-0', '0-0-0', '0-0-0-0'],
     };
+  },
+  componentDidMount(){
+    const that = this;
+    fetch('http://127.0.0.1:3001/json/tree.json')
+    .then(function(response) {
+        return response.text()
+        //return response.json()
+    }).then(function(body) {
+        that.setState({gData:JSON.parse(body)})
+        console.log('componentDidMount.body:::\r\n' + body)
+        //document.body.innerHTML = body
+    })
+    // fetchJsonp('http://127.0.0.1:3001/json/tree.json')
+    // .then(function(response) {
+    //     //return response.text()
+    //     return response.json()
+    // }).then(function(body) {
+    //     that.setState({gData:body});
+    //     //that.setState(JSON.parse(body));
+    //     //that.setState(body);
+    //     console.log('componentDidMount.body:::\r\n' + body);
+    //     //document.body.innerHTML = body
+    // })
   },
   onSelect(key, event) {
         //browserHistory.replace(key[0]);
@@ -87,6 +162,7 @@ LeftTree.contextTypes = {
   }
   
 module.exports = LeftTree
+//*/
 //ReactDOM.render(<Demo />, mountNode);
 
 

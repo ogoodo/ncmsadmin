@@ -20,6 +20,7 @@ const BUILD_PATH = path.join(process.cwd(), 'build')
 const nodeModulesPath = path.join(process.cwd(), 'node_modules')
 const srcPath = path.join(process.cwd(), 'src')
 const imgPath = path.resolve(process.cwd(), 'src/img')
+const testJsonPath = path.resolve(process.cwd(), 'test/json')
 console.log('imgPath================================', imgPath)
 //const isDev = true;
 
@@ -61,9 +62,13 @@ let plugins = [
         //__PRODUCTION__: true,
         React: 'react',
         ReactDOM: 'react-dom',
-        //以下两项为了使用fetch
+        // 使用es6-promise
         Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
-        fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
+        //以下为了使用fetch
+        //fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
+        //以下为了使用fetch
+        fetch: 'imports?this=>global!exports?global.fetch!isomorphic-fetch',
+        fetchJsonp: 'imports?this=>global!exports?global.fetchJsonp!fetch-jsonp',
     }),
     // 模板试试用这个 https://github.com/jaketrent/html-webpack-template
     // 生成及压缩HTML  //根据模板插入css/js等生成最终HTML
@@ -93,6 +98,7 @@ let plugins = [
     }),
     new CopyWebpackPlugin([ 
             { from: imgPath, to: 'img', toType: 'dir' },
+            { from: testJsonPath, to: 'json', toType: 'dir' },
             { from: 'src/img/favicon.ico', to: 'favicon.ico', toType: 'file' },
         ])
         //], {ignore:[ '*.txt',]} ),
@@ -211,7 +217,14 @@ config.module.loaders =
     // }, 
     {
         test: /\.jsx$/,
-        loader: 'babel-loader!jsx-loader?harmony'
+        include: [srcPath],
+        exclude: nodeModulesPath,
+        loader: ['babel'],
+        query: {
+            //presets: ['es2015', 'react', 'stage-0']  
+            presets: ["es2015", "react"],
+        }
+        //loader: 'babel-loader!jsx-loader?harmony'
         //先jsx-loader处理，再babel-loader
     },
     {

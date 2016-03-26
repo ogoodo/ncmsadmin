@@ -1,0 +1,19 @@
+[
+    {
+        "key":"/Page1",
+        "title":"TreePage1",
+        "path":"testpath",
+        "children":[
+            {   "key":"/Page1/Tab1", "title":"Page1-Tab1" },
+            {   "key":"/Page1/Tab2", "title":"Page1-Tab2" }
+        ]
+    },
+    {
+        "key":"/Page2",
+        "title":"TreePage222",
+        "children":[
+            {   "key":"/Page2/Tab1", "title":"Page2-Tab1" },
+            {   "key":"/Page2/Tab2", "title":"Page2-Tab2" }
+        ]
+    }
+]
