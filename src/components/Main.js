@@ -3,7 +3,7 @@ import { browserHistory, Router, Route, Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Tree from '../components/Tree.jsx'
-
+import 'app.css'
 
 import CounterContainer from './containers/CounterContainer'
 //import { connect } from 'react-redux'
@@ -22,12 +22,12 @@ class Main extends React.Component {
         </div>
         <div>
             <Tree />
-        </div>
-        <div>
             <ul>
-            <li><Link to="/page1">Pagehh 111</Link></li>
-            <li><Link to="/page2">Pagehh 2</Link></li>
+                <li><Link to="/page1">Pagehh 111</Link></li>
+                <li><Link to="/page2">Pagehh 2</Link></li>
             </ul>
+        </div>
+        <div className="tree-right">
             <ReactCSSTransitionGroup
             component="div" transitionName="swap"
             transitionEnterTimeout={500} transitionLeaveTimeout={500}

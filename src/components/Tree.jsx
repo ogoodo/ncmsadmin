@@ -21,11 +21,9 @@ class LeftTree extends React.Component{
     fetch('http://127.0.0.1:3001/json/tree.json')
     .then(function(response) {
         return response.text()
-        //return response.json()
     }).then(function(body) {
         that.setState({gData:JSON.parse(body)})
-        console.log('componentDidMount.body:::\r\n' + body)
-        //document.body.innerHTML = body
+        //console.log('componentDidMount.body:::\r\n' + body)
     })
     // fetchJsonp('http://127.0.0.1:3001/json/tree.json')
     // .then(function(response) {
@@ -36,13 +34,13 @@ class LeftTree extends React.Component{
   }
   onSelect(key, event) {
         this.context.router.replace(key[0]);
-        fetch('http://127.0.0.1:3001')        
-        .then(function(response) {
-            return response.text()
-        }).then(function(body) {
-            console.log('body:::\r\n' + body);
-            //document.body.innerHTML = body
-        })
+        // fetch('http://127.0.0.1:3001')        
+        // .then(function(response) {
+        //     return response.text()
+        // }).then(function(body) {
+        //     console.log('body:::\r\n' + body);
+        //     //document.body.innerHTML = body
+        // })
         if(__DEV__){
             console.log('__DEV__:调试版本=', __ENV__);
         }
@@ -53,11 +51,11 @@ class LeftTree extends React.Component{
   render() {
     const loop = data => data.map((item) => {
       if (item.children) {
-        return <TreeNode key={item.key} title={item.key}>
+        return <TreeNode key={item.key} title={item.title}>
                     {loop(item.children)}
                </TreeNode>;
       }
-      return <TreeNode key={item.key} title={item.key} _path={item.key} />;
+      return <TreeNode key={item.key} title={item.title} _path={item.key} />;
     });
     return (
       <Tree defaultExpandedKeys={this.state.expandedKeys} openAnimation={{}} onSelect={this.onSelect} >
