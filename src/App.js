@@ -20,14 +20,15 @@ require('antd/lib/index.css');
 
 
 import configureStore from './components/store/configureStore'
-const store = configureStore(browserHistory)  
+const store = configureStore(browserHistory)
 
 const rootRoute = {
     path: '/',
     component: require('./components/Main.js'),
     childRoutes: [
         require('./routes/Page1'),
-        require('./routes/Page2')
+        require('./routes/Page2'),
+        require('./routes/Page3/route-index.js')
         //require('./routes/Page2/index.js')
     ]
 }
@@ -35,17 +36,17 @@ const history3 = syncHistoryWithStore(browserHistory, store)
 history3.listen(location => console.log('路由: ' + location.pathname))
 render(
     <Provider store={store}>
-        <Router history={history3} routes={rootRoute}/>
+        <Router history={history3} routes={rootRoute} />
     </Provider>
-    ,document.getElementById('id_root')
+    , document.getElementById('id_root')
 )
 
-        //<Router history={browserHistory} routes={rootRoute}/>//这个配置文件可以
-        //<Router history={history}  routes={rootRoute}/>
-        //<Router history={history2}  routes={rootRoute}/>
-        //<Router history={hashHistory} routes={rootRoute}/>
-        //<Router  routes={rootRoute} />    
-        
+//<Router history={browserHistory} routes={rootRoute}/>//这个配置文件可以
+//<Router history={history}  routes={rootRoute}/>
+//<Router history={history2}  routes={rootRoute}/>
+//<Router history={hashHistory} routes={rootRoute}/>
+//<Router  routes={rootRoute} />
+
 
 // // 作用:  干掉React url 的_k=xxxx
 // // 此处用于添加根路径
@@ -86,6 +87,3 @@ render(
 //     </Route>
 //   </Router>
 // ), document.getElementById('example'))
-
-
-

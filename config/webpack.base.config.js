@@ -110,7 +110,8 @@ let config = {
   entry: {
      // 打包时分离第三方库
      vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux",
-            "react-redux", "redux-thunk", "react-addons-css-transition-group"
+            "react-redux", "redux-thunk", "react-addons-css-transition-group",
+            "immutable"
             ],
     // vendors1: ["react", "react-dom",  ],
     // vendors2: [ "react-router", "react-router-redux", "redux",  "react-redux", ],

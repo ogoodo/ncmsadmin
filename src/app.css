@@ -43,3 +43,12 @@
 .example-leave.example-leave-active {
   opacity: 0;
 }
+.tree-left{
+    float: left;
+    width: 300px;
+}
+.tree-right{
+    float: left;
+    width: 300px;
+}
+

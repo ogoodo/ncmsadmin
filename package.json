@@ -12,7 +12,8 @@
     "build": "set NODE_ENV=production  && gulp prod ",
     "new": "npm run build && npm run start",
     "debug": "npm run devbd && npm run start",
-    "dbg": "set NODE_ENV=development && node server/debug.js"
+    "dbg": "set NODE_ENV=development && node server/debug.js",
+    "lint": "eslint ./src/"
   },
   "keywords": [
     "react",
@@ -51,6 +52,10 @@
     "babel-preset-stage-1": "^6.5.0",
     "copy-webpack-plugin": "^1.1.1",
     "css-loader": "^0.23.1",
+    "eslint": "^2.5.1",
+    "eslint-config-airbnb": "^6.2.0",
+    "eslint-plugin-import": "^1.3.0",
+    "eslint-plugin-react": "^4.2.3",
     "exports-loader": "^0.6.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "gulp": "^3.9.1",

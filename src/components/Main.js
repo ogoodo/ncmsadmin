@@ -21,18 +21,22 @@ class Main extends React.Component {
             <CounterContainer />
         </div>
         <div>
-            <Tree />
             <ul>
                 <li><Link to="/page1">Pagehh 111</Link></li>
                 <li><Link to="/page2">Pagehh 2</Link></li>
             </ul>
         </div>
+        <div className='tree-left'>
+            <Tree />
+        </div>
         <div className="tree-right">
             <ReactCSSTransitionGroup
-            component="div" transitionName="swap"
-            transitionEnterTimeout={500} transitionLeaveTimeout={500}
+            component="div" 
+            transitionName="swap"
+            transitionEnterTimeout={500} 
+            transitionLeaveTimeout={500}
             >
-            {React.cloneElement(this.props.children || <div />, { key: key })}
+                {React.cloneElement(this.props.children || <div />, { key: key })}
             </ReactCSSTransitionGroup>
         </div>
       </div>
