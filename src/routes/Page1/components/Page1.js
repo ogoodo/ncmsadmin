@@ -14,17 +14,20 @@ class Page1 extends React.Component {
           <li><Link to="/page1/tab2">Tab 2</Link></li>
         </ul>
         <ReactCSSTransitionGroup
-          component="div" 
+          component="div"
           transitionName="example"
-          transitionEnterTimeout={500} 
+          transitionEnterTimeout={500}
           transitionLeaveTimeout={500}
         >
-          {React.cloneElement(this.props.children || <div/>, { key: pathname })}
+          {React.cloneElement(this.props.children || <div />, { key: pathname })}
         </ReactCSSTransitionGroup>
       </div>
     )
   }
 }
-
+Page1.propTypes = {
+    location: React.PropTypes.object.isRequired,
+    children: React.PropTypes.object
+}
 module.exports = Page1
 //export default Page1

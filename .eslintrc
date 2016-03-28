@@ -1,3 +1,5 @@
+// 参考: https://segmentfault.com/a/1190000004468428
+
 { "extends": "eslint-config-airbnb",
   "env": {
     "browser": true,
@@ -9,7 +11,12 @@
    "ecmaFeatures": {
     "jsx": true
   },
-  //"parser": "babel-eslint",
+  "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+  },
+  "parser": "babel-eslint",
   "rules": {
     //官方文档 http://eslint.org/docs/rules/
     //参数：0 关闭，1 警告，2 错误
@@ -92,6 +99,10 @@
         
         "semi": [0, "always"],
         "spaced-comment": 0,
+        "prefer-template": 1,   //报错: console.log('路由: ' + location.pathname) 代替: `路由: ${location.pathname}`
+        "no-trailing-spaces": 2, //行后面是否允许空格
+        "max-len": 1,
+        "react/prefer-stateless-function": 0, //无状态组件写在标准组件格式里
         
         "react/no-multi-comp": 0,
         "import/default": 0,
@@ -109,18 +120,21 @@
     "eslint-plugin-react", "eslint-plugin-import"
   ],
   "settings": {
-    "import/parser": "babel-eslint",
-    "import/resolve": {
-      "moduleDirectory": ["node_modules", "src"]
-    }
+        "import/parser": "babel-eslint",
+        "import/resolve": {
+            //"moduleDirectory": ["node_modules", "src"]
+            "moduleDirectory": [ "src"]
+        }
   },
   "globals": {
-    "__DEVELOPMENT__": true,
-    "__CLIENT__": true,
-    "__SERVER__": true,
-    "__DISABLE_SSR__": true,
-    "__DEVTOOLS__": true,
-    "socket": true,
-    "webpackIsomorphicTools": true
+        "__DEV__": true,
+        
+        "__DEVELOPMENT__": true,
+        "__CLIENT__": true,
+        "__SERVER__": true,
+        "__DISABLE_SSR__": true,
+        "__DEVTOOLS__": true,
+        "socket": true,
+        "webpackIsomorphicTools": true
   }
 }

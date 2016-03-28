@@ -6,13 +6,12 @@ import reducers from '../reducers'
 
 
 export default function configureStore(browserHistory, initialState) {
-    
     // Apply the middleware to the store
     const middleware = routerMiddleware(browserHistory)
     //applyMiddleware来自redux可以包装 store 的 dispatch
     //thunk作用是使被 dispatch 的 function 会接收 dispatch 作为参数，并且可以异步调用它
     const createStoreEx = compose(
-        applyMiddleware( thunkMiddleware, middleware),
+        applyMiddleware(thunkMiddleware, middleware),
         window.devToolsExtension ? window.devToolsExtension() : f => f
     )(createStore)
 

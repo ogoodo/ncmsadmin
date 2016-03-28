@@ -18,12 +18,15 @@ class Page2 extends React.Component {
           component="div" transitionName="example"
           transitionEnterTimeout={500} transitionLeaveTimeout={500}
         >
-          {React.cloneElement(this.props.children || <div/>, { key: pathname })}
+          {React.cloneElement(this.props.children || <div />, { key: pathname })}
         </ReactCSSTransitionGroup>
       </div>
     )
   }
 }
-
+Page2.propTypes = {
+    location: React.PropTypes.object.isRequired,
+    children: React.PropTypes.object
+}
 module.exports = Page2
 //export default Page1

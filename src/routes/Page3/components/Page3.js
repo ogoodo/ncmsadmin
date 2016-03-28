@@ -3,7 +3,7 @@ import { browserHistory, Router, Route, Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 
-export default class Page3 extends React.Component {
+class Page3 extends React.Component {
   render() {
     const { pathname } = this.props.location
 
@@ -18,12 +18,15 @@ export default class Page3 extends React.Component {
           component="div" transitionName="example"
           transitionEnterTimeout={500} transitionLeaveTimeout={500}
         >
-          {React.cloneElement(this.props.children || <div/>, { key: pathname })}
+          {React.cloneElement(this.props.children || <div />, { key: pathname })}
         </ReactCSSTransitionGroup>
       </div>
     )
   }
 }
-
-//module.exports = Page3
+Page3.propTypes = {
+    location: React.PropTypes.object.isRequired,
+    children: React.PropTypes.object
+}
+module.exports = Page3
 //export default Page1

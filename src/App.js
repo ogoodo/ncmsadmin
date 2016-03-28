@@ -33,7 +33,13 @@ const rootRoute = {
     ]
 }
 const history3 = syncHistoryWithStore(browserHistory, store)
-history3.listen(location => console.log('路由: ' + location.pathname))
+if (__DEV__) {
+    history3.listen(location => console.log(`App.js路由: ${location.pathname}`))
+    console.log('App.js__ENV__:注入变量测试=', __ENV__);
+}
+if (__ENV__) {
+    console.log('App.js__ENV__:注入变量测试=', __ENV__);
+}
 render(
     <Provider store={store}>
         <Router history={history3} routes={rootRoute} />

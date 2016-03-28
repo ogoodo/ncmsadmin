@@ -26,23 +26,25 @@ class Main extends React.Component {
                 <li><Link to="/page2">Pagehh 2</Link></li>
             </ul>
         </div>
-        <div className='tree-left'>
+        <div className="tree-left">
             <Tree />
         </div>
         <div className="tree-right">
             <ReactCSSTransitionGroup
-            component="div" 
-            transitionName="swap"
-            transitionEnterTimeout={500} 
-            transitionLeaveTimeout={500}
+              component="div"
+              transitionName="swap"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={500}
             >
-                {React.cloneElement(this.props.children || <div />, { key: key })}
+                {React.cloneElement(this.props.children || <div />, { key })}
             </ReactCSSTransitionGroup>
         </div>
       </div>
     )
   }
 }
-
+Main.propTypes = {
+    location: React.PropTypes.object.isRequired,
+    children: React.PropTypes.object
+}
 module.exports = Main
-

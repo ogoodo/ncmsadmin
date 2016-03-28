@@ -1,6 +1,8 @@
 'use strict'
 const path = require('path');
 const webpack = require('webpack');
+// 如何copy目录下的文件到输出目录
+//const TransferWebpackPlugin = require('transfer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -160,7 +162,19 @@ let config = {
     'bootstrap':true,
   }
 };
-
+//Eslint config
+config.eslint = {
+    configFile: './.eslintrc' //Rules for eslint
+}
+// config.module.preLoaders =
+// [
+//     {
+//         test: /\.(js|jsx)$/,
+//         include: [srcPath],
+//         exclude: [nodeModulesPath],
+//         loader: 'eslint-loader'
+//     }
+// ]
 config.module.loaders = 
 [
     {
@@ -228,6 +242,7 @@ config.module.loaders =
         //loader: 'babel-loader!jsx-loader?harmony'
         //先jsx-loader处理，再babel-loader
     },
+    {test: /\.(js|jsx)$/, loader: "eslint-loader", exclude: nodeModulesPath},
     {
         test: /\.less$/,
         loader: 'style-loader!css-loader!autoprefixer-loader!less-loader',

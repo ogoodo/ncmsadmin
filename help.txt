@@ -63,6 +63,8 @@ npm install --save-dev eslint
 npm install --save-dev eslint-plugin-react
 npm install --save-dev eslint-plugin-import@latest
 npm install --save-dev eslint-config-airbnb@latest    配置模板
+npm install --save-dev babel-eslint@latest    .eslintrc用来加载解析文件
+npm install --save-dev eslint-loader    webPack用来做预加载
 安装=====================================================}}
 
 

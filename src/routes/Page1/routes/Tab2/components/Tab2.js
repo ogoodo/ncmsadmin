@@ -2,8 +2,6 @@ import React from 'react'
 import { browserHistory, Router, Route, Link } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-
-
 class Tab2 extends React.Component {
   render() {
     return (

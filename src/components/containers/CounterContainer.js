@@ -7,7 +7,7 @@ import * as CounterActions from '../actions/counter.js'
 function mapStateToProps(state) {
   return {
     //counter: state.counter
-    counter: state.reducers.counter    
+    counter: state.reducers.counter
   }
 }
 //将action的所有方法绑定到props上
