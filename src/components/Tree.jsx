@@ -34,19 +34,6 @@ class LeftTree extends React.Component {
   }
   onSelect(key, event) {
         this.context.router.replace(key[0]);
-        // fetch('http://127.0.0.1:3001')
-        // .then(function(response) {
-        //     return response.text()
-        // }).then(function(body) {
-        //     console.log('body:::\r\n' + body);
-        //     //document.body.innerHTML = body
-        // })
-        // if(__DEV__){
-        //     console.log('__DEV__:调试版本=', __ENV__);
-        // }
-        // if(__ENV__){
-        //     console.log('__ENV__:注入变量测试=', __ENV__);
-        // }
   }
   render() {
     const loop = data => data.map((item) => {
