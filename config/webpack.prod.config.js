@@ -35,4 +35,5 @@ wpconfig.plugins.push(
     new webpack.optimize.DedupePlugin()
 );
 
+// wpconfig.devtool = 'source-map'
 module.exports = wpconfig;

@@ -23,8 +23,8 @@ wpconfig.plugins.push(
 wpconfig.entry.bundle.unshift('webpack-hot-middleware/client');
 // console.log(wpconfig.entry.bundle)
 // wpconfig.devtool = 'eval'
-wpconfig.devtool = 'cheap-module-eval-source-map'
-// wpconfig.devtool = 'source-map' //规定了在开发环境下才使用 source-map
-//wpconfig.devtool = '#eval-source-map'
+//wpconfig.devtool = 'cheap-module-eval-source-map'
+// wpconfig.devtool = 'source-map'
+wpconfig.devtool = '#eval-source-map'
 
 module.exports = wpconfig;

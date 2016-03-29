@@ -35,10 +35,13 @@ const rootRoute = {
 const history3 = syncHistoryWithStore(browserHistory, store)
 if (__DEV__) {
     history3.listen(location => console.log(`App.js路由: ${location.pathname}`))
-    console.log('App.js__ENV__:注入变量测试=', __ENV__);
+    console.log('App.js __DEV__:注入变量测试=', __DEV__);
 }
 if (__ENV__) {
-    console.log('App.js__ENV__:注入变量测试=', __ENV__);
+    console.log('App.js __ENV__:注入变量测试=', __ENV__);
+}
+if (process.env.NODE_ENV !== 'production') {
+    console.log('App.js process.env.NODE_ENV:注入变量测试=', process.env.NODE_ENV);
 }
 render(
     <Provider store={store}>

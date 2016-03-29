@@ -175,73 +175,79 @@ config.eslint = {
 //         loader: 'eslint-loader'
 //     }
 // ]
+const babelQuery = {
+    //presets: ['es2015', 'react', 'stage-0']  
+    presets: ["es2015", "react"]
+}
+/**
+ * 解决错误: Cannot define 'query' and multiple loaders in loaders list
+ * https://github.com/jsdf/webpack-combine-loaders
+ */
 config.module.loaders = 
 [
     {
         test: /\.js$/,
         include: [srcPath],
         exclude: nodeModulesPath,
-        loader: ['babel'],
-        //loader: ['react-hot', 'babel'],
-        query: {
-            //presets: ['es2015', 'react', 'stage-0']  
-            presets: ["es2015", "react"],
-            // "env": {
-            //     "development": {
-            //         "presets": ["react-hmre"],
-            //         "plugins": [
-            //             ["react-transform", {
-            //                 "transforms": [{
-            //                     "transform": "react-transform-hmr",
-            //                     "imports": ["react"],
-            //                     "locals": ["module"]
-            //                 }]
-            //             }]
-            //         ]
-            //     }
-            // },
-            // 好像没效果
-            // env: {
-            //     development: {
-            //         plugins: [
-            //         ['react-transform', {
-            //             transforms: [{
-            //             transform: 'react-transform-hmr',
-            //             imports: ['react'],
-            //             locals: ['module']
-            //             }, {
-            //             transform: 'react-transform-catch-errors',
-            //             imports: ['react', 'redbox-react']
-            //             }]
-            //         }]
-            //         ]
-            //     },
-            //     production: {
-            //         plugins: [
-            //         'transform-react-remove-prop-types',
-            //         'transform-react-constant-elements'
-            //         ]
-            //     }
-            // }
-            // //env end
-        }
+        //loader: ['babel'],
+        loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
+        // query: {
+        //     //presets: ['es2015', 'react', 'stage-0']  
+        //     presets: ["es2015", "react"],
+        //     // "env": {
+        //     //     "development": {
+        //     //         "presets": ["react-hmre"],
+        //     //         "plugins": [
+        //     //             ["react-transform", {
+        //     //                 "transforms": [{
+        //     //                     "transform": "react-transform-hmr",
+        //     //                     "imports": ["react"],
+        //     //                     "locals": ["module"]
+        //     //                 }]
+        //     //             }]
+        //     //         ]
+        //     //     }
+        //     // },
+        //     // 好像没效果
+        //     // env: {
+        //     //     development: {
+        //     //         plugins: [
+        //     //         ['react-transform', {
+        //     //             transforms: [{
+        //     //             transform: 'react-transform-hmr',
+        //     //             imports: ['react'],
+        //     //             locals: ['module']
+        //     //             }, {
+        //     //             transform: 'react-transform-catch-errors',
+        //     //             imports: ['react', 'redbox-react']
+        //     //             }]
+        //     //         }]
+        //     //         ]
+        //     //     },
+        //     //     production: {
+        //     //         plugins: [
+        //     //         'transform-react-remove-prop-types',
+        //     //         'transform-react-constant-elements'
+        //     //         ]
+        //     //     }
+        //     // }
+        //     // //env end
+        // }
     },
-    // {
-    //     test: /\.js$/,
-    //     loader: 'babel-loader'
-    // }, 
     {
         test: /\.jsx$/,
         include: [srcPath],
         exclude: nodeModulesPath,
-        loader: ['babel'],
-        query: {
-            //presets: ['es2015', 'react', 'stage-0']  
-            presets: ["es2015", "react"],
-        }
+        //loader: ['babel'],
+        loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
+        // query: {
+        //     //presets: ['es2015', 'react', 'stage-0']  
+        //     presets: ["es2015", "react"],
+        // }
         //loader: 'babel-loader!jsx-loader?harmony'
         //先jsx-loader处理，再babel-loader
     },
+    //{test: /\.(js|jsx)$/, loader: "react-hot", exclude: nodeModulesPath},
     {test: /\.(js|jsx)$/, loader: "eslint-loader", exclude: nodeModulesPath},
     {
         test: /\.less$/,

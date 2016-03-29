@@ -20,11 +20,10 @@ class LeftTree extends React.Component {
   componentDidMount() {
     const that = this;
     fetch('http://127.0.0.1:3001/json/tree.json')
-    .then((response) => {
-        response.text()
-    }).then((body) => {
-        that.setState({ gData:JSON.parse(body) })
+    .then((response) => response.text()
+    ).then((body) => {
         //console.log('componentDidMount.body:::\r\n' + body)
+        that.setState({ gData:JSON.parse(body) })
     })
     // fetchJsonp('http://127.0.0.1:3001/json/tree.json')
     // .then(function(response) {
