@@ -28,7 +28,7 @@ gulp.task('make:jsdoc', function () {
     const config = require('./config/jsdocConfig');
     return gulp
     //.src(['./src/*.js', './src/*.jsx'])
-    .src(['./src/*.js'])
+    .src(['./src/*.js', './jsdoc3/*.js'])
     .pipe(jsdoc(config))
     //.pipe(jsdoc('./doc-output'))
 })
