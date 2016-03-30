@@ -33,7 +33,8 @@ class LeftTree extends React.Component {
     // })
   }
   onSelect(key, event) {
-        this.context.router.replace(key[0]);
+    this.context.router.push(key[0]);
+    //this.context.router.replace(key[0]);
   }
   render() {
     const loop = data => data.map((item) => {

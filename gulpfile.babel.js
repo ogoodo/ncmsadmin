@@ -1,14 +1,15 @@
-import gulp from 'gulp';
-import gutil from 'gulp-util';
-import watch from 'gulp-watch';
-import babel from 'gulp-babel';
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
+import gulp from 'gulp'
+import gutil from 'gulp-util'
+import watch from 'gulp-watch'
+import babel from 'gulp-babel'
+import webpack from 'webpack'
+import jsdoc from 'gulp-jsdoc3'
+import WebpackDevServer from 'webpack-dev-server'
 
 // import webpackConfigProd from './config/webpack.prod.1.config.js';
 // import webpackConfigDev from './config/webpack.dev.1.config.js';
 //import webpackConfigProd from './config/webpack.config.js';
-import webpackConfig  from './config/webpack.config.js';
+//import webpackConfig  from './config/webpack.config.js'
 
 //console.log(webpackConfigDev)
 
@@ -16,6 +17,21 @@ import webpackConfig  from './config/webpack.config.js';
 // const isDevelopment = function () {
 //     return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
 // };
+
+/**
+ * 如果js文件格式不合要求生成jsdoc的时候会报错误(esprima), 但是又不会提出什么错误
+ * jsdoc估计是基于AST的, 如果js有错误， 他生成就会报错:ogoodo.com:2016.3.30
+ * jsdoc3支持es6，jsx
+ * 参考: https://github.com/jsdoc3/jsdoc
+ */
+gulp.task('make:jsdoc', function () {
+    const config = require('./config/jsdocConfig');
+    return gulp
+    //.src(['./src/*.js', './src/*.jsx'])
+    .src(['./src/*.js'])
+    .pipe(jsdoc(config))
+    //.pipe(jsdoc('./doc-output'))
+})
 
 gulp.task('html', function () {  
     return gulp
@@ -41,6 +57,7 @@ gulp.task('watch-transform', () => {
 });
 
 gulp.task('webpack:build', (callback) => {
+  const webpackConfig  = require('./config/webpack.config.js')
   // modify some webpack config options
   var myConfig = Object.create( webpackConfig);
 //   myConfig.plugins = myConfig.plugins.concat(
@@ -67,6 +84,7 @@ gulp.task('webpack:build', (callback) => {
 });
 
 gulp.task('webpack-dev-server', (callback) => {
+  const webpackConfig  = require('./config/webpack.config.js')
   // modify some webpack config options
   var myConfig = Object.create(webpackConfig);
   myConfig.devtool = 'eval';
@@ -89,3 +107,6 @@ gulp.task('default', ['watch-transform', 'webpack-dev-server']);
 
 //执行 gulp prod 打包到dist目录， 部署直接部署dist目录即可
 gulp.task('prod', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
+
+// 生成jsdoc帮助文档
+gulp.task('jsdoc', ['make:jsdoc'])

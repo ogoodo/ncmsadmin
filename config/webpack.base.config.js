@@ -7,7 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const envcfg = require("../config/env.config.js").server( )
+const envcfg = require("../config/env.config.js").server()
 
 //console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$scfg==', envcfg)
 
@@ -22,18 +22,19 @@ const BUILD_PATH = path.join(process.cwd(), 'build')
 const nodeModulesPath = path.join(process.cwd(), 'node_modules')
 const srcPath = path.join(process.cwd(), 'src')
 const imgPath = path.resolve(process.cwd(), 'src/img')
+const eslintPath = path.resolve(process.cwd(), '.eslintrc')
 const testJsonPath = path.resolve(process.cwd(), 'test/json')
 console.log('imgPath================================', imgPath)
 //const isDev = true;
 
-let plugins = [
+const plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
     // 参考: https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk
     new webpack.optimize.CommonsChunkPlugin({
         name: 'vendors',
         //name: ['common', 'vendors', 'vendors2', 'vendors3'],
-        minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
-        filename: envcfg.vendorsFilename,//isDev?'dist/js/vendors.js':'dist/js/vendors.[hash:8].js',
+        minChunks: 2, //一个文件至少被require两次才能放在CommonChunk里
+        filename: envcfg.vendorsFilename, //isDev?'dist/js/vendors.js':'dist/js/vendors.[hash:8].js',
         //filename: 'dist/js/common/vendors.[hash:8].js',
     }),
     // new webpack.optimize.CommonsChunkPlugin({
@@ -164,7 +165,7 @@ let config = {
 };
 //Eslint config
 config.eslint = {
-    configFile: './.eslintrc' //Rules for eslint
+    configFile: eslintPath //'./.eslintrc' //Rules for eslint
 }
 // config.module.preLoaders =
 // [
@@ -183,7 +184,7 @@ const babelQuery = {
  * 解决错误: Cannot define 'query' and multiple loaders in loaders list
  * https://github.com/jsdf/webpack-combine-loaders
  */
-config.module.loaders = 
+config.module.loaders =
 [
     {
         test: /\.js$/,

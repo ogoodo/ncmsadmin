@@ -63,7 +63,7 @@ if(isDevelopment()){
 
     var serverOptions = {  
         //contentBase: 'http://' + host + ':' + port,
-        // quiet: true,
+        // quiet: true, //关掉输出的一堆信息, 但是eslint检测报告也关掉了
         // noInfo: true,
         // hot: true,
         // inline: true,
