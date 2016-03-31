@@ -71,7 +71,8 @@ const plugins = [
         //fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch',
         //以下为了使用fetch
         fetch: 'imports?this=>global!exports?global.fetch!isomorphic-fetch',
-        fetchJsonp: 'imports?this=>global!exports?global.fetchJsonp!fetch-jsonp',
+        //fetchJsonp: 'imports?this=>global!exports?global.fetchJsonp!fetch-jsonp',
+        fetchJsonp: 'fetch-jsonp',
     }),
     // 模板试试用这个 https://github.com/jaketrent/html-webpack-template
     // 生成及压缩HTML  //根据模板插入css/js等生成最终HTML
@@ -177,6 +178,7 @@ config.eslint = {
 //     }
 // ]
 const babelQuery = {
+    //plugins:['transform-runtime'],
     //presets: ['es2015', 'react', 'stage-0']  
     presets: ["es2015", "react"]
 }

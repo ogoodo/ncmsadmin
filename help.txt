@@ -65,6 +65,10 @@ npm install --save-dev eslint-plugin-import@latest
 npm install --save-dev eslint-config-airbnb@latest    配置模板
 npm install --save-dev babel-eslint@latest    .eslintrc用来加载解析文件
 npm install --save-dev eslint-loader    webPack用来做预加载
+
+npm install babel-runtime  --save
+npm install babel-plugin-transform-runtime --save-dev
+/*减少打包的时候重复代码，以上要注意是放在dev还是非dev上！*/          重点重点重点   有空的时候测试下这两个
 安装=====================================================}}
 
 

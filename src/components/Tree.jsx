@@ -28,11 +28,12 @@ class LeftTree extends React.Component {
             that.setState({ gData:JSON.parse(body), loading: false })
         }, 500)
     })
+    // 如果返回数据不是jsonp格式会包超时错误:ogoodo.com:2016.3.31
     // fetchJsonp('http://127.0.0.1:3001/json/tree.json')
-    // .then(function(response) {
-    //     return response.json()
-    // }).then(function(body) {
-    //     that.setState({gData:body});
+    // .then((response) => {
+    //     response.json()
+    // }).then((body) => {
+    //     that.setState({ gData:body });
     // })
   }
   onSelect(key, event) {
