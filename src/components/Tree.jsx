@@ -2,6 +2,7 @@
 import { parseString } from 'xml2js'
 import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { Tree } from 'antd'
+import Loading from 'react-component-loading';
 //import fetchJsonp from 'fetch-jsonp'
 //import fetch from 'fetch'
 //import 'whatwg-fetch'
@@ -14,7 +15,7 @@ const gData = [];
 class LeftTree extends React.Component {
   constructor(props) {
       super(props)
-      this.state = { gData }
+      this.state = { gData, loading:true }
       this.onSelect = this.onSelect.bind(this)
   }
   componentDidMount() {
@@ -23,7 +24,9 @@ class LeftTree extends React.Component {
     .then((response) => response.text()
     ).then((body) => {
         //console.log('componentDidMount.body:::\r\n' + body)
-        that.setState({ gData:JSON.parse(body) })
+        setTimeout(() => {
+            that.setState({ gData:JSON.parse(body), loading: false })
+        }, 500)
     })
     // fetchJsonp('http://127.0.0.1:3001/json/tree.json')
     // .then(function(response) {
@@ -47,15 +50,18 @@ class LeftTree extends React.Component {
       }
       return <TreeNode key={item.key} title={item.title} _path={item.key} />;
     });
-    return (
-      <Tree
-        defaultExpandedKeys={this.state.expandedKeys}
-        openAnimation={{}}
-        onSelect={this.onSelect}
-      >
-        {loop(this.state.gData)}
-      </Tree>
-    );
+        const ca = <Loading />
+        //const ca = <div>loading...</div>
+        const cb =(
+            <Tree
+              defaultExpandedKeys={this.state.expandedKeys}
+              openAnimation={{}}
+              onSelect={this.onSelect}
+            >
+                {loop(this.state.gData)}
+            </Tree>)
+        const cc = this.state.loading ? ca : cb;
+    return cc;
   }
 }
 

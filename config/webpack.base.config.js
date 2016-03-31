@@ -24,7 +24,7 @@ const srcPath = path.join(process.cwd(), 'src')
 const imgPath = path.resolve(process.cwd(), 'src/img')
 const eslintPath = path.resolve(process.cwd(), '.eslintrc')
 const testJsonPath = path.resolve(process.cwd(), 'test/json')
-console.log('imgPath================================', imgPath)
+//console.log('imgPath================================', imgPath)
 //const isDev = true;
 
 const plugins = [
@@ -249,7 +249,7 @@ config.module.loaders =
         //先jsx-loader处理，再babel-loader
     },
     //{test: /\.(js|jsx)$/, loader: "react-hot", exclude: nodeModulesPath},
-    {test: /\.(js|jsx)$/, loader: "eslint-loader", exclude: nodeModulesPath},
+    { test: /\.(js|jsx)$/, loader: 'eslint-loader', exclude: nodeModulesPath },
     {
         test: /\.less$/,
         loader: 'style-loader!css-loader!autoprefixer-loader!less-loader',
