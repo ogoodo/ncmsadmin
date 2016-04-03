@@ -18,16 +18,24 @@ class LeftTree extends React.Component {
       this.state = { gData, loading:true }
       this.onSelect = this.onSelect.bind(this)
   }
-  componentDidMount() {
+  async componentDidMount() {
     const that = this;
-    fetch('http://127.0.0.1:3001/json/tree.json')
-    .then((response) => response.text()
-    ).then((body) => {
-        //console.log('componentDidMount.body:::\r\n' + body)
-        setTimeout(() => {
-            that.setState({ gData:JSON.parse(body), loading: false })
-        }, 500)
-    })
+    //await代码翻译出来不太好看
+    const res = await fetch('http://127.0.0.1:3001/json/tree.json')
+    const body = await res.text()
+    setTimeout(() => {
+        that.setState({ gData:JSON.parse(body), loading: false })
+    }, 500)
+    //primise方式
+    // fetch('http://127.0.0.1:3001/json/tree.json')
+    // .then((response) => response.text()
+    // ).then((body) => {
+    //     //console.log('componentDidMount.body:::\r\n' + body)
+    //     setTimeout(() => {
+    //         that.setState({ gData:JSON.parse(body), loading: false })
+    //     }, 500)
+    // })
+
     // 如果返回数据不是jsonp格式会包超时错误:ogoodo.com:2016.3.31
     // fetchJsonp('http://127.0.0.1:3001/json/tree.json')
     // .then((response) => {

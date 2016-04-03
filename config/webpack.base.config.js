@@ -178,7 +178,8 @@ config.eslint = {
 //     }
 // ]
 const babelQuery = {
-    //plugins:['transform-runtime'],
+    // 支持aysnc await
+    plugins: ['transform-runtime'],
     //presets: ['es2015', 'react', 'stage-0']  
     presets: ["es2015", "react"]
 }
