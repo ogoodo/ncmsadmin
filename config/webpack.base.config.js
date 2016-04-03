@@ -121,6 +121,7 @@ let config = {
     // vendors2: [ "react-router", "react-router-redux", "redux",  "react-redux", ],
     // vendors3: ["redux-thunk", "react-addons-css-transition-group"],
     //public: ['webpack-hot-middleware/client', './src/App.js']
+    // bundle: ['babel-polyfill', './src/App.js']  //IE8 支持不知道要不要这个
     bundle: [ './src/App.js']
   },
   output: {
@@ -180,8 +181,9 @@ config.eslint = {
 const babelQuery = {
     // 支持aysnc await
     plugins: ['transform-runtime'],
-    //presets: ['es2015', 'react', 'stage-0']  
-    presets: ["es2015", "react"]
+    //presets: ['es2015', 'react', 'stage-0']
+    presets: ['es2015', 'stage-0', 'react']
+    //presets: ["es2015", "react"]
 }
 /**
  * 解决错误: Cannot define 'query' and multiple loaders in loaders list
