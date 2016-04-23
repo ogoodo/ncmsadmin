@@ -24,11 +24,15 @@ npm install --save-dev babel-core babel-preset-es2015
 .babelrc  文件内容   {"presets": ["es2015"]}
 
 
+
 gulp
 npm install -g gulp-cli
 npm install --save-dev gulp gulp-babel gulp-watch
 npm install --save-dev gulp-cssmin gulp-less gulp-autoprefixer
 npm install --save-dev gulp-uglify gulp-if
+
+安装阿里reactUi组件
+npm install --save antd
 
 react
 npm install --save react react-dom

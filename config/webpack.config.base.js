@@ -115,7 +115,11 @@ let config = {
      // 打包时分离第三方库
      vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux",
             "react-redux", "redux-thunk", "react-addons-css-transition-group",
-            "immutable"
+            "immutable",
+            "antd", "history", "fetch-jsonp",
+            //"es6-promise", 
+            // "babel-core",
+            //"webpack-dev-server", "webpack-hot-middleware", "react-hot-loader", 
             ],
     // vendors1: ["react", "react-dom",  ],
     // vendors2: [ "react-router", "react-router-redux", "redux",  "react-redux", ],
@@ -197,6 +201,47 @@ config.module.loaders =
         exclude: nodeModulesPath,
         //loader: ['babel'],
         loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
+    },
+    {
+        test: /\.jsx$/,
+        include: [srcPath],
+        exclude: nodeModulesPath,
+        //loader: ['babel'],
+        loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
+        // query: {
+        //     //presets: ['es2015', 'react', 'stage-0']  
+        //     presets: ["es2015", "react"],
+        // }
+        //loader: 'babel-loader!jsx-loader?harmony'
+        //先jsx-loader处理，再babel-loader
+    },
+    //{test: /\.(js|jsx)$/, loader: "react-hot", exclude: nodeModulesPath},
+    { test: /\.(js|jsx)$/, loader: 'eslint-loader', exclude: nodeModulesPath },
+    {
+        test: /\.less$/,
+        //loader: 'style-loader!css-loader!autoprefixer-loader!less-loader',
+        loaders: ['style-loader', 'css-loader', 'autoprefixer-loader', 'less-loader'],
+        //loaders: [ExtractTextPlugin.extract('style'), 'css', 'less'],
+    },
+    {
+        test: /\.css$/, 
+        //loader: "style!css"
+        //分离css单独打包
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+    },
+    {
+        test: /\.(png|jpg)$/, 
+        //loader: "url-loader?limit=8192",
+        loaders: ['url?limit=8192&name=img/[name].[ext]'],
+        // <=8k图片被转化成 base64 格式的 dataUrl
+    },
+    {
+        test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
+        loader: 'url-loader?importLoaders=1&limit=1000&name=/fonts/[name].[ext]'
+    }
+]
+module.exports = config;
+
         // query: {
         //     //presets: ['es2015', 'react', 'stage-0']  
         //     presets: ["es2015", "react"],
@@ -239,44 +284,5 @@ config.module.loaders =
         //     // }
         //     // //env end
         // }
-    },
-    {
-        test: /\.jsx$/,
-        include: [srcPath],
-        exclude: nodeModulesPath,
-        //loader: ['babel'],
-        loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
-        // query: {
-        //     //presets: ['es2015', 'react', 'stage-0']  
-        //     presets: ["es2015", "react"],
-        // }
-        //loader: 'babel-loader!jsx-loader?harmony'
-        //先jsx-loader处理，再babel-loader
-    },
-    //{test: /\.(js|jsx)$/, loader: "react-hot", exclude: nodeModulesPath},
-    { test: /\.(js|jsx)$/, loader: 'eslint-loader', exclude: nodeModulesPath },
-    {
-        test: /\.less$/,
-        loader: 'style-loader!css-loader!autoprefixer-loader!less-loader',
-        //loaders: [ExtractTextPlugin.extract('style'), 'css', 'less'],
-        // require('./MyComponent.less');
-        // 文件可以这样引用less
-    },
-    {
-        test: /\.css$/, 
-        //loader: "style!css"
-        //分离css单独打包
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
-    },
-    {
-        test: /\.(png|jpg)$/, 
-        //loader: "url-loader?limit=8192",
-        loaders: ['url?limit=8192&name=img/[name].[ext]'],
-        // <=8k图片被转化成 base64 格式的 dataUrl
-    },
-    {
-        test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
-        loader: 'url-loader?importLoaders=1&limit=1000&name=/fonts/[name].[ext]'
-    }
-]
-module.exports = config;
+        
+        

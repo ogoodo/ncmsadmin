@@ -9,10 +9,10 @@ const isDevelopment = function () {
 
 let cfg;
 if (isDevelopment()){    
-    let wpconfig = require('./webpack.dev.config.js')
+    let wpconfig = require('./webpack.config.dev.js')
     cfg = wpconfig;
 }else{
-    let wpconfig = require('./webpack.prod.config.js')
+    let wpconfig = require('./webpack.config.prod.js')
     cfg = wpconfig;
 }
 

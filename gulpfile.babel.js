@@ -25,7 +25,7 @@ import WebpackDevServer from 'webpack-dev-server'
  * 参考: https://github.com/jsdoc3/jsdoc
  */
 gulp.task('make:jsdoc', function () {
-    const config = require('./config/jsdocConfig');
+    const config = require('./config/jsdoc.config.json');
     return gulp
     //.src(['./src/*.js', './src/*.jsx'])
     .src(['./src/*.js', './jsdoc3/*.js'])

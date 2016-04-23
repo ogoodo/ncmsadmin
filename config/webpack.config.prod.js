@@ -1,8 +1,8 @@
 
 'use strict'
 
-const webpack = require('webpack');
-let wpconfig = require('./webpack.base.config.js')
+const webpack = require('webpack')
+let wpconfig = require('./webpack.config.base.js')
 
 // 压缩JS与CSS
 wpconfig.plugins.push(

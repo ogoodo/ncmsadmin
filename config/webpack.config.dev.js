@@ -2,7 +2,7 @@
 'use strict'
 
 const webpack = require('webpack')
-let wpconfig = require('./webpack.base.config.js')
+let wpconfig = require('./webpack.config.base.js')
 var OpenBrowserPlugin = require('open-browser-webpack-plugin')
 //console.log('process.env.CONFIG==', process.env.CONFIG)
 

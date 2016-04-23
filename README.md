@@ -1,4 +1,15 @@
 
+生成jsdoc3文档
+gulp jsdoc
+
+运行正式版(打包文件后运行)
+npm run new
+
+运行调试版(打包文件后运行)(调试版打包)
+npm run debug
+
+直接调试
+npm run dev
 
 发布项目
 gulp prod  将build目录copy到node服务器的静态资源目录就行(注意网址可能要改下)
@@ -12,8 +23,6 @@ gulp webpack-dev-server
 浏览器访问
 http://localhost:3001
 
-
-npm install --save antd  安装阿里reactUi组件
 
 
 https://segmentfault.com/a/1190000003499526
