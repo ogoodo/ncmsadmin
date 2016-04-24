@@ -1,8 +1,15 @@
 import { combineReducers } from 'redux'
 import testModule from '../modules/test/reducers'
+import PageBModule from '../modules/PageB/reducers'
 
-const rootReducer = combineReducers({
-    testModule
+// 这样层级会多一层
+const rootReducer2 = combineReducers({
+    testModule,
+    PageBModule
 })
+const rootReducer = {
+    testModule,
+    PageBModule
+};
 
 export default rootReducer

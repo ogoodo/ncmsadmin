@@ -1,8 +1,6 @@
 import keyMirror from 'fbjs/lib/keyMirror';
 
 export default keyMirror({
-    INCREMENT_COUNTER: null,
-    DECREMENT_COUNTER: null,
     ADD_ITEM: null,
     DELETE_ITEM: null,
     DELETE_ALL: null,

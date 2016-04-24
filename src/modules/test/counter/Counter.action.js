@@ -1,27 +1,29 @@
-import { ADD_ITEM, DELETE_ITEM, DELETE_ALL, FILTER_ITEM } from './Counter.constant.js'
+import constant from './Counter.constant.js'
+//import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './Counter.constant.js'
 
-export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
-export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
+// export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
+// export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
 //导出加一的方法
 export function increment() {
   return {
-    type: INCREMENT_COUNTER
+    type: constant.INCREMENT_COUNTER
   }
 }
 //导出减一的方法
 export function decrement() {
   return {
-    type: DECREMENT_COUNTER
+    type: constant.DECREMENT_COUNTER
   }
 }
 //导出奇数加一的方法，该方法返回一个方法，包含dispatch和getState两个参数，dispatch用于执行action的方法，getState返回state
 export function incrementIfOdd() {
   return (dispatch, getState) => {
     //获取state对象中的counter属性值
-    const { counter } = getState().reducers
+    const { counter } = getState().testModule
 
     //偶数则返回
     if (counter % 2 === 0) {
+      dispatch(decrement())
       return
     }
     //没有返回就执行加一

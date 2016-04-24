@@ -26,7 +26,7 @@ export default function configureStore(browserHistory, initialState) {
         reducers,
         routing: routerReducer
     };
-  const store = createStoreEx(combineReducers(obj2))
+  const store = createStoreEx(combineReducers(obj1))
 
   //热替换选项
   // if (module.hot) {
