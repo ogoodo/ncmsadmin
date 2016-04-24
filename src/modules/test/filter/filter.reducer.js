@@ -1,4 +1,4 @@
-import { FILTER_ITEM } from '../constants/actionTypes'
+import { FILTER_ITEM } from '../counter/Counter.constant.js'
 
 const initialFilterItem = ''
 

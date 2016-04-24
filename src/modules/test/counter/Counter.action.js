@@ -1,4 +1,4 @@
-import { ADD_ITEM, DELETE_ITEM, DELETE_ALL, FILTER_ITEM } from '../constants/actionTypes'
+import { ADD_ITEM, DELETE_ITEM, DELETE_ALL, FILTER_ITEM } from './Counter.constant.js'
 
 export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
 export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'

@@ -5,7 +5,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Tree from '../components/Tree.jsx'
 import 'app.css'
 
-import CounterContainer from './containers/CounterContainer'
+import CounterContainer from '../modules/test/counter/Counter.container'
 //import { connect } from 'react-redux'
 
 class Main extends React.Component {

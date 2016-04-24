@@ -1,13 +1,13 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Counter from '../components/Counter.js'
-import * as CounterActions from '../actions/counter.js'
+import Counter from './Counter.component.js'
+import * as CounterActions from './Counter.action.js'
 
 //将state.counter绑定到props的counter
 function mapStateToProps(state) {
   return {
     //counter: state.counter
-    counter: state.reducers.counter
+    counter: state.reducers.testModule.counter
   }
 }
 //将action的所有方法绑定到props上
