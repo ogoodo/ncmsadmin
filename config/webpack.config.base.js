@@ -195,44 +195,38 @@ const babelQuery = {
  */
 config.module.loaders =
 [
+    { test: /\.(js|jsx)$/, loader: "react-hot-loader", exclude: nodeModulesPath},
     {
         test: /\.js$/,
         include: [srcPath],
         exclude: nodeModulesPath,
-        //loader: ['babel'],
-        loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
+        loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
+        //loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
     },
     {
         test: /\.jsx$/,
         include: [srcPath],
         exclude: nodeModulesPath,
-        //loader: ['babel'],
-        loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
-        // query: {
-        //     //presets: ['es2015', 'react', 'stage-0']  
-        //     presets: ["es2015", "react"],
-        // }
-        //loader: 'babel-loader!jsx-loader?harmony'
-        //先jsx-loader处理，再babel-loader
+        loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
+        //loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
     },
-    //{test: /\.(js|jsx)$/, loader: "react-hot", exclude: nodeModulesPath},
     { test: /\.(js|jsx)$/, loader: 'eslint-loader', exclude: nodeModulesPath },
     {
         test: /\.less$/,
-        //loader: 'style-loader!css-loader!autoprefixer-loader!less-loader',
         loaders: ['style-loader', 'css-loader', 'autoprefixer-loader', 'less-loader'],
+        //loader: 'style-loader!css-loader!autoprefixer-loader!less-loader',
         //loaders: [ExtractTextPlugin.extract('style'), 'css', 'less'],
     },
     {
         test: /\.css$/, 
-        //loader: "style!css"
+        //loader: "style-loader!css-loader"
         //分离css单独打包
         loader: ExtractTextPlugin.extract("style-loader", "css-loader")
     },
     {
         test: /\.(png|jpg)$/, 
         //loader: "url-loader?limit=8192",
-        loaders: ['url?limit=8192&name=img/[name].[ext]'],
+        loaders: ['url-loader?limit=8192&name=img/[name].[ext]'],
         // <=8k图片被转化成 base64 格式的 dataUrl
     },
     {
