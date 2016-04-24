@@ -9,7 +9,7 @@ class Page2 extends React.Component {
 
     return (
       <div className="Image">
-        <h1>Page 2</h1>
+        <h1>Page 222</h1>
         <ul>
           <li><Link to="/page2/tab1">Tab 1</Link></li>
           <li><Link to="/page2/tab2">Tab 2</Link></li>

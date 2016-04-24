@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 //import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux'
 import thunkMiddleware from 'redux-thunk'
-import reducers from '../reducers'
+import reducers from '../components/reducers'
 
 
 export default function configureStore(browserHistory, initialState) {
@@ -28,13 +28,13 @@ export default function configureStore(browserHistory, initialState) {
   const store = createStoreEx(combineReducers(obj2))
 
   //热替换选项
-  if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('../reducers', () => {
-      const nextReducer = require('../reducers')
-      store.replaceReducer(nextReducer)
-    })
-  }
+  // if (module.hot) {
+  //   // Enable Webpack hot module replacement for reducers
+  //   module.hot.accept('../components/reducers', () => {
+  //     const nextReducer = require('../components/reducers')
+  //     store.replaceReducer(nextReducer)
+  //   })
+  // }
 
   return store
 }

@@ -7,7 +7,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { createHashHistory, useBasename } from 'history';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import './app.css'
-import 'antd/lib/index.css'//
+import 'antd/lib/index.css'
 require('./app.css');
 require('antd/lib/index.css');
 //import { DatePicker } from 'antd'
@@ -19,7 +19,7 @@ require('antd/lib/index.css');
 // import routes from './config/routes.js'
 
 
-import configureStore from './components/store/configureStore'
+import configureStore from './store/configureStore'
 const store = configureStore(browserHistory)
 
 const rootRoute = {
@@ -32,9 +32,10 @@ const rootRoute = {
         //require('./routes/Page2/index.js')
     ]
 }
-const history3 = syncHistoryWithStore(browserHistory, store)
+// 将路由信息注入redux使得能够做返回功能
+const history = syncHistoryWithStore(browserHistory, store)
 if (__DEV__) {
-    history3.listen(location => console.log(`App.js路由: ${location.pathname}`))
+    history.listen(location => console.log(`App.js路由: ${location.pathname}`))
     console.log('App.js __DEV__:注入变量测试=', __DEV__);
 }
 if (__ENV__) {
@@ -45,7 +46,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 render(
     <Provider store={store}>
-        <Router history={history3} routes={rootRoute} />
+        <Router history={history} routes={rootRoute} />
     </Provider>
     , document.getElementById('id_root')
 )
