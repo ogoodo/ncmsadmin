@@ -6,33 +6,17 @@ import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { createHashHistory, useBasename } from 'history';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+
+import rootRoute from './routes'
 import './app.css'
 import 'antd/lib/index.css'
 require('./app.css');
 require('antd/lib/index.css');
-//import { DatePicker } from 'antd'
-//import App from './components/App.js'
-// import Page1 from './components/Page1.js'
-// import Page2 from './components/Page2.js'
-// import Tab1 from './components/Tab1.js'
-// import Tab2 from './components/Tab2.js'
-// import routes from './config/routes.js'
-
 
 import configureStore from './store/configureStore'
 const store = configureStore(browserHistory)
 
-const rootRoute = {
-    path: '/',
-    component: require('./components/Main.js'),
-    childRoutes: [
-        require('./routes/Page1'),
-        require('./routes/Page2'),
-        require('./routes/Page3/route-index.js')
-        //require('./routes/Page2/index.js')
-    ]
-}
-// 将路由信息注入redux使得能够做返回功能
+// 将路由信息注入redux使得能够做撤销功能
 const history = syncHistoryWithStore(browserHistory, store)
 if (__DEV__) {
     history.listen(location => console.log(`App.js路由: ${location.pathname}`))
@@ -50,6 +34,18 @@ render(
     </Provider>
     , document.getElementById('id_root')
 )
+
+// const rootRoute = {
+//     path: '/',
+//     component: require('./components/Main.js'),
+//     childRoutes: [
+//         require('./routes/Page1'),
+//         require('./routes/Page2'),
+//         require('./routes/Page3/route-index.js')
+//         //require('./routes/Page2/index.js')
+//     ]
+// }
+
 
 //<Router history={browserHistory} routes={rootRoute}/>//这个配置文件可以
 //<Router history={history}  routes={rootRoute}/>

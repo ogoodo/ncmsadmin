@@ -22,8 +22,8 @@ class Main extends React.Component {
         </div>
         <div>
             <ul>
-                <li><Link to="/page1">Pagehh 11</Link></li>
-                <li><Link to="/page2">Pagehh 222</Link></li>
+                <li><Link to="/page1">Pagehh 1</Link></li>
+                <li><Link to="/page2">Pagehh 2</Link></li>
             </ul>
         </div>
         <div className="tree-left">
