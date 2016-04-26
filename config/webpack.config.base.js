@@ -22,6 +22,7 @@ const BUILD_PATH = path.join(process.cwd(), 'build')
 const nodeModulesPath = path.join(process.cwd(), 'node_modules')
 const srcPath = path.join(process.cwd(), 'src')
 const imgPath = path.resolve(process.cwd(), 'src/img')
+const uiPath = path.resolve(process.cwd(), 'src/components')
 const eslintPath = path.resolve(process.cwd(), '.eslintrc')
 const testJsonPath = path.resolve(process.cwd(), 'test/json')
 //console.log('imgPath================================', imgPath)
@@ -150,6 +151,8 @@ let config = {
     //别名, 其他可以直接用 require("js/main.js");加载
     alias: {
         // js: path.join(__dirname, "./app/components"),
+        // 公共的component
+        ui: uiPath,
         // 指定公共库的位置，优化webpack搜索硬盘的速度
         'react': path.join(nodeModulesPath, 'react'),
         'react-dom': path.join(nodeModulesPath, 'react-dom'),

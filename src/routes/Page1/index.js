@@ -4,15 +4,15 @@ module.exports = {
   getChildRoutes(location, cb) {
     require.ensure([], (require) => {
       cb(null, [
-        require('./routes/Tab1'),
-        require('./routes/Tab2')
+        require('./Tab1'),
+        require('./Tab2')
       ])
     })
   },
 
   getComponent(location, cb) {
     require.ensure([], (require) => {
-      cb(null, require('./components/Page1'))
+      cb(null, require('ui/Page1'))
     })
   }
 }
