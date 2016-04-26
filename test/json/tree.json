@@ -23,5 +23,13 @@
             {   "key":"/Page2/Tab1", "title":"Page2-Tab1" },
             {   "key":"/Page2/Tab2", "title":"Page2-Tab2" }
         ]
+    },
+    {
+        "key":"/Page4",
+        "title":"TreePage333",
+        "children":[
+            {   "key":"/Page1/Tab1", "title":"Page4-Tab1" },
+            {   "key":"/Page1/Tab2", "title":"Page4-Tab2" }
+        ]
     }
 ]
