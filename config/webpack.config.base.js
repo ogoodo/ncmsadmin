@@ -32,12 +32,18 @@ const plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
     // 参考: https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk
     new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendors',
-        //name: ['common', 'vendors', 'vendors2', 'vendors3'],
-        minChunks: 2, //一个文件至少被require两次才能放在CommonChunk里
-        filename: envcfg.vendorsFilename, //isDev?'dist/js/vendors.js':'dist/js/vendors.[hash:8].js',
-        //filename: 'dist/js/common/vendors.[hash:8].js',
+        // names: ['vendors', 'vendorFetch' ],
+        names: ['vendors', 'vendorAtnd', 'vendorFetch' ],
+        minChunks: Infinity,
+        // filename: envcfg.vendorsFilename, 
     }),
+    // new webpack.optimize.CommonsChunkPlugin({
+    //     name: 'vendors',
+    //     //name: ['common', 'vendors', 'vendors2', 'vendors3'],
+    //     minChunks: 2, //一个文件至少被require两次才能放在CommonChunk里
+    //     filename: envcfg.vendorsFilename, //isDev?'dist/js/vendors.js':'dist/js/vendors.[hash:8].js',
+    //     //filename: 'dist/js/common/vendors.[hash:8].js',
+    // }),
     // new webpack.optimize.CommonsChunkPlugin({
     //     name: 'vendors1',
     //     minChunks: 2,//一个文件至少被require两次才能放在CommonChunk里
@@ -114,10 +120,13 @@ const plugins = [
 let config = {
   entry: {
      // 打包时分离第三方库
+    vendorFetch: ["fetch-jsonp"],
+     vendorAntd: ["antd"],
      vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux",
             "react-redux", "redux-thunk", "react-addons-css-transition-group",
             "immutable",
-            "antd", "history", "fetch-jsonp",
+            "history"
+            // "antd", "history", "fetch-jsonp",
             //"es6-promise", 
             // "babel-core",
             //"webpack-dev-server", "webpack-hot-middleware", "react-hot-loader", 

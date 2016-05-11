@@ -37,15 +37,18 @@ init.server = function(envName){
     
     cfg['dev_'].publicPath = '/'
     cfg['prod'].publicPath = 'http://127.0.0.1:3001/'
+    // cfg['prod'].publicPath = 'http://www.ogoodo.com:3001/'
     
-    cfg['dev_'].vendorsFilename = 'dist/js/vendors.js'
-    cfg['prod'].vendorsFilename = 'dist/js/vendors.[hash:8].js'
+    // cfg['dev_'].vendorsFilename = 'dist/js/[id].vendors.js'
+    // cfg['prod'].vendorsFilename = 'dist/js/[id].vendors.[hash:8].js'
+    cfg['dev_'].vendorsFilename = 'dist/js/[id].[name].js'
+    cfg['prod'].vendorsFilename = 'dist/js/[id].[name].[hash:8].js'
     
-    cfg['dev_'].cssFilename = 'dist/css/[name].css'
-    cfg['prod'].cssFilename = 'dist/css/[name].[hash:8].css'
+    cfg['dev_'].cssFilename = 'dist/css/[id].[name].css'
+    cfg['prod'].cssFilename = 'dist/css/[id].[name].[hash:8].css'
     
-    cfg['dev_'].outputFilename = 'dist/js/[name].js'
-    cfg['prod'].outputFilename = 'dist/js/[name].[chunkhash:8].js'
+    cfg['dev_'].outputFilename = 'dist/js/[id].[name].js'
+    cfg['prod'].outputFilename = 'dist/js/[id].[name].[chunkhash:8].js'
     
     cfg['dev_'].outputChunkFilename = 'dist/js/[id].chunk.js'
     cfg['prod'].outputChunkFilename = 'dist/js/[id].[chunkhash:8].chunk.js'

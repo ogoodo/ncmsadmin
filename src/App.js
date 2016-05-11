@@ -10,8 +10,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import rootRoute from './routes'
 import './app.css'
 import 'antd/lib/index.css'
-require('./app.css');
-require('antd/lib/index.css');
+// require('./app.css');
+// require('antd/lib/index.css');
 
 import configureStore from './store/configureStore'
 const store = configureStore(browserHistory)
