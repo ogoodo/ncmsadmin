@@ -32,8 +32,9 @@ const plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
     // 参考: https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk
     new webpack.optimize.CommonsChunkPlugin({
+        names: ['vendors' ],
         // names: ['vendors', 'vendorFetch' ],
-        names: ['vendors', 'vendorAtnd', 'vendorFetch' ],
+        // names: ['vendors', 'vendorAtnd', 'vendorFetch' ],
         minChunks: Infinity,
         // filename: envcfg.vendorsFilename, 
     }),

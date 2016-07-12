@@ -31,7 +31,7 @@
         "complexity": [1, 10], //圈复杂度大于10 警告
 
         //常见错误
-        "comma-dangle": [1, "never"], //定义数组或对象最后多余的逗号
+        "comma-dangle": 0, // [1, "never"], //定义数组或对象最后多余的逗号
         "no-debugger": 1, //debugger 调试代码未删除
         "no-console": 0, //console 未删除
         "no-constant-condition": 2, //常量作为条件
@@ -113,7 +113,7 @@
         "import/namespace": 0,
         "import/no-unresolved": 0,
         "import/no-named-as-default": 2,
-        //"comma-dangle": 0,  // not sure why airbnb turned this on. gross!
+        // "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
         "indent": [0, 4, {
             "SwitchCase": 1
         }], //缩进判断
