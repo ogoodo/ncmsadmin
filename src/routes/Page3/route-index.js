@@ -3,6 +3,6 @@ module.exports = {
 
 
   getComponent(location, cb) {
-      cb(null, require('ui/Page3.js'))
+      cb(null, require('ui/test/Page3.js'))
   }
 }

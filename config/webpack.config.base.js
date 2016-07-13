@@ -32,9 +32,9 @@ const plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
     // 参考: https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk
     new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendors' ],
+        names: ['vendors', 'vendorAntd' ],
         // names: ['vendors', 'vendorFetch' ],
-        // names: ['vendors', 'vendorAtnd', 'vendorFetch' ],
+        // names: ['vendors', 'vendorAntd', 'vendorFetch' ],
         minChunks: Infinity,
         // filename: envcfg.vendorsFilename, 
     }),
@@ -121,8 +121,8 @@ const plugins = [
 let config = {
   entry: {
      // 打包时分离第三方库
-    vendorFetch: ["fetch-jsonp"],
-     vendorAntd: ["antd"],
+    // vendorFetch: ["fetch-jsonp"],
+    // vendorAntd: ["antd"],
      vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux",
             "react-redux", "redux-thunk", "react-addons-css-transition-group",
             "immutable",

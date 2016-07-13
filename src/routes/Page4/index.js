@@ -1,7 +1,7 @@
 import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
-import Page1 from 'ui/Page1'
-import Tab1 from 'ui/Tab1'
-import Tab2 from 'ui/Tab2'
+import Page1 from 'ui/test/Page1'
+import Tab1 from 'ui/test/Tab1'
+import Tab2 from 'ui/test/Tab2'
 
 export default (
   <Route path="page1" component={Page1}>

@@ -12,7 +12,7 @@ module.exports = {
 
   getComponent(location, cb) {
     require.ensure([], (require) => {
-      cb(null, require('ui/Page1'))
+      cb(null, require('ui/test/Page1'))
     })
   }
 }

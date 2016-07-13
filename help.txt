@@ -73,6 +73,8 @@ npm install --save-dev eslint-loader    webPack用来做预加载
 npm install babel-runtime  --save
 npm install babel-plugin-transform-runtime --save-dev
 /*减少打包的时候重复代码，以上要注意是放在dev还是非dev上！*/          重点重点重点   有空的时候测试下这两个
+
+npm install babel-plugin-antd --save-dev   优化antd的文件大小
 安装=====================================================}}
 
 
