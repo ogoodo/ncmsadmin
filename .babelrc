@@ -1,7 +1,7 @@
 {
     "plugins": [
         "transform-runtime",
-        ["antd", { "style": "css" }]
+        ["babel-plugin-antd", { "style": false, "notes": "true:less,css:css,false:无这个配置参数就是表示不到入css和less" }]
     ],
     "presets": ["es2015", "react", "stage-0"]
 }

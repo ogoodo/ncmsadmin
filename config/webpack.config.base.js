@@ -32,7 +32,8 @@ const plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
     // 参考: https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk
     new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendors', 'vendorAntd' ],
+        names: ['vendors' ],
+        // names: ['vendors', 'vendorAntd' ],
         // names: ['vendors', 'vendorFetch' ],
         // names: ['vendors', 'vendorAntd', 'vendorFetch' ],
         minChunks: Infinity,
@@ -208,7 +209,9 @@ const babelQuery = {
  */
 config.module.loaders =
 [
-    { test: /\.(js|jsx)$/, loader: "react-hot-loader", exclude: nodeModulesPath},
+    {
+        test: /\.(js|jsx)$/, loader: "react-hot-loader", exclude: nodeModulesPath
+    },
     {
         test: /\.js$/,
         include: [srcPath],
@@ -223,10 +226,14 @@ config.module.loaders =
         loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
         //loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
     },
-    { test: /\.(js|jsx)$/, loader: 'eslint-loader', exclude: nodeModulesPath },
+    { 
+        test: /\.(js|jsx)$/, loader: 'eslint-loader', exclude: nodeModulesPath
+    },
     {
         test: /\.less$/,
-        loaders: ['style-loader', 'css-loader', 'autoprefixer-loader', 'less-loader'],
+        // loaders: ['style-loader', 'css-loader', 'autoprefixer-loader', 'less-loader'],
+        // 写法参考: https://github.com/webpack/extract-text-webpack-plugin#api
+        loader: ExtractTextPlugin.extract('style-loader', [ 'css-loader', 'autoprefixer-loader', 'less-loader'])
         //loader: 'style-loader!css-loader!autoprefixer-loader!less-loader',
         //loaders: [ExtractTextPlugin.extract('style'), 'css', 'less'],
     },

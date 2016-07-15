@@ -2,6 +2,7 @@
 import { parseString } from 'xml2js'
 import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { Tree } from 'antd'
+// import Tree from 'antd/lib/tree'
 //import Loading from 'react-component-loading';
 //import fetchJsonp from 'fetch-jsonp'
 //import fetch from 'fetch'
