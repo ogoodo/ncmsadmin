@@ -238,6 +238,10 @@ config.module.loaders =
         //loaders: [ExtractTextPlugin.extract('style'), 'css', 'less'],
     },
     {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style-loader', [ 'css-loader', 'autoprefixer-loader', 'sass-loader'])
+    },
+    {
         test: /\.css$/, 
         //loader: "style-loader!css-loader"
         //分离css单独打包

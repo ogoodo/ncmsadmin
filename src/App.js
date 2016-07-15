@@ -9,7 +9,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import rootRoute from './routes'
 // import './app.css'
-import './less/index.less'
+import './style/index.less'
+import './style/sass.scss'
 // import 'antd/dist/antd.less'
 
 // require('./app.css');
