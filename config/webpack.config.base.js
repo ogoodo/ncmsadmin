@@ -31,14 +31,14 @@ const testJsonPath = path.resolve(process.cwd(), 'test/json')
 const plugins = [
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
     // 参考: https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk
-    new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendors' ],
-        // names: ['vendors', 'vendorAntd' ],
-        // names: ['vendors', 'vendorFetch' ],
-        // names: ['vendors', 'vendorAntd', 'vendorFetch' ],
-        minChunks: Infinity,
-        // filename: envcfg.vendorsFilename, 
-    }),
+// new webpack.optimize.CommonsChunkPlugin({
+//     names: ['vendors' ],
+//     // names: ['vendors', 'vendorAntd' ],
+//     // names: ['vendors', 'vendorFetch' ],
+//     // names: ['vendors', 'vendorAntd', 'vendorFetch' ],
+//     minChunks: Infinity,
+//     // filename: envcfg.vendorsFilename, 
+// }),
     // new webpack.optimize.CommonsChunkPlugin({
     //     name: 'vendors',
     //     //name: ['common', 'vendors', 'vendors2', 'vendors3'],
@@ -110,29 +110,35 @@ const plugins = [
         }
     }),
     new CopyWebpackPlugin([ 
-            { from: imgPath, to: 'img', toType: 'dir' },
-            { from: testJsonPath, to: 'json', toType: 'dir' },
-            { from: 'src/img/favicon.ico', to: 'favicon.ico', toType: 'file' },
-        ])
-        //], {ignore:[ '*.txt',]} ),
+        { from: imgPath, to: 'img', toType: 'dir' },
+        { from: testJsonPath, to: 'json', toType: 'dir' },
+        { from: 'src/img/favicon.ico', to: 'favicon.ico', toType: 'file' },
+    ]),
+    //], {ignore:[ '*.txt',]} ),
+    new webpack.DllReferencePlugin({
+      // context: __dirname,
+      context: path.join(__dirname, "../build/dist/js/"),
+      // manifest: require('manifest.json'),
+      manifest: require('../build/dist/js/manifest.json'),
+    }),
     //new CopyWebpackPlugin([ { from: 'src/img/favicon.ico', to: '/favicon.ico' },], {ignore:[ '*.txt',]} ),
 ];
-
+console.log('__dirname:', __dirname);
 
 let config = {
   entry: {
      // 打包时分离第三方库
     // vendorFetch: ["fetch-jsonp"],
     // vendorAntd: ["antd"],
-     vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux",
-            "react-redux", "redux-thunk", "react-addons-css-transition-group",
-            "immutable",
-            "history"
-            // "antd", "history", "fetch-jsonp",
-            //"es6-promise", 
-            // "babel-core",
-            //"webpack-dev-server", "webpack-hot-middleware", "react-hot-loader", 
-            ],
+//  vendors: ["react", "react-dom", "react-router", "react-router-redux", "redux",
+//         "react-redux", "redux-thunk", "react-addons-css-transition-group",
+//         "immutable",
+//         "history"
+//         // "antd", "history", "fetch-jsonp",
+//         //"es6-promise", 
+//         // "babel-core",
+//         //"webpack-dev-server", "webpack-hot-middleware", "react-hot-loader", 
+//         ],
     // vendors1: ["react", "react-dom",  ],
     // vendors2: [ "react-router", "react-router-redux", "redux",  "react-redux", ],
     // vendors3: ["redux-thunk", "react-addons-css-transition-group"],
