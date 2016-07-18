@@ -8,13 +8,16 @@
     "dev2": "webpack-dev-server --hot --inline",
     "dev": "set NODE_ENV=development && node server/server.js --hot --inline",
     "start": "set NODE_ENV=production  && node server/server.js",
+
+    "dll": "./node_modules/webpack/bin/webpack.js --config ./config/webpack.config.dll.js",
     "devbd": "set NODE_ENV=development && gulp prod ",
     "build": "set NODE_ENV=production  && gulp prod ",
-    "new": "npm run build && npm run start",
-    "debug": "npm run devbd && npm run start",
+    "new": "npm run dll && npm run build && npm run start",
+    "debug": "npm run dll && npm run devbd && npm run start",
+
     "dbg": "set NODE_ENV=development && node server/debug.js",
     "lint": "eslint ./src/",
-    "dll": "./node_modules/webpack/bin/webpack.js --config ./config/webpack.config.dll.js",
+
     "dll2": "./node_modules/webpack/bin/webpack.js --config ./dll/webpack.config.js",
     "dll3": "./node_modules/webpack/bin/webpack.js --config ./config/test.webpack.dll.js",
     "dll5": "./node_modules/webpack/bin/webpack.js --config ./config/test.webpack.dev.js",
