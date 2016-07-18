@@ -110,15 +110,34 @@ const plugins = [
     // 模板试试用这个 https://github.com/jaketrent/html-webpack-template
     // 生成及压缩HTML  //根据模板插入css/js等生成最终HTML
     new HtmlWebpackPlugin({
+        //  "files": {
+        //     "js": [ "dll.vendor.js", "assets/main_bundle.js"],  
+        //      "chunks": {
+        //         "body": {
+        //             "myvendor": {
+        //                 "entry": "dll.vendor.js",
+        //                 "hash": "2fsdf",
+        //                 "size": "122"
+        //             }
+        //         },
+        //         "main": {
+        //             "entry": "dll.vendor.js",
+        //             "hash": "2fsdf",
+        //             "size": "122"
+        //         }
+        //     },
+        //  },
         title: 'ncms admin',
         //favicon:'./build/img/favicon.ico', //favicon路径
         favicon:'./src/img/favicon.ico', //favicon路径
         inject: false, //允许插件修改哪些内容，包括head与body
         cache: false, //如果为 true, 这是默认值 仅仅在文件修改之后才会发布文件
-        template: 'node_modules/html-webpack-template/index.ejs',
+        // template: 'node_modules/html-webpack-template/index.ejs',
+        template: './src/template/index.ejs',
         filename: './index.html',    //生成的html存放路径，相对于 path
         appMountId: 'id_root',
         baseHref: envcfg.publicPath, // 'http://example.com/awesome',
+        // chunks:['my_vendor'],
         //压缩HTML文件 传递 html-minifier 选项给 minify 输出
         minify:{
             removeComments: true,    //移除HTML中的注释
@@ -162,7 +181,7 @@ let config = {
     // vendors3: ["redux-thunk", "react-addons-css-transition-group"],
     //public: ['webpack-hot-middleware/client', './src/App.js']
     // bundle: ['babel-polyfill', './src/App.js']  //IE8 支持不知道要不要这个
-    example: [ './src/example.js'],
+    // example: [ './src/example.js'],
     app: [ './src/App.js']
   },
   output: {

@@ -2,7 +2,7 @@ var path = require("path");
 var webpack = require("webpack");
 
 
-const vendors = [
+const vendors_stop = [
   "react",
   "react-dom",
   "react-router",
@@ -18,6 +18,9 @@ const vendors = [
   'isomorphic-fetch',
   "fetch-jsonp",
   "es6-promise", 
+  
+  "core-js",
+  "lodash",
   // "babel-core",
   // "webpack-dev-server", "webpack-hot-middleware", "react-hot-loader", 
 ];
@@ -39,7 +42,7 @@ module.exports = {
             context: path.resolve(__dirname, "client")
         }),
         new webpack.optimize.OccurenceOrderPlugin(),
-        // new webpack.optimize.UglifyJsPlugin()
+        new webpack.optimize.UglifyJsPlugin()
     ],
     resolve: {
         root: path.resolve(__dirname, "client"),

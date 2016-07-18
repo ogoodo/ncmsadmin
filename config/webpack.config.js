@@ -4,8 +4,8 @@
 
 console.warn('webpack.config.js********** process.env.NODE_ENV=', process.env.NODE_ENV );
 const isDevelopment = function () {
-    // return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
-    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()!=='production' : true;
+    // return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : true;
+    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()!=='production' : false;
 };
 
 let cfg;
