@@ -29,6 +29,30 @@ const testJsonPath = path.resolve(process.cwd(), 'test/json')
 //const isDev = true;
 
 const plugins = [
+    new webpack.DllReferencePlugin({
+        // scope: "dll",
+        context: path.join(__dirname, '..', "client"),
+        manifest: require("../build/dist/dll/vendor-manifest.json")
+    }),
+    // new webpack.DllReferencePlugin({
+    //     context: path.join(__dirname, '..', "build", 'dist'),
+    //     manifest: require("../build/dist/dll/antd-manifest.json")
+    // }),
+    // new webpack.DllReferencePlugin({
+    //     context: path.join(__dirname, "..", "dll"),
+    //     manifest: require("../dll/js/alpha-manifest.json")
+    // }),
+    // new webpack.DllReferencePlugin({
+    //     scope: "beta",
+    //     manifest: require("../dll/js/beta-manifest.json")
+    // }),
+    // new webpack.DllReferencePlugin({
+    //   // context: __dirname,
+    //   context: path.join(__dirname, "../build/dist"),
+    //   // manifest: require('manifest.json'),
+    //   manifest: require('../build/dist/js/manifest.json'),
+    // }),
+
     // CommonsChunkPlugin 插件会根据各个生成的模块中共用的模块，然后打包成一个common.js 文件。
     // 参考: https://github.com/webpack/webpack/tree/master/examples/common-chunk-and-vendor-chunk
 // new webpack.optimize.CommonsChunkPlugin({
@@ -115,12 +139,6 @@ const plugins = [
         { from: 'src/img/favicon.ico', to: 'favicon.ico', toType: 'file' },
     ]),
     //], {ignore:[ '*.txt',]} ),
-    new webpack.DllReferencePlugin({
-      // context: __dirname,
-      context: path.join(__dirname, "../build/dist/js/"),
-      // manifest: require('manifest.json'),
-      manifest: require('../build/dist/js/manifest.json'),
-    }),
     //new CopyWebpackPlugin([ { from: 'src/img/favicon.ico', to: '/favicon.ico' },], {ignore:[ '*.txt',]} ),
 ];
 console.log('__dirname:', __dirname);
@@ -144,7 +162,8 @@ let config = {
     // vendors3: ["redux-thunk", "react-addons-css-transition-group"],
     //public: ['webpack-hot-middleware/client', './src/App.js']
     // bundle: ['babel-polyfill', './src/App.js']  //IE8 支持不知道要不要这个
-    bundle: [ './src/App.js']
+    example: [ './src/example.js'],
+    //app: [ './src/App.js']
   },
   output: {
     //path: path.join(__dirname, 'public/dist'),

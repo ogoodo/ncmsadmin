@@ -20,7 +20,16 @@ wpconfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),    
     new webpack.NoErrorsPlugin()  // 防止报错的插件
 );
-wpconfig.entry.bundle.unshift('webpack-hot-middleware/client');
+for (var key in wpconfig.entry) {
+    if (wpconfig.entry.hasOwnProperty(key)) {
+        var item = wpconfig.entry[key];
+        item.unshift('webpack-hot-middleware/client');        
+    }
+}
+// wpconfig.entry.forEach(function(item) {
+//     item.unshift('webpack-hot-middleware/client');    
+// }, this);
+//    wpconfig.entry.bundle.unshift('webpack-hot-middleware/client');    
 // console.log(wpconfig.entry.bundle)
 // wpconfig.devtool = 'eval'
 //wpconfig.devtool = 'cheap-module-eval-source-map'

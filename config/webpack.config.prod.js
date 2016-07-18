@@ -6,17 +6,17 @@ let wpconfig = require('./webpack.config.base.js')
 
 // 压缩JS与CSS
 wpconfig.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-        test: /(\.jsx|\.js)$/,
-        minimize: true,  //--optimize-minimize
-        compress: {
-            unused: true,
-            dead_code: true,
-            warnings: false
-        },
-        //排除混淆关键词
-        except: ['$super', '$', 'exports', 'require'],
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //     test: /(\.jsx|\.js)$/,
+    //     minimize: true,  //--optimize-minimize
+    //     compress: {
+    //         unused: true,
+    //         dead_code: true,
+    //         warnings: false
+    //     },
+    //     //排除混淆关键词
+    //     except: ['$super', '$', 'exports', 'require'],
+    // }),
     // definePlugin 接收字符串插入到代码当中, 所以你需要的话可以写上 JS 的字符串
     new webpack.DefinePlugin({
         // 压缩React

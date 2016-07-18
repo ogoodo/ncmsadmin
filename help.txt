@@ -44,8 +44,7 @@ npm install --save-dev url-loader
 为了编译jsx，我们还需要其他一些模块
 npm install --save-dev babel-loader babel-preset-react
 npm install --save-dev babel-preset-stage-1   ...延展属性(就是三个点)要用这个, 不然编译会出错
-npm install --save-dev sass-loader
-npm install --save-dev node-sass
+npm install --save-dev sass-loader node-sass css-loader style-loader
 
 //thunk作用是使被 dispatch 的 function 会接收 dispatch 作为参数，并且可以异步调用它
 npm install --save react-router 

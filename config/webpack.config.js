@@ -4,14 +4,17 @@
 
 console.warn('webpack.config.js********** process.env.NODE_ENV=', process.env.NODE_ENV );
 const isDevelopment = function () {
-    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
+    // return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : false;
+    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()!=='production' : true;
 };
 
 let cfg;
-if (isDevelopment()){    
+if (isDevelopment()){
+    console.log('当前编译环境: development');
     let wpconfig = require('./webpack.config.dev.js')
     cfg = wpconfig;
 }else{
+    console.log('当前编译环境: production');
     let wpconfig = require('./webpack.config.prod.js')
     cfg = wpconfig;
 }
