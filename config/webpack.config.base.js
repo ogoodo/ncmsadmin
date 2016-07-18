@@ -163,7 +163,7 @@ let config = {
     //public: ['webpack-hot-middleware/client', './src/App.js']
     // bundle: ['babel-polyfill', './src/App.js']  //IE8 支持不知道要不要这个
     example: [ './src/example.js'],
-    //app: [ './src/App.js']
+    app: [ './src/App.js']
   },
   output: {
     //path: path.join(__dirname, 'public/dist'),
