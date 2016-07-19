@@ -4,10 +4,11 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-import { createHashHistory, useBasename } from 'history';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+// import { createHashHistory, useBasename } from 'history';
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import rootRoute from './routes'
+
 // import './app.css'
 import './style/index.less'
 import './style/sass.scss'
@@ -37,6 +38,7 @@ render(
     </Provider>
     , document.getElementById('id_root')
 )
+//*/
 
 // const rootRoute = {
 //     path: '/',

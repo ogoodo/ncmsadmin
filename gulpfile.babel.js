@@ -2,9 +2,11 @@ import gulp from 'gulp'
 import gutil from 'gulp-util'
 import watch from 'gulp-watch'
 import babel from 'gulp-babel'
+import replace from 'gulp-replace'
 import webpack from 'webpack'
 import jsdoc from 'gulp-jsdoc3'
 import WebpackDevServer from 'webpack-dev-server'
+var fs = require('fs')
 
 // import webpackConfigProd from './config/webpack.prod.1.config.js';
 // import webpackConfigDev from './config/webpack.dev.1.config.js';
@@ -38,6 +40,25 @@ gulp.task('html', function () {
     .src(['./src/*.html'])
     .pipe(gulp.dest('./build/'));  
 });
+function getAllFiles() {
+    var doc = '';
+    var files = fs.readdirSync('./build/dist/dll/');
+    files.forEach(function(item) {
+        //if(item.indexOf('.js')>=0) {
+        if(/^dll\..+\.js$/g.test(item)) {
+            console.log('gulp:替换ejs模版文件名: ', item);
+            doc += '<script src="/dist/dll/'+item+'"></script>\r\n';
+        }
+    }, this);
+    return doc;
+}
+gulp.task('do.dll.ejs.template', function () {
+    var filenames = getAllFiles();
+    return gulp
+    .src(['./src/template/*.ejs'])
+    .pipe(replace(/<!--dll.js.file.replace-->/g, filenames))    
+    .pipe(gulp.dest('./build/template'));
+});
 
 // transform
 gulp.task('transform', () => {
@@ -56,7 +77,7 @@ gulp.task('watch-transform', () => {
     .pipe(gulp.dest('lib'));
 });
 
-gulp.task('webpack:build', (callback) => {
+gulp.task('webpack:build', ['do.dll.ejs.template'], (callback) => {
   const webpackConfig  = require('./config/webpack.config.js')
   // modify some webpack config options
   var myConfig = Object.create( webpackConfig);
@@ -105,8 +126,9 @@ gulp.task('webpack-dev-server', (callback) => {
 
 gulp.task('default', ['watch-transform', 'webpack-dev-server']);
 
-//执行 gulp prod 打包到dist目录， 部署直接部署dist目录即可
-gulp.task('prod', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
+// 执行 gulp prod 打包到dist目录， 部署直接部署dist目录即可
+gulp.task('prod', ['html', 'do.dll.ejs.template', 'webpack:build']);//, 'transform', 'watch-transform'
+// gulp.task('prod', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
 
 // 生成jsdoc帮助文档
 gulp.task('jsdoc', ['make:jsdoc'])

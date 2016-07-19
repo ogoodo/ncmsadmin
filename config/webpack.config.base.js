@@ -133,7 +133,7 @@ const plugins = [
         inject: false, //允许插件修改哪些内容，包括head与body
         cache: false, //如果为 true, 这是默认值 仅仅在文件修改之后才会发布文件
         // template: 'node_modules/html-webpack-template/index.ejs',
-        template: './src/template/index.ejs',
+        template: './build/template/index.ejs',
         filename: './index.html',    //生成的html存放路径，相对于 path
         appMountId: 'id_root',
         baseHref: envcfg.publicPath, // 'http://example.com/awesome',
