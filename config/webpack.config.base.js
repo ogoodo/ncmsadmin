@@ -18,13 +18,14 @@ const envcfg = require("../config/env.config.js").server()
 //const PUBLIC_PATH = '/dist/js/';//path.resolve(__dirname, "build/dist/js/");
 //const nodeModulesPath = path.join(path.resolve(__dirname, '..'), 'node_modules')
 //const nodeModulesPath = path.join(path.resolve(__dirname, '../'), 'node_modules')
-const BUILD_PATH = path.join(process.cwd(), 'build')
-const nodeModulesPath = path.join(process.cwd(), 'node_modules')
-const srcPath = path.join(process.cwd(), 'src')
-const imgPath = path.resolve(process.cwd(), 'src/img')
-const uiPath = path.resolve(process.cwd(), 'src/components')
-const eslintPath = path.resolve(process.cwd(), '.eslintrc')
-const testJsonPath = path.resolve(process.cwd(), 'test/json')
+const ROOT_PATH = path.join(process.cwd(), '..')
+const BUILD_PATH = path.join(ROOT_PATH, 'build')
+const nodeModulesPath = path.join(ROOT_PATH, 'node_modules')
+const SRC_PATH = path.join(ROOT_PATH, 'src')
+const imgPath = path.resolve(ROOT_PATH, 'src/img')
+const uiPath = path.resolve(ROOT_PATH, 'src/components')
+const eslintPath = path.resolve(ROOT_PATH, '.eslintrc')
+const testJsonPath = path.resolve(ROOT_PATH, 'test/json')
 //console.log('imgPath================================', imgPath)
 //const isDev = true;
 
@@ -129,11 +130,11 @@ const plugins = [
         //  },
         title: 'ncms admin',
         //favicon:'./build/img/favicon.ico', //favicon路径
-        favicon:'./src/img/favicon.ico', //favicon路径
+        favicon: path.join( imgPath, 'favicon.ico'), //favicon路径
         inject: false, //允许插件修改哪些内容，包括head与body
         cache: false, //如果为 true, 这是默认值 仅仅在文件修改之后才会发布文件
         // template: 'node_modules/html-webpack-template/index.ejs',
-        template: './build/template/index.ejs',
+        template: path.join(BUILD_PATH, './template/index.ejs'),
         filename: './index.html',    //生成的html存放路径，相对于 path
         appMountId: 'id_root',
         baseHref: envcfg.publicPath, // 'http://example.com/awesome',
@@ -182,7 +183,8 @@ let config = {
     //public: ['webpack-hot-middleware/client', './src/App.js']
     // bundle: ['babel-polyfill', './src/App.js']  //IE8 支持不知道要不要这个
     // example: [ './src/example.js'],
-    app: [ './src/App.js']
+    // app: [ './src/App.js']
+    app: [path.join(SRC_PATH, 'app.js')]
   },
   output: {
     //path: path.join(__dirname, 'public/dist'),
@@ -197,7 +199,7 @@ let config = {
   },
   plugins: plugins,
   resolve: {
-    root: [srcPath, nodeModulesPath],
+    root: [SRC_PATH, nodeModulesPath],
     //fallback: [path.join(__dirname, 'node_modules') ],
     //用于指明程序自动补全识别哪些后缀
     extensions: ['', '.js', '.jsx'],
@@ -235,7 +237,7 @@ config.eslint = {
 // [
 //     {
 //         test: /\.(js|jsx)$/,
-//         include: [srcPath],
+//         include: [SRC_PATH],
 //         exclude: [nodeModulesPath],
 //         loader: 'eslint-loader'
 //     }
@@ -258,14 +260,14 @@ config.module.loaders =
     },
     {
         test: /\.js$/,
-        include: [srcPath],
+        include: [SRC_PATH],
         exclude: nodeModulesPath,
         loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
         //loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
     },
     {
         test: /\.jsx$/,
-        include: [srcPath],
+        include: [SRC_PATH],
         exclude: nodeModulesPath,
         loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
         //loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
