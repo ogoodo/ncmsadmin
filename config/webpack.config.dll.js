@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+var config = require("./env.config.js");
 
 
 const vendors = [
@@ -32,13 +33,13 @@ module.exports = {
         // vendor: [path.join(__dirname, "client", "vendors.js")]
     },
     output: {
-        path: path.join(__dirname, '..', 'build', "dist", "dll"),
+        path: config.DLL_PATH, // path.join(config.OUT_PATH, "dist", "dll"),
         filename: "dll.[name].[hash].js",
         library: "[name]_[hash]"
     },
     plugins: [
         new webpack.DllPlugin({
-            path: path.join(__dirname, '..', 'build', 'dist', "dll", "[name]-manifest.json"),
+            path: path.join(config.OUT_PATH, 'dist', "dll", "[name]-manifest.json"),
             name: "[name]_[hash]",
             context: path.resolve(__dirname, '..', "client")
         }),

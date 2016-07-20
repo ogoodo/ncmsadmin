@@ -7,12 +7,14 @@ import watch from 'gulp-watch'
 import babel from 'gulp-babel'
 import replace from 'gulp-replace'
 import gulpif from 'gulp-if'
+import del from 'del' // rm -rf
 import webpack from 'webpack'
 import jsdoc from 'gulp-jsdoc3'
 import WebpackDevServer from 'webpack-dev-server'
+import config from './env.config.js'
 
-var isDll = false
-var isBuild = false
+let isDll = false
+let isBuild = false
 
 if(false) {
     console.info('gulp运行目录: ', process.cwd())
@@ -29,13 +31,35 @@ if(false) {
 
 gulp.task('user.select', (callback) => {
     const info = `
-    l: 生成dll
-    d: 开发版
-    s: 测试版
-    p: 生产版
+    l:  生成dll
+    d:  开发版
+    s:  测试版
+    p:  生产版
+    ld: 开发版及dll
+    ls: 
+    lp: 
     请选择你想编译的版本(退出ctrl＋c)
     `.substr(1)
     console.log(info)
+    function parserArgument(code) {
+        switch(code) {
+            case 'l':
+                isDll = true
+                break
+            case 'd':
+                isBuild = true
+                process.env.NODE_ENV = 'development'
+                break
+            case 's':
+                isBuild = true
+                process.env.NODE_ENV = 'development'
+                break
+            case 'p':
+                isBuild = true
+                process.env.NODE_ENV = 'production'
+                break
+        }
+    }
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -43,30 +67,20 @@ gulp.task('user.select', (callback) => {
     rl.on('line', (line) => {
         line = line.trim()
         console.log(`您选择了: ${line}`)
-        if(['l','d','s','p'].indexOf(line) === -1) {
+        if(['l','d','s','p','ld','ld','lp'].indexOf(line) === -1) {
             console.log('请选择正确的版本')
         } else {
             rl.close()
-            switch(line) {
-                case 'l':
-                    isDll = true
-                    break
-                case 'd':
-                    isBuild = true
-                    process.env.NODE_ENV = 'development'
-                    break
-                case 's':
-                    isBuild = true
-                    process.env.NODE_ENV = 'development'
-                    break
-                case 'p':
-                    isBuild = true
-                    process.env.NODE_ENV = 'production'
-                    break
+            for(var a of line) {
+                parserArgument(a)
             }
-            callback(); // 如果 err 不是 null 和 undefined，流程会被结束掉，后面的任务不会被执行
+            config.init(process.env.NODE_ENV)
+            callback() // 如果 err 不是 null 和 undefined，流程会被结束掉，后面的任务不会被执行
         }
     })
+});
+gulp.task('clean', function(cb) {
+    // del(['output'], cb)
 });
 /**
  * 如果js文件格式不合要求生成jsdoc的时候会报错误(esprima), 但是又不会提出什么错误
@@ -75,40 +89,41 @@ gulp.task('user.select', (callback) => {
  * 参考: https://github.com/jsdoc3/jsdoc
  */
 gulp.task('make:jsdoc', function () {
-    const config = require('../config/jsdoc.config.json')
+    const cfg = require('../config/jsdoc.config.json')
     return gulp
     //.src(['./src/*.js', './src/*.jsx'])
     .src(['../src/*.js', '../jsdoc3/*.js'])
-    .pipe(jsdoc(config))
+    .pipe(jsdoc(cfg))
     //.pipe(jsdoc('./doc-output'))
 })
 
 gulp.task('html', ['user.select'], function () {  
     return gulp
     .src(['../src/template/*.html'])
-    .pipe(gulpif(!isDll, gulp.dest('../build/')))
+    .pipe(gulpif(!isDll, gulp.dest(config.OUT_PATH)))
 });
+
 function getAllFiles() {
     var doc = '';
-    const files = fs.readdirSync('../build/dist/dll/');
+    const files = fs.readdirSync(config.DLL_PATH);
     files.forEach(function(item) {
         //if(item.indexOf('.js')>=0) {
         if(/^dll\..+\.js$/g.test(item)) {
-            console.log('gulp:替换ejs模版文件名: ', item);
             doc += '<script src="/dist/dll/'+item+'"></script>\r\n';
         }
     }, this);
+    console.log('gulp:替换ejs模版文件名: ', doc);
     return doc;
 }
-gulp.task('do.dll.ejs.template', ['user.select'], function () {
-    if(isDll) {
+gulp.task('do.dll.ejs.template', ['user.select', 'webpack:dll'], function () {
+    if( ! isBuild) {
         return;
     } else {
         const filenames = getAllFiles();
         return gulp
         .src(['../src/template/*.ejs'])
-        .pipe(gulpif(!isDll, replace(/<!--dll.js.file.replace-->/g, filenames))) 
-        .pipe(gulp.dest('../build/template'))
+        .pipe(gulpif(isBuild, replace(/<!--dll.js.file.replace-->/g, filenames))) 
+        .pipe(gulp.dest(path.join(config.OUT_PATH, 'template')))
     }
 });
 
@@ -129,7 +144,7 @@ gulp.task('watch-transform', () => {
     .pipe(gulp.dest('lib'));
 });
 
-gulp.task('webpack:dll', ['do.dll.ejs.template'], (callback) => {
+gulp.task('webpack:dll', ['user.select'], (callback) => {
   if( ! isDll) {
       return;
   }
@@ -146,7 +161,7 @@ gulp.task('webpack:dll', ['do.dll.ejs.template'], (callback) => {
     });
 });
 
-gulp.task('webpack:build', ['do.dll.ejs.template'], (callback) => {
+gulp.task('webpack:build', ['do.dll.ejs.template', 'webpack:dll'], (callback) => {
   if( ! isBuild) {
       return;
   }
@@ -189,7 +204,7 @@ gulp.task('webpack-dev-server', (callback) => {
 gulp.task('default', ['watch-transform', 'webpack-dev-server']);
 
 // 执行 gulp prod 打包到dist目录， 部署直接部署dist目录即可
-gulp.task('prod', ['user.select', 'html', 'do.dll.ejs.template', 'webpack:dll', 'webpack:build']);//, 'transform', 'watch-transform'
+gulp.task('prod', ['user.select', 'html', 'webpack:dll', 'do.dll.ejs.template', 'webpack:build']);//, 'transform', 'watch-transform'
 // gulp.task('prod', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
 
 // 生成jsdoc帮助文档
@@ -209,7 +224,7 @@ gulp.task('jsdoc', ['make:jsdoc'])
 // }
 // console.log(readSyncByfs('请输入任意字符：'));
 
-// const ROOT_PATH = path.join(process.cwd(), '..')
+// 
 // var ttt = 3
 // const buf = new Buffer(50)
 // function readSyn() {

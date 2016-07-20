@@ -1,15 +1,32 @@
 'use strict'
+import path from 'path'
 
 function formatName(envName){    
-    envName = envName?envName.trim():'development';
-    envName = envName==='dev'?'dev_':envName;
-    envName = envName==='development'?'dev_':envName;
-    envName = envName==='production'?'prod':envName;
+    envName = envName ? envName.trim() : 'development'
+    envName = envName === 'dev' ? 'dev_' : envName
+    envName = envName === 'development' ? 'dev_' : envName
+    envName = envName === 'production' ? 'prod' : envName
     return envName;
 }
 
-function init (envName){
+function init (){
 }
+
+init.ROOT_PATH = path.join(process.cwd(), '..')
+console.log('项目的根目录ROOT_PATH:', init.ROOT_PATH)
+
+init.init = function (nodeEvn) {
+    process.env.NODE_ENV = nodeEvn
+
+    if (nodeEvn === 'development') {
+        this.OUT_PATH = path.join(this.ROOT_PATH, 'devlopment')
+    }
+    if ( nodeEvn === 'production') {
+        this.OUT_PATH = path.join(this.ROOT_PATH, 'production')
+    }
+    this.DLL_PATH = path.join(this.OUT_PATH, 'dist/dll');
+}
+
 //浏览器使用的配置项
 init.client = function(envName){
     envName = formatName(envName);

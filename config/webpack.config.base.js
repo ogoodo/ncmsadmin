@@ -7,6 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const cfg = require("../config/env.config.js")
 const envcfg = require("../config/env.config.js").server()
 
 //console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$scfg==', envcfg)
@@ -19,7 +20,7 @@ const envcfg = require("../config/env.config.js").server()
 //const nodeModulesPath = path.join(path.resolve(__dirname, '..'), 'node_modules')
 //const nodeModulesPath = path.join(path.resolve(__dirname, '../'), 'node_modules')
 const ROOT_PATH = path.join(process.cwd(), '..')
-const BUILD_PATH = path.join(ROOT_PATH, 'build')
+const BUILD_PATH = cfg.OUT_PATH; // path.join(ROOT_PATH, 'build')
 const nodeModulesPath = path.join(ROOT_PATH, 'node_modules')
 const SRC_PATH = path.join(ROOT_PATH, 'src')
 const imgPath = path.resolve(ROOT_PATH, 'src/img')
@@ -33,7 +34,7 @@ const plugins = [
     new webpack.DllReferencePlugin({
         // scope: "dll",
         context: path.join(__dirname, '..', "client"),
-        manifest: require("../build/dist/dll/vendor-manifest.json")
+        manifest: require(path.join(cfg.DLL_PATH, "vendor-manifest.json"))
     }),
     // new webpack.DllReferencePlugin({
     //     context: path.join(__dirname, '..', "build", 'dist'),
