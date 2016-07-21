@@ -1,5 +1,5 @@
 'use strict'
-import path from 'path'
+const path = require('path')
 
 function formatName(envName){    
     envName = envName ? envName.trim() : 'development'
@@ -12,17 +12,18 @@ function formatName(envName){
 function init (){
 }
 
-init.ROOT_PATH = path.join(process.cwd(), '..')
-console.log('项目的根目录ROOT_PATH:', init.ROOT_PATH)
+// init.ROOT_PATH = path.join(process.cwd(), '..')
+init.ROOT_PATH = path.join(__dirname, '..')
+console.log(`项目的根目录ROOT_PATH: ${init.ROOT_PATH} ===========================`)
 
 init.init = function (nodeEvn) {
     process.env.NODE_ENV = nodeEvn
 
     if (nodeEvn === 'development') {
-        this.OUT_PATH = path.join(this.ROOT_PATH, 'devlopment')
+        this.OUT_PATH = path.join(this.ROOT_PATH, 'build/development')
     }
     if ( nodeEvn === 'production') {
-        this.OUT_PATH = path.join(this.ROOT_PATH, 'production')
+        this.OUT_PATH = path.join(this.ROOT_PATH, 'build/production')
     }
     this.DLL_PATH = path.join(this.OUT_PATH, 'dist/dll');
 }

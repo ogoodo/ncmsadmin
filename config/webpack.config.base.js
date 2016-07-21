@@ -19,7 +19,7 @@ const envcfg = require("../config/env.config.js").server()
 //const PUBLIC_PATH = '/dist/js/';//path.resolve(__dirname, "build/dist/js/");
 //const nodeModulesPath = path.join(path.resolve(__dirname, '..'), 'node_modules')
 //const nodeModulesPath = path.join(path.resolve(__dirname, '../'), 'node_modules')
-const ROOT_PATH = path.join(process.cwd(), '..')
+const ROOT_PATH = cfg.ROOT_PATH; // path.join(process.cwd(), '..')
 const BUILD_PATH = cfg.OUT_PATH; // path.join(ROOT_PATH, 'build')
 const nodeModulesPath = path.join(ROOT_PATH, 'node_modules')
 const SRC_PATH = path.join(ROOT_PATH, 'src')
@@ -29,6 +29,7 @@ const eslintPath = path.resolve(ROOT_PATH, '.eslintrc')
 const testJsonPath = path.resolve(ROOT_PATH, 'test/json')
 //console.log('imgPath================================', imgPath)
 //const isDev = true;
+console.log(`webpack.base: ROOT_PATH${ROOT_PATH} //////////////`)
 
 const plugins = [
     new webpack.DllReferencePlugin({
