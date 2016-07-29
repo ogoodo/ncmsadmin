@@ -32,9 +32,9 @@ if(false) {
 gulp.task('user.select', (callback) => {
     const info = `
     l:  生成dll
-    d:  开发版
-    s:  测试版
-    p:  生产版
+    d:  开发版    注意要先编译dll
+    s:  测试版    注意要先编译dll
+    p:  生产版    注意要先编译dll
     ld: 开发版及dll
     ls: 
     lp: 
@@ -146,6 +146,7 @@ gulp.task('watch-transform', () => {
 
 gulp.task('webpack:dll', ['user.select'], (callback) => {
   if( ! isDll) {
+      callback()
       return;
   }
   const webpackConfig  = require('../config/webpack.config.dll.js')

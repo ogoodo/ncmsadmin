@@ -229,6 +229,8 @@ let config = {
     'moment': true,
     'jquery':'jQuery',
     'bootstrap':true,
+    // 让 Webpack 知道，对于 react 这个模块就不要打包啦，直接指向 window.React 就好。不过别忘了加载 react.min.js，让全局中有 React 这个变量
+    // 'react': 'window.React',
   }
 };
 //Eslint config
@@ -302,9 +304,30 @@ config.module.loaders =
         // <=8k图片被转化成 base64 格式的 dataUrl
     },
     {
-        test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
-        loader: 'url-loader?importLoaders=1&limit=1000&name=/fonts/[name].[ext]'
-    }
+		test: /\.(eot|woff|svg|ttf|woff2|gif)(\?|$)/,
+		loader: 'file-loader?name=[hash].[ext]'
+	},
+    // {
+    //     test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/,
+    //     loader: 'url-loader?importLoaders=1&limit=1&name=/fonts/[name].[hash].[ext]'
+    // },
+    // {
+    //     test: /\.(woff|svg|eot|ttf)\??.*$/,
+    //     /*test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,*/
+    //     loader: 'url',
+    //     query: {
+    //         limit: 1,
+    //         name: 'fonts/[name].[hash:7].[ext]'
+    //     }
+    // },
+    // {
+    //     test: /\.(svg|ttf|eot|woff|woff2)$/,
+    //     loader: 'file-loader?name=fonts/[name].[ext]'
+    // },
+    // {
+    //     test: /\.(eot|svg|ttf|woff|woff2|png)\w*/,
+    //     loader: 'file'
+    // },
 ]
 module.exports = config;
 

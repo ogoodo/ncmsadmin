@@ -79,7 +79,7 @@ function getArg(argKey) {
 app.use(express.static(webdir))
 console.log(`网址静态目录: ${webdir}`)
 
-if(isDevelopment()) {
+if(isDevelopment() && 1===1) {
     config.init('development')
     console.log('调试服务器插件启动{{')
     var webpackConfig = require('../config/webpack.config.js')
