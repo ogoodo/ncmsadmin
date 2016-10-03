@@ -3,7 +3,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux'
 import thunkMiddleware from 'redux-thunk'
 //import reducers from '../components/reducers'
-import reducers from '../modules/reducer'
+import reducers from '../modules/index.reducer.js'
 
 
 export default function configureStore(browserHistory, initialState) {

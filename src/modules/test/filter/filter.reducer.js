@@ -1,4 +1,4 @@
-import { FILTER_ITEM } from '../counter/Counter.constant.js'
+import { FILTER_ITEM } from '../counter/counter.constant.js'
 
 const initialFilterItem = ''
 

@@ -3,9 +3,9 @@ var RadioInput = React.createClass({
     // 1.添加动态属性
     propTypes: {
         name: React.PropTypes.string.isRequired,
-        value:React.PropTypes.string.isRequired,
-        checked:React.PropTypes.bool,
-        onChanged:React.PropTypes.func.isRequired
+        value: React.PropTypes.string.isRequired,
+        checked: React.PropTypes.bool,
+        onChanged: React.PropTypes.func.isRequired
     },
 
     // 2.为非必要属性定义其默认值

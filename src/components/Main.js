@@ -5,7 +5,10 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Tree from '../components/nav/Tree.jsx'
 // import 'app.css'
 
-import CounterContainer from '../modules/test/counter/Counter.container'
+import counterContainerTTT from '../modules/test/counter/Counter.container'
+
+console.log('main.js counterContainerTTT')
+const CounterContainer = counterContainerTTT('page', 'module')
 //import { connect } from 'react-redux'
 
 class Main extends React.Component {
@@ -18,6 +21,7 @@ class Main extends React.Component {
     return (
       <div>
         <div>
+            <CounterContainer />
             <CounterContainer />
         </div>
         <div>

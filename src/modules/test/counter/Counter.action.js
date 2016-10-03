@@ -1,8 +1,17 @@
-import constant from './Counter.constant.js'
-//import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './Counter.constant.js'
+import constantTTT from './counter.constant.js'
+//import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './counter.constant.js'
 
 // export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
 // export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
+
+// function generateAction({pageName, moduleName}) {
+//   const ACTION_PREFIX = `${pageName}.${moduleName}`;
+//   const LOAD = `${ACTION_PREFIX}.LOAD`;
+
+// }
+const constant = constantTTT('page', 'module')
+console.log(constant)
+
 //导出加一的方法
 export function increment() {
   return {

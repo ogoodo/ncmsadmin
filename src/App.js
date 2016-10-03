@@ -7,7 +7,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 // import { createHashHistory, useBasename } from 'history';
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-import rootRoute from './routes'
+import rootRoute from './routes/index.route.js'
 
 // import './app.css'
 import './style/index.less'

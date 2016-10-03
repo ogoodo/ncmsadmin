@@ -23,3 +23,12 @@ console.log('Tree', Tree);
 // console.log(require("beta/b"));
 
 // console.log(require("module"));
+
+function ttt() {
+    var aa = { a:1 };
+    var bb = { ...aa, cc:2 };
+    var cc = 'abc';
+    var dd = 'abc';
+    console.log('测试删除');
+}
+

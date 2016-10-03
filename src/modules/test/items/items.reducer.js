@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import { ADD_ITEM, DELETE_ITEM, DELETE_ALL } from '../counter/Counter.constant.js'
+import { ADD_ITEM, DELETE_ITEM, DELETE_ALL } from '../counter/counter.constant.js'
 
 //这里new加得不知道对否, eslint过不了加的
 const initialItems = new Immutable.List([1, 2, 3])
