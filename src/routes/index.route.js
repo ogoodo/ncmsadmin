@@ -3,6 +3,7 @@ export default {
     path: '/',
     component: require('../components/Main.js'),
     childRoutes: [
+        require('../admin/route.js'),
         require('./Page1'),
         require('./Page2'),
         require('./Page3.route.js'),

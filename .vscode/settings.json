@@ -9,7 +9,7 @@
     // 按 "Tab" 时插入空格。
     "editor.insertSpaces": true,
 
-    // Controls whether the editor should render indent guides
+    // 缩进线,垂直方向  Controls whether the editor should render indent guides
     "editor.renderIndentGuides": true,
 
     // search.exclude 用来忽略搜索的文件夹

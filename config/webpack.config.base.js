@@ -25,6 +25,8 @@ const nodeModulesPath = path.join(ROOT_PATH, 'node_modules')
 const SRC_PATH = path.join(ROOT_PATH, 'src')
 const imgPath = path.resolve(ROOT_PATH, 'src/img')
 const uiPath = path.resolve(ROOT_PATH, 'src/components')
+const commPath = path.resolve(ROOT_PATH, 'src/commons')
+const GPagesReducer = path.resolve(ROOT_PATH, 'src/store/pages.reducer.js')
 const eslintPath = path.resolve(ROOT_PATH, '.eslintrc')
 const testJsonPath = path.resolve(ROOT_PATH, 'test/json')
 //console.log('imgPath================================', imgPath)
@@ -212,11 +214,13 @@ let config = {
         // js: path.join(__dirname, "./app/components"),
         // 公共的component
         ui: uiPath,
+        commPath,
+        GPagesReducer,
         // 指定公共库的位置，优化webpack搜索硬盘的速度
-        'react': path.join(nodeModulesPath, 'react'),
+        react: path.join(nodeModulesPath, 'react'),
         'react-dom': path.join(nodeModulesPath, 'react-dom'),
         'react-router': path.join(nodeModulesPath, 'react-router'),
-        'redux': path.join(nodeModulesPath, 'redux'),
+        redux: path.join(nodeModulesPath, 'redux'),
         'react-redux': path.join(nodeModulesPath, 'react-redux'),
         'react-router-redux': path.join(nodeModulesPath, 'react-router-redux')
     }

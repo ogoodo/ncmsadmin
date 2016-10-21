@@ -81,7 +81,7 @@ export default class MyComponent extends Component {
 	// ***特别注意*** 书写顺序按组件生命周期顺序书写
 	
     /**
-	 * 此函数表示页面将要挂载, 所以页面掉接口获取初始化数据都在这里写
+	 * 此函数表示页面将要挂载, 所有页面掉接口获取初始化数据都在这里写
 	 * 当接口数据获取成功后, 会出发render函数, 渲染界面
 	 */
     componentWillMount() {
@@ -90,7 +90,7 @@ export default class MyComponent extends Component {
         this.props.action.increment();
     }
 	/**
-	 * 在挂载结束之后马上被调用。需要DOM节点的初始化操作应该放在这里
+	 * 在挂载结束(地一次render)之后马上被调用。需要DOM节点的初始化操作应该放在这里
 	 */
 	componentDidMount() {
 	};
@@ -111,8 +111,8 @@ export default class MyComponent extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 	};
 	/**
-	 * 在更新发生之前被调用。你可以在这里调用 this.setState()
-	 * 特别注意**  不能在此函数中调用setState(会导致循环调用)
+	 * 在更新发生之前被调用
+	 * 特别注意**  不能在此函数中调用this.setState()(会导致循环调用)
 	 */
 	componentWillUpdate(nextProps, nextState) {
 	};

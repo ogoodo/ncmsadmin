@@ -53,6 +53,7 @@
         "no-mixed-spaces-and-tabs": 0,
 
         //代码风格优化
+        "no-var": 1, // 禁止使用var定义变量,用let const替代
         "no-irregular-whitespace": 0,
         "no-else-return": 0, //在else代码块中return，else是多余的
         "no-multi-spaces": 0, //不允许多个空格
