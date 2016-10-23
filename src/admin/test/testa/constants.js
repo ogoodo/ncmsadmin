@@ -1,6 +1,4 @@
-/**
- * @author chenxiaobo178 2016.10.09
- */
+
 import keyMirror from 'keymirror'
 
 export default keyMirror({

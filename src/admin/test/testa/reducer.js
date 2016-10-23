@@ -1,6 +1,4 @@
-/**
- * @author chenxiaobo178 2016.10.09
- */
+
 // import { PubSymbol} from 'commPath/symbol.js';
 import constants from './constants.js';
 const initalState = false; // { };
@@ -10,7 +8,7 @@ export default {
   /**
    * 为了兼容性, 一定要写上request, success, failure这三个状态的处理函数
    * 就只写一个success的部分还没考虑清楚
-   * @todo 稳定后和需求清晰之后, 做request和failure的缺省处理函数
+   * 稳定后和需求清晰之后, 做request和failure的缺省处理函数
    */
   [constants.testCallApiAction1]: {
     /**
@@ -62,7 +60,6 @@ export default {
 
   /**
    * 这部份还没考虑清楚, 先不要用
-   * 如果有此需求联系 陈晓波<chenxiaobo178@pingan.com.cn>
    * 不调用接口
    * 浏览器内部调用action, 传递数据到redux
    */

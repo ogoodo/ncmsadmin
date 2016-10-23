@@ -1,6 +1,4 @@
-/**
- * @author chenxiaobo178 2016.10.09
- */
+
 import * as PubSymbol from 'commPath/symbol.js';
 import constants from './constants.js';
 import { pageName } from './pageName.js';
@@ -12,7 +10,7 @@ import { pageName } from './pageName.js';
  */
 export function removePage() {
   return (dispatch, getState) => {
-    dispatch({
+    return dispatch({
       [PubSymbol.REMOVE_PAGE]: true, // 有这个标记会清除页面在redux里的数据
       pageName,
       type: `${pageName}>${constants.removePage}`,
@@ -26,12 +24,13 @@ export function removePage() {
  */
 export function testCallApiAction1(params, options) {
   return (dispatch, getState) => {
-    dispatch({
+    return dispatch({
       [PubSymbol.FETCH]: true, //这项必须有(以后扩展可以做版本号); true: 这里代表是调用接口; false: 表示不调接口;
       [PubSymbol.SHOW_LOADER]: false, // true: 代表现实全局loader动画; false: 代表不显示; 默认值:true
       [PubSymbol.REQ_NOTICE]: true, // true: 请求阶段会发送个action给redux,会触发reader; false: ; 默认值:false
       pageName, // 每个页面都要是全局唯一名称, 如果有两个页名称一样会冲突
-      type: `${pageName}>${constants.testCallApiAction1}`, // 每个type必须唯一， “pageName>”这段必须带上, 改constants的key就好了
+      // 每个type必须唯一， “pageName>”这段必须带上, 改constants的key就好了
+      type: `${pageName}>${constants.testCallApiAction1}`,
       url: '/com/ogoodo/qryList.do', // 调用后台接口的名称
       requestData: params, // 看函数说明
       requestOptions: options, // 看函数说明
@@ -57,10 +56,7 @@ export function testCallApiAction2(params, options) {
   }
 }
 
-/**
- * 注意
- * 这个函数还没启用, 开发阶段 by:chenxiaobo178 2016.10.12
- */
+
 export function testInnerAction3(params, options) {
   return (dispatch, getState) => {
     dispatch({

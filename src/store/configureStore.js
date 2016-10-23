@@ -2,8 +2,11 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 //import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux'
 import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger'
 //import reducers from '../components/reducers'
-import reducers from '../modules/index.reducer.js'
+// import reducers from '../modules/index.reducer.js'
+import reducers from '../reducer.js'
+import fetchMiddlewareV1 from './fetchMiddleware.js'
 
 
 export default function configureStore(browserHistory, initialState) {
@@ -12,7 +15,7 @@ export default function configureStore(browserHistory, initialState) {
     //applyMiddleware来自redux可以包装 store 的 dispatch
     //thunk作用是使被 dispatch 的 function 会接收 dispatch 作为参数，并且可以异步调用它
     const createStoreEx = compose(
-        applyMiddleware(thunkMiddleware, middleware),
+        applyMiddleware(thunkMiddleware, middleware, fetchMiddlewareV1(), createLogger()),
         window.devToolsExtension ? window.devToolsExtension() : f => f
     )(createStore)
 

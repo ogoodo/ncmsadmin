@@ -2,12 +2,14 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
+import { hashHistory, Router, Route, Link, useRouterHistory } from 'react-router'
+// import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { createHistory } from 'history';
 // import { createHashHistory, useBasename } from 'history';
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-import rootRoute from './routes/index.route.js'
+import rootRoute from './route.js'
 
 // import './app.css'
 import './style/index.less'
@@ -18,6 +20,10 @@ import './style/sass.scss'
 // require('antd/lib/index.css');
 
 import configureStore from './store/configureStore'
+
+const browserHistory = useRouterHistory(createHistory)({
+  basename: '/mybasename',
+})
 const store = configureStore(browserHistory)
 
 // 将路由信息注入redux使得能够做撤销功能

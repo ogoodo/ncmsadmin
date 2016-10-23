@@ -1,11 +1,9 @@
-/**
- * @author chenxiaobo178 2016.10.09
- */
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import * as PubSymbol from 'commPath/symbol.js';
-import * as actions from './action.js';
-import { pageName } from './pageName.js';
+
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as PubSymbol from 'commPath/symbol.js'
+import * as actions from './action.js'
+import { pageName } from './pageName.js'
 import PageView from './PageView.jsx'
 
 function mapStateToProps(state) {
@@ -21,7 +19,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PageView);
+const Page = connect(mapStateToProps, mapDispatchToProps)(PageView);
+export default Page

@@ -28,7 +28,11 @@
         "no-extra-parens": 0, //多余的括号
         "no-empty": 1, //空代码块
         "no-use-before-define": [0, "nofunc"], //使用前未定义
-        "complexity": [1, 10], //圈复杂度大于10 警告
+        "complexity": [1, 11], //圈复杂度大于10 警告 10:三次if会警报
+        "func-names": 0, // function定义函数必须写名称 回调函数要写函数名不爽
+        "arrow-body-style": 0, // 箭头函数有return单词检查
+        "prefer-arrow-callback": 0, // 优先使用箭头回调函数
+        "no-param-reassign": 0, // 函数入参重新赋值
 
         //常见错误
         "comma-dangle": 0, // [1, "never"], //定义数组或对象最后多余的逗号

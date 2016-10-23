@@ -1,14 +1,13 @@
-'use strict'
 const path = require('path');
 const webpack = require('webpack');
 // 如何copy目录下的文件到输出目录
 //const TransferWebpackPlugin = require('transfer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const cfg = require("../config/env.config.js")
-const envcfg = require("../config/env.config.js").server()
+const cfg = require('../config/env.config.js')
+const envcfg = require('../config/env.config.js').server()
 
 //console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$scfg==', envcfg)
 
@@ -31,13 +30,14 @@ const eslintPath = path.resolve(ROOT_PATH, '.eslintrc')
 const testJsonPath = path.resolve(ROOT_PATH, 'test/json')
 //console.log('imgPath================================', imgPath)
 //const isDev = true;
-console.log(`webpack.base: ROOT_PATH${ROOT_PATH} //////////////`)
+console.log(`webpack.config.base.js: ROOT_PATH=${ROOT_PATH}`)
 
 const plugins = [
+    // dll 可以用, 但是调试不能动态更新, 停用试试 2016-10-22
     new webpack.DllReferencePlugin({
         // scope: "dll",
-        context: path.join(__dirname, '..', "client"),
-        manifest: require(path.join(cfg.DLL_PATH, "vendor-manifest.json"))
+        context: path.join(__dirname, '..', 'config'), // 解析dll路径的上下文
+        manifest: require(path.join(cfg.DLL_PATH, 'vendor-manifest.json'))
     }),
     // new webpack.DllReferencePlugin({
     //     context: path.join(__dirname, '..', "build", 'dist'),
@@ -66,7 +66,7 @@ const plugins = [
 //     // names: ['vendors', 'vendorFetch' ],
 //     // names: ['vendors', 'vendorAntd', 'vendorFetch' ],
 //     minChunks: Infinity,
-//     // filename: envcfg.vendorsFilename, 
+//     // filename: envcfg.vendorsFilename,
 // }),
     // new webpack.optimize.CommonsChunkPlugin({
     //     name: 'vendors',
@@ -95,7 +95,7 @@ const plugins = [
     // }),
     //分离css单独打包
     //new ExtractTextPlugin('dist/css/[name].[hash:8].css'),
-    new ExtractTextPlugin(envcfg.cssFilename ),
+    new ExtractTextPlugin(envcfg.cssFilename),
     // ProvidePlugin 插件可以定义一个共用的入口，比如 下面加的 React ,
     // 他会在每个文件自动require了react，所以你在文件中不需要 require('react')，也可以使用 React。
     // 用法 https://github.com/webpack/webpack/tree/master/examples/multi-compiler
@@ -116,7 +116,7 @@ const plugins = [
     // 生成及压缩HTML  //根据模板插入css/js等生成最终HTML
     new HtmlWebpackPlugin({
         //  "files": {
-        //     "js": [ "dll.vendor.js", "assets/main_bundle.js"],  
+        //     "js": [ "dll.vendor.js", "assets/main_bundle.js"],
         //      "chunks": {
         //         "body": {
         //             "myvendor": {
@@ -134,7 +134,7 @@ const plugins = [
         //  },
         title: 'ncms admin',
         //favicon:'./build/img/favicon.ico', //favicon路径
-        favicon: path.join( imgPath, 'favicon.ico'), //favicon路径
+        favicon: path.join(imgPath, 'favicon.ico'), //favicon路径
         inject: false, //允许插件修改哪些内容，包括head与body
         cache: false, //如果为 true, 这是默认值 仅仅在文件修改之后才会发布文件
         // template: 'node_modules/html-webpack-template/index.ejs',
@@ -157,7 +157,7 @@ const plugins = [
             }
         }
     }),
-    new CopyWebpackPlugin([ 
+    new CopyWebpackPlugin([
         { from: imgPath, to: 'img', toType: 'dir' },
         { from: testJsonPath, to: 'json', toType: 'dir' },
         { from: 'src/img/favicon.ico', to: 'favicon.ico', toType: 'file' },
@@ -167,7 +167,7 @@ const plugins = [
 ];
 console.log('__dirname:', __dirname);
 
-let config = {
+const config = {
   entry: {
      // 打包时分离第三方库
     // vendorFetch: ["fetch-jsonp"],
@@ -177,9 +177,9 @@ let config = {
 //         "immutable",
 //         "history"
 //         // "antd", "history", "fetch-jsonp",
-//         //"es6-promise", 
+//         //"es6-promise",
 //         // "babel-core",
-//         //"webpack-dev-server", "webpack-hot-middleware", "react-hot-loader", 
+//         //"webpack-dev-server", "webpack-hot-middleware", "react-hot-loader",
 //         ],
     // vendors1: ["react", "react-dom",  ],
     // vendors2: [ "react-router", "react-router-redux", "redux",  "react-redux", ],
@@ -201,7 +201,7 @@ let config = {
     publicPath: envcfg.publicPath,
     //publicPath: isProduction()? 'http://******' : 'http://localhost:3000',
   },
-  plugins: plugins,
+  plugins,
   resolve: {
     root: [SRC_PATH, nodeModulesPath],
     //fallback: [path.join(__dirname, 'node_modules') ],
@@ -230,9 +230,9 @@ let config = {
   },
   //这些库不用打包处理，但是在html文件中还是需要自己去引用
   externals:{
-    'moment': true,
-    'jquery':'jQuery',
-    'bootstrap':true,
+    moment: true,
+    jquery: 'jQuery',
+    bootstrap: true,
     // 让 Webpack 知道，对于 react 这个模块就不要打包啦，直接指向 window.React 就好。不过别忘了加载 react.min.js，让全局中有 React 这个变量
     // 'react': 'window.React',
   }
@@ -252,7 +252,7 @@ config.eslint = {
 // ]
 const babelQuery = {
     // 支持aysnc await
-    plugins: ['transform-runtime'],
+    plugins: ['transform-runtime', 'add-module-exports'],
     //presets: ['es2015', 'react', 'stage-0']
     presets: ['es2015', 'stage-0', 'react']
     //presets: ["es2015", "react"]
@@ -264,45 +264,47 @@ const babelQuery = {
 config.module.loaders =
 [
     {
-        test: /\.(js|jsx)$/, loader: "react-hot-loader", exclude: nodeModulesPath
+        test: /\.(js|jsx)$/, loader: 'react-hot-loader', exclude: nodeModulesPath
     },
     {
         test: /\.js$/,
         include: [SRC_PATH],
         exclude: nodeModulesPath,
-        loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
+        loaders: [`babel?${JSON.stringify(babelQuery)}`],
+        // loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
         //loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
     },
     {
         test: /\.jsx$/,
         include: [SRC_PATH],
         exclude: nodeModulesPath,
-        loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
+        loaders: [`babel?${JSON.stringify(babelQuery)}`],
+        // loaders: ['babel'+'?'+JSON.stringify(babelQuery)],
         //loaders: ['react-hot', 'babel'+'?'+JSON.stringify(babelQuery)],
     },
-    { 
+    {
         test: /\.(js|jsx)$/, loader: 'eslint-loader', exclude: nodeModulesPath
     },
     {
         test: /\.less$/,
         // loaders: ['style-loader', 'css-loader', 'autoprefixer-loader', 'less-loader'],
         // 写法参考: https://github.com/webpack/extract-text-webpack-plugin#api
-        loader: ExtractTextPlugin.extract('style-loader', [ 'css-loader', 'autoprefixer-loader', 'less-loader'])
+        loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'autoprefixer-loader', 'less-loader'])
         //loader: 'style-loader!css-loader!autoprefixer-loader!less-loader',
         //loaders: [ExtractTextPlugin.extract('style'), 'css', 'less'],
     },
     {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style-loader', [ 'css-loader', 'autoprefixer-loader', 'sass-loader'])
+        loader: ExtractTextPlugin.extract('style-loader', ['css-loader', 'autoprefixer-loader', 'sass-loader'])
     },
     {
-        test: /\.css$/, 
+        test: /\.css$/,
         //loader: "style-loader!css-loader"
         //分离css单独打包
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
     },
     {
-        test: /\.(png|jpg)$/, 
+        test: /\.(png|jpg)$/,
         //loader: "url-loader?limit=8192",
         loaders: ['url-loader?limit=8192&name=img/[name].[ext]'],
         // <=8k图片被转化成 base64 格式的 dataUrl
@@ -336,7 +338,7 @@ config.module.loaders =
 module.exports = config;
 
         // query: {
-        //     //presets: ['es2015', 'react', 'stage-0']  
+        //     //presets: ['es2015', 'react', 'stage-0']
         //     presets: ["es2015", "react"],
         //     // "env": {
         //     //     "development": {
@@ -377,5 +379,3 @@ module.exports = config;
         //     // }
         //     // //env end
         // }
-        
-        

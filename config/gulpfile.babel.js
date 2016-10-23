@@ -16,12 +16,13 @@ import config from './env.config.js'
 let isDll = false
 let isBuild = false
 
-if(false) {
+const outCurInfo = false;
+if (outCurInfo) {
     console.info('gulp运行目录: ', process.cwd())
     console.info('gulp运行参数: ', process.argv)
     const argv = process.argv
-    argv.forEach(function (item) {
-        if(item.indexOf('--NODE_ENV=')===0) {
+    argv.forEach((item) => {
+        if (item.indexOf('--NODE_ENV=')===0) {
             const nodeenv = item.replace('--NODE_ENV=', '')
             console.info('gulp打包版本: ', nodeenv)
             process.env.NODE_ENV = nodeenv;
@@ -42,9 +43,10 @@ gulp.task('user.select', (callback) => {
     `.substr(1)
     console.log(info)
     function parserArgument(code) {
-        switch(code) {
+        switch (code) {
             case 'l':
                 isDll = true
+                process.env.NODE_ENV = 'development'
                 break
             case 'd':
                 isBuild = true
@@ -58,6 +60,8 @@ gulp.task('user.select', (callback) => {
                 isBuild = true
                 process.env.NODE_ENV = 'production'
                 break
+            default:
+                console.error('未知code:', code)
         }
     }
     const rl = readline.createInterface({
@@ -67,19 +71,22 @@ gulp.task('user.select', (callback) => {
     rl.on('line', (line) => {
         line = line.trim()
         console.log(`您选择了: ${line}`)
-        if(['l','d','s','p','ld','ld','lp'].indexOf(line) === -1) {
+        if (['l', 'd', 's', 'p', 'ld', 'ls', 'lp'].indexOf(line) === -1) {
             console.log('请选择正确的版本')
         } else {
             rl.close()
-            for(var a of line) {
+            for (const a of line) {
+                console.log('处理:', a)
                 parserArgument(a)
             }
+            console.log('处理2:')
             config.init(process.env.NODE_ENV)
+            console.log('用户选择参数解析完成!')
             callback() // 如果 err 不是 null 和 undefined，流程会被结束掉，后面的任务不会被执行
         }
     })
 });
-gulp.task('clean', function(cb) {
+gulp.task('clean', function (cb) {
     // del(['output'], cb)
 });
 /**
@@ -97,32 +104,33 @@ gulp.task('make:jsdoc', function () {
     //.pipe(jsdoc('./doc-output'))
 })
 
-gulp.task('html', ['user.select'], function () {  
+gulp.task('html', ['user.select'], function () {
     return gulp
     .src(['../src/template/*.html'])
     .pipe(gulpif(!isDll, gulp.dest(config.OUT_PATH)))
 });
 
 function getAllFiles() {
-    var doc = '';
+    let doc = '';
     const files = fs.readdirSync(config.DLL_PATH);
-    files.forEach(function(item) {
+    files.forEach(function (item) {
         //if(item.indexOf('.js')>=0) {
-        if(/^dll\..+\.js$/g.test(item)) {
-            doc += '<script src="/dist/dll/'+item+'"></script>\r\n';
+        if (/^dll\..+\.js$/g.test(item)) {
+            doc += `<script src="/dist/dll/${item}"></script>\r\n`;
         }
     }, this);
     console.log('gulp:替换ejs模版文件名: ', doc);
     return doc;
 }
+
 gulp.task('do.dll.ejs.template', ['user.select', 'webpack:dll'], function () {
-    if( ! isBuild) {
-        return;
+    if (!isBuild) {
+        return false;
     } else {
         const filenames = getAllFiles();
         return gulp
         .src(['../src/template/*.ejs'])
-        .pipe(gulpif(isBuild, replace(/<!--dll.js.file.replace-->/g, filenames))) 
+        .pipe(gulpif(isBuild, replace(/<!--dll.js.file.replace-->/g, filenames)))
         .pipe(gulp.dest(path.join(config.OUT_PATH, 'template')))
     }
 });
@@ -145,14 +153,14 @@ gulp.task('watch-transform', () => {
 });
 
 gulp.task('webpack:dll', ['user.select'], (callback) => {
-  if( ! isDll) {
+  if (!isDll) {
       callback()
       return;
   }
   const webpackConfig  = require('../config/webpack.config.dll.js')
-  var myConfig = Object.create( webpackConfig);
+  const myConfig = Object.create(webpackConfig);
     webpack(myConfig, (err, stats) => {
-        if (err){
+        if (err) {
             throw new gutil.PluginError('webpack:build', err);
         }
         gutil.log('[webpack:build]', stats.toString({
@@ -163,13 +171,13 @@ gulp.task('webpack:dll', ['user.select'], (callback) => {
 });
 
 gulp.task('webpack:build', ['do.dll.ejs.template', 'webpack:dll'], (callback) => {
-  if( ! isBuild) {
+  if (!isBuild) {
       return;
   }
   const webpackConfig  = require('../config/webpack.config.js')
-  var myConfig = Object.create( webpackConfig);
+  const myConfig = Object.create(webpackConfig);
     webpack(myConfig, (err, stats) => {
-        if (err){
+        if (err) {
             throw new gutil.PluginError('webpack:build', err);
         }
         gutil.log('[webpack:build]', stats.toString({
@@ -179,38 +187,39 @@ gulp.task('webpack:build', ['do.dll.ejs.template', 'webpack:dll'], (callback) =>
     });
 });
 
-gulp.task('webpack-dev-server', (callback) => {
-  const webpackConfig  = isDll ?
-    require('../config/webpack.config.dll.js') :
-    require('../config/webpack.config.js')
-    console.log(webpackConfig)
-  // modify some webpack config options
-  var myConfig = Object.create(webpackConfig);
-   myConfig.devtool = 'eval';
-   myConfig.debug = true;
-
-  // Start a webpack-dev-server
-  new WebpackDevServer(webpack(myConfig), {
-    publicPath:  myConfig.output.publicPath,
-    stats: {
-      colors: true
-    }
-  }).listen(3001, 'localhost', (err) => {
-    if (err) throw new gutil.PluginError('webpack-dev-server', err);
-    gutil.log('[webpack-dev-server]', 'http://localhost:3001/');
-  });
-});
-
-
-gulp.task('default', ['watch-transform', 'webpack-dev-server']);
-
 // 执行 gulp prod 打包到dist目录， 部署直接部署dist目录即可
-gulp.task('prod', ['user.select', 'html', 'webpack:dll', 'do.dll.ejs.template', 'webpack:build']);//, 'transform', 'watch-transform'
+gulp.task('prod', ['user.select', 'html', 'webpack:dll', 'do.dll.ejs.template', 'webpack:build']);
+//, 'transform', 'watch-transform'
 // gulp.task('prod', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
 
 // 生成jsdoc帮助文档
 gulp.task('jsdoc', ['make:jsdoc'])
 
+
+// gulp.task('webpack-dev-server', (callback) => {
+//   const webpackConfig  = isDll ?
+//     require('../config/webpack.config.dll.js') :
+//     require('../config/webpack.config.js')
+//     console.log(webpackConfig)
+//   // modify some webpack config options
+//   const myConfig = Object.create(webpackConfig);
+//    myConfig.devtool = 'eval';
+//    myConfig.debug = true;
+
+//   // Start a webpack-dev-server
+//   new WebpackDevServer(webpack(myConfig), {
+//     publicPath:  myConfig.output.publicPath,
+//     stats: {
+//       colors: true
+//     }
+//   }).listen(3001, 'localhost', (err) => {
+//     if (err) throw new gutil.PluginError('webpack-dev-server', err);
+//     gutil.log('[webpack-dev-server]', 'http://localhost:3001/');
+//   });
+// });
+
+
+// gulp.task('default', ['watch-transform', 'webpack-dev-server']);
 
 
 // function readSyncByfs(tips) {
@@ -225,7 +234,7 @@ gulp.task('jsdoc', ['make:jsdoc'])
 // }
 // console.log(readSyncByfs('请输入任意字符：'));
 
-// 
+//
 // var ttt = 3
 // const buf = new Buffer(50)
 // function readSyn() {

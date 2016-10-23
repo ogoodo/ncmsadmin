@@ -1,6 +1,5 @@
 /**
  * 配置redux及项目用到的符号变量
- * @author chenxiaobo178 2016.10.09
  */
 // fetch调用接口使用
 export const FETCH = Symbol('FETCH ACTION');
