@@ -16,6 +16,7 @@ import config from './env.config.js'
 let isDll = false
 let isBuild = false
 
+// 命令解析库 npm install commander --save-dev http://witcheryne.iteye.com/blog/1196170
 const outCurInfo = false;
 if (outCurInfo) {
     console.info('gulp运行目录: ', process.cwd())
@@ -111,6 +112,13 @@ gulp.task('html', ['user.select'], function () {
     .pipe(gulpif(!isDll, gulp.dest(config.OUT_PATH)))
 });
 
+gulp.task('copy:font', ['user.select'], function () {
+    return gulp
+    .src(['../src/font/**'])
+    .pipe(gulp.dest(config.OUT_PATH+'/font'))
+    // .pipe(gulpif(!isDll, gulp.dest(config.OUT_PATH)))
+});
+
 function getAllFiles() {
     let doc = '';
     const files = fs.readdirSync(config.DLL_PATH);
@@ -123,18 +131,6 @@ function getAllFiles() {
     console.log('gulp:替换ejs模版文件名: ', doc);
     return doc;
 }
-
-gulp.task('do.dll.ejs.template', ['user.select', 'webpack:dll'], function () {
-    if (!isBuild) {
-        return false;
-    } else {
-        const filenames = getAllFiles();
-        return gulp
-        .src(['../src/template/*.ejs'])
-        .pipe(gulpif(isBuild, replace(/<!--dll.js.file.replace-->/g, filenames)))
-        .pipe(gulp.dest(path.join(config.OUT_PATH, 'template')))
-    }
-});
 
 // transform
 gulp.task('transform', () => {
@@ -171,7 +167,22 @@ gulp.task('webpack:dll', ['user.select'], (callback) => {
     });
 });
 
-gulp.task('webpack:build', ['do.dll.ejs.template', 'webpack:dll'], (callback) => {
+/**
+ * 生成dll后生成ejs模板, 将dll的js写入ejs模板
+ */
+gulp.task('do.dll.ejs.template', ['user.select', 'webpack:dll'], function () {
+    if (!isDll) {
+        return false;
+    } else {
+        const filenames = getAllFiles();
+        return gulp
+        .src(['../src/template/*.ejs'])
+        .pipe(gulpif(isDll, replace(/<!--dll.js.file.replace-->/g, filenames)))
+        .pipe(gulp.dest(path.join(config.OUT_PATH, 'template')))
+    }
+});
+
+gulp.task('webpack:build', ['webpack:dll', 'do.dll.ejs.template'], (callback) => {
   if (!isBuild) {
       return;
   }
@@ -189,7 +200,7 @@ gulp.task('webpack:build', ['do.dll.ejs.template', 'webpack:dll'], (callback) =>
 });
 
 // 执行 gulp prod 打包到dist目录， 部署直接部署dist目录即可
-gulp.task('prod', ['user.select', 'html', 'webpack:dll', 'do.dll.ejs.template', 'webpack:build']);
+gulp.task('prod', ['user.select', 'html', 'webpack:dll', 'do.dll.ejs.template', 'copy:font', 'webpack:build']);
 //, 'transform', 'watch-transform'
 // gulp.task('prod', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
 

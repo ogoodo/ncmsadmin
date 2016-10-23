@@ -6,8 +6,8 @@ import * as pagesReducer from 'GPagesReducer';
 class Main extends React.Component {
   render() {
     console.log('Main.jsx this.props.location.pathname:', location.pathname)
-    console.log('Main.jsx this.props:', this.props)
-    console.log('Main.jsx this.props.children:', this.props.children)
+    // console.log('Main.jsx this.props:', this.props)
+    // console.log('Main.jsx this.props.children:', this.props.children)
     return (
       this.props.children
     )

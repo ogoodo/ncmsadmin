@@ -24,9 +24,12 @@ app.use(function (req, res, next) {
     }
     next();
     //404后处理, 要编译成本地文件才行
+    // res.hasOwnProperty('statusCode') 这个能判断是否url处理成功
     if (!res.hasOwnProperty('statusCode') && !res.finished) {
-        console.log('404捕获参数: ', res.hasOwnProperty('statusCode'), res.statusCode, ' url:', req.url)
-        if (req.url.indexOf('/dist/dll/') === 0) {
+        console.log('404捕获参数: ', res.hasOwnProperty('statusCode'), res.statusCode, res.finished, ' url:', req.url)
+        if (req.url.indexOf('/dist/dll/') === 0 ||
+            req.url.indexOf('/font/iconfont/') === 0
+        ) {
             try {
                 const filename = path.join(webdir, req.url)
                 const file = fs.readFileSync(filename, 'utf8')
@@ -36,6 +39,8 @@ app.use(function (req, res, next) {
                 console.error('error: server-dev.js', err)
             }
         }
+    } else {
+        console.log('200捕获参数: ', res.hasOwnProperty('statusCode'), res.statusCode, res.finished, ' url:', req.url)
     }
 })
 //url重写支持http://127.0.0.1:3001/page1/tab2这种类型加载
