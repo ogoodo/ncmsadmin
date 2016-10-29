@@ -12,9 +12,19 @@ import webpack from 'webpack'
 import jsdoc from 'gulp-jsdoc3'
 import WebpackDevServer from 'webpack-dev-server'
 import config from './env.config.js'
+import program from 'commander'
 
 let isDll = false
 let isBuild = false
+
+program
+    .version('0.0.1')
+    .usage('[options] [value ...]')
+    .option('--NODE_ENV, --message <string>', 'a string argument')
+
+// 解析commandline arguments
+program.parse(process.argv)
+console.log('命令行参数NODE_ENV:', program.message)
 
 // 命令解析库 npm install commander --save-dev http://witcheryne.iteye.com/blog/1196170
 const outCurInfo = false;

@@ -38,9 +38,9 @@ require('lodash')
 
 // 要一个个加载的文件
 require('core-js/library');
-//require('core-js/library/fn');
-//require('core-js/library/fn/object');
-require('core-js/library/modules/$.js');
+// require('core-js/library/fn');
+// require('core-js/library/fn/object');
+// require('core-js/library/modules/$.js');
 require('core-js/library/fn/object/assign.js')
 require('core-js/library/fn/object/create.js')
 require('core-js/library/fn/object/define-property.js')

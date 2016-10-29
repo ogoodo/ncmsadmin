@@ -13,7 +13,9 @@ import rootRoute from './route.js'
 
 // import './app.css'
 import './style/index.less'
-import './style/sass.scss'
+// 这个scss支持的是6.3.1版本node
+// import './style/sass.scss'
+
 // import 'antd/dist/antd.less'
 
 // require('./app.css');
