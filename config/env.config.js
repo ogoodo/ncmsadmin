@@ -11,26 +11,52 @@ function formatName(envName) {
 function init() {
 }
 
-// init.ROOT_PATH = path.join(process.cwd(), '..')
-init.ROOT_PATH = path.join(__dirname, '..')
-console.log(`项目的根目录ROOT_PATH: ${init.ROOT_PATH} ===========================`)
+// // init.ROOT_PATH = path.join(process.cwd(), '..')
+// // 运行 npm run cmd的目录
+// init.ROOT_PATH = path.join(__dirname, '..')
+// // 项目所有输出文件都在这个BUILD目录里面, 包括临时文件
+// init.BUILD_PATH = path.join(init.ROOT_PATH, 'build')
+// // init.OUT_PATH = path.join(init.BUILD_PATH, '') // development
+// // init.DLL_PATH = path.join(OUT_PATH, '') // dist/dll
+// console.log(`项目的根目录ROOT_PATH: ${init.ROOT_PATH} ===========================`)
 
-init.init = function (nodeEvn) {
-    process.env.NODE_ENV = nodeEvn
-
-    switch (nodeEvn) {
-        case 'development':
-            this.OUT_PATH = path.join(this.ROOT_PATH, 'build/development')
-            break
-        case 'production':
-            this.OUT_PATH = path.join(this.ROOT_PATH, 'build/production')
-            break
-        default:
-            console.error('无此环境变量分支:', nodeEvn)
+/**
+ * @param {string} nodeEvn development:开发版; production:生产版
+ */
+init.initPath = function(nodeEvn) {
+    if (['development', 'production'].indexOf(nodeEvn) <0) {
+        console.error('请输入正确的环境(如:development,production): 错误环境:', nodeEvn)
+        nodeEvn = 'error-development'
     }
-    this.DLL_PATH = path.join(this.OUT_PATH, 'dist/dll')
-    console.log('DLL_PATH:', this.DLL_PATH)
+    // 运行 npm run cmd的目录
+    init.ROOT_PATH = path.join(__dirname, '..')
+    // 项目所有输出文件都在这个BUILD目录里面, 包括临时文件
+    init.BUILD_PATH = path.join(init.ROOT_PATH, 'build')
+    init.OUT_PATH = path.join(init.BUILD_PATH, nodeEvn)
+    init.DLL_PATH = path.join(init.OUT_PATH, 'dist/dll')
+    console.log('项目的根目录: ===========================')
+    console.log(`     ROOT_PATH: ${init.ROOT_PATH}`)
+    console.log(`    BUILD_PATH: ${init.BUILD_PATH}`)
+    console.log(`      OUT_PATH: ${init.OUT_PATH}`)
+    console.log(`      DLL_PATH: ${init.DLL_PATH}`)
+    console.log('')
 }
+// init.init = function (nodeEvn) {
+//     process.env.NODE_ENV = nodeEvn
+
+//     switch (nodeEvn) {
+//         case 'development':
+//             this.OUT_PATH = path.join(this.ROOT_PATH, 'build/development')
+//             break
+//         case 'production':
+//             this.OUT_PATH = path.join(this.ROOT_PATH, 'build/production')
+//             break
+//         default:
+//             console.error('无此环境变量分支:', nodeEvn)
+//     }
+//     this.DLL_PATH = path.join(this.OUT_PATH, 'dist/dll')
+//     console.log('DLL_PATH:', this.DLL_PATH)
+// }
 
 // 浏览器使用的配置项
 init.client = function (envName) {

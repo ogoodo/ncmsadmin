@@ -35,7 +35,7 @@ require('lodash')
 // import { Tree } from 'antd';
 // import  Tree  from '~/antd/lib/tree';
 
-
+/*  下面启用会减少dll的代码量2016.10.29
 // 要一个个加载的文件
 require('core-js/library');
 // require('core-js/library/fn');
@@ -68,3 +68,5 @@ require('babel-runtime/helpers/createClass.js')
 require('babel-runtime/helpers/inherits.js')
 require('babel-runtime/helpers/possibleConstructorReturn.js')
 //require('babel-runtime')
+
+//*/

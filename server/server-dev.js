@@ -14,7 +14,8 @@ const onFinished = require('on-finished')
  * 开发使用
  */
 
-const webdir = path.join(__dirname, '../build/development')
+config.initPath('development')
+const webdir = config.OUT_PATH // path.join(__dirname, '../build/development')
 
 app.use(logger('dev'));
 app.use(function (req, res, next) {
@@ -49,7 +50,6 @@ app.use(function (req, res, next) {
 //app.use(rewrite('/page1', '/index.html'))
 
 
-config.init('development')
 console.log('调试服务器插件启动{{')
 const webpackConfig = require('../config/webpack.config.js')
 const myConfig = Object.create(webpackConfig)

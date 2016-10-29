@@ -33,6 +33,7 @@
         "arrow-body-style": 0, // 箭头函数有return单词检查
         "prefer-arrow-callback": 0, // 优先使用箭头回调函数
         "no-param-reassign": 0, // 函数入参重新赋值
+        "space-before-function-paren": 0, //
 
         //常见错误
         "comma-dangle": 0, // [1, "never"], //定义数组或对象最后多余的逗号

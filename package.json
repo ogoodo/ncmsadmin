@@ -22,7 +22,8 @@
     "dll5": "./node_modules/webpack/bin/webpack.js --config ./config/test.webpack.dev.js",
     "dll6": "./node_modules/webpack/bin/webpack.js --config ./config/webpack.dll.js",
     "d2": "./node_modules/webpack/bin/webpack.js --config ./webpack.dll.js",
-    "d3": "./node_modules/webpack/bin/webpack.js --config ./webpack.dev.js"
+    "d3": "./node_modules/webpack/bin/webpack.js --config ./webpack.dev.js",
+    "cmd": "gulp runcmd --gulpfile ./config/gulpfile.babel.js"
   },
   "keywords": [
     "react",
@@ -86,6 +87,7 @@
     "gulp-jsdoc3": "^0.2.1",
     "gulp-less": "^3.0.5",
     "gulp-replace": "^0.5.4",
+    "gulp-run": "^1.7.1",
     "gulp-uglify": "^1.5.3",
     "gulp-watch": "^4.3.5",
     "html-webpack-plugin": "^2.10.0",
