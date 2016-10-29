@@ -7,7 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const cfg = require('../config/env.config.js')
-const envcfg = require('../config/env.config.js').server()
+const envcfg = require('../config/env.config.js').server(process.env.NODE_ENV)
 
 //console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$scfg==', envcfg)
 

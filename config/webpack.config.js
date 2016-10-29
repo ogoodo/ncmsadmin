@@ -3,8 +3,16 @@
 
 console.warn('webpack.config.js********** process.env.NODE_ENV=', process.env.NODE_ENV)
 const isDevelopment = function () {
-    // return process.env.NODE_ENV ? process.env.NODE_ENV.trim()==='development' : true;
-    return process.env.NODE_ENV ? process.env.NODE_ENV.trim()!=='production' : false;
+    if (process.env.NODE_ENV.trim()==='production') {
+        return false
+    } else if (process.env.NODE_ENV.trim()==='stg') {
+        return true
+    } else if (process.env.NODE_ENV.trim()==='development') {
+        return true
+    } else {
+        console.error('无此分支啊:', process.env.NODE_ENV)
+    }
+    return false
 };
 
 let cfg;

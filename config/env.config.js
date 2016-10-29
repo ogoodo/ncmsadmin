@@ -4,6 +4,7 @@ function formatName(envName) {
     envName = envName ? envName.trim() : 'development'
     envName = envName === 'dev' ? 'dev_' : envName
     envName = envName === 'development' ? 'dev_' : envName
+    envName = envName === 'stg' ? 'dev_' : envName
     envName = envName === 'production' ? 'prod' : envName
     return envName;
 }
@@ -19,20 +20,25 @@ function init() {
 // // init.OUT_PATH = path.join(init.BUILD_PATH, '') // development
 // // init.DLL_PATH = path.join(OUT_PATH, '') // dist/dll
 // console.log(`项目的根目录ROOT_PATH: ${init.ROOT_PATH} ===========================`)
-
+init.checkEvn = function(nodeEnv) {
+    if (['development', 'production', 'stg'].indexOf(nodeEnv) <0) {
+        console.error('请输入正确的环境(如:development,production,stg): 错误环境:', nodeEnv)
+        return false
+    }
+    return true
+}
 /**
- * @param {string} nodeEvn development:开发版; production:生产版
+ * @param {string} nodeEvn development:开发版; production:生产版; stg:测试版(生产版不压缩)
  */
-init.initPath = function(nodeEvn) {
-    if (['development', 'production'].indexOf(nodeEvn) <0) {
-        console.error('请输入正确的环境(如:development,production): 错误环境:', nodeEvn)
-        nodeEvn = 'error-development'
+init.initPath = function(nodeEnv) {
+    if (!init.checkEvn(nodeEnv)) {
+        nodeEnv = 'error-development'
     }
     // 运行 npm run cmd的目录
     init.ROOT_PATH = path.join(__dirname, '..')
     // 项目所有输出文件都在这个BUILD目录里面, 包括临时文件
     init.BUILD_PATH = path.join(init.ROOT_PATH, 'build')
-    init.OUT_PATH = path.join(init.BUILD_PATH, nodeEvn)
+    init.OUT_PATH = path.join(init.BUILD_PATH, nodeEnv)
     init.DLL_PATH = path.join(init.OUT_PATH, 'dist/dll')
     console.log('项目的根目录: ===========================')
     console.log(`     ROOT_PATH: ${init.ROOT_PATH}`)
@@ -59,8 +65,11 @@ init.initPath = function(nodeEvn) {
 // }
 
 // 浏览器使用的配置项
-init.client = function (envName) {
-    envName = formatName(envName);
+init.client = function (nodeEnv) {
+    if (!init.checkEvn(nodeEnv)) {
+        nodeEnv = 'error-development'
+    }
+    const envName = formatName(nodeEnv);
     const cfg = {}
     cfg.dev_ = {}
     cfg.prod = {}
@@ -74,11 +83,14 @@ init.client = function (envName) {
     return cfg[envName]
 }
 //nodejs使用的配置项
-init.server = function (envName) {
-    if (envName === undefined) {
-        envName = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'development';
+init.server = function (nodeEnv) {
+    // if (envName === undefined) {
+    //     envName = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'development';
+    // }
+    if (!init.checkEvn(nodeEnv)) {
+        nodeEnv = 'error-development'
     }
-    envName = formatName(envName);
+    const envName = formatName(nodeEnv);
     const cfg = {}
     cfg.dev_ = {};
     cfg.prod = {};
