@@ -4,7 +4,7 @@
   "description": "ncms admin",
   "main": "server/server.js",
   "scripts": {
-    "start-dev": "node server/server-dev.js --NODE_ENV=development",
+    "start-dev": "node --harmony-async-await server/server-dev.js --NODE_ENV=development",
     "start-stg": "node server/server.js --NODE_ENV=stg",
     "start-pro": "node server/server.js --NODE_ENV=production",
     "build": "gulp prod --gulpfile ./config/gulpfile.babel.js --tip 进去后用户选择构建什么",
@@ -36,7 +36,7 @@
     "redux",
     "webpack"
   ],
-  "author": "ogoodo.com",
+  "author": "www.ogoodo.com",
   "license": "MIT",
   "dependencies": {
     "antd": "^1.6.4",

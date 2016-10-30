@@ -4,6 +4,7 @@
 import { Modal } from 'antd';
 import superagent from 'superagent';
 import * as PubSymbol from 'commPath/symbol.js';
+import * as config from 'commPath/config.js';
 
 const showLoader = (show) => {console.log('显示加载动画', show)};
 
@@ -54,8 +55,9 @@ export default function fetchMiddleware(client) {
       callNext('request', '');
     }
     return new Promise((resolve, reject) => {
+      const urlall = config.apiUrl + url;
       const request = superagent
-        .post(url)
+        .post(urlall)
         .withCredentials()
         .set('Content-Type', 'application/json')
         .accept('application/json');
@@ -68,7 +70,7 @@ export default function fetchMiddleware(client) {
           callNext('failure', err);
           reject(err);
           Modal.error({ title : '调接口异常!' })
-        } else if (body.responseCode === '10000') {
+        } else if (body.responseCode === 10000) {
           resolve(body);
           callNext('success', body);
         } else {

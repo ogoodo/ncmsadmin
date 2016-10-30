@@ -43,33 +43,33 @@ class TestCxb extends Component {
     this.props.actions.testInnerAction3({ test: '仅作测试' });
   }
 
-  // componentWillUnmount() {
-  //   console.log('componentWillUnmount: ', pageName);
-  //   // 清除page在redux里挂载的数据
-  //   this.props.actions.removePage();
-  //   // 清除处理此页面接口用的reducer引用, 让浏览器能垃圾回收
-  //   pagesReducer.removePages(pageName);
-  // }
+  componentWillUnmount() {
+    console.log('componentWillUnmount: ', pageName);
+    // 清除page在redux里挂载的数据
+    this.props.actions.removePage();
+    // 清除处理此页面接口用的reducer引用, 让浏览器能垃圾回收
+    pagesReducer.removePages(pageName);
+  }
 
   renderListApi1() {
-    // if (!this.props.api || !this.props.api.testcxbAction1) {
-    //   return false;
-    // }
-    // const data = this.props.api.testcxbAction1.data;
-    // return (
-    //   <div>
-    //   {
-    //     JSON.stringify(data)
-    //   }
-    //   </div>
-    // )
+    if (!this.props.api || !this.props.api.testCallApiAction1) {
+      return false;
+    }
+    const data = this.props.api.testCallApiAction1.data;
+    return (
+      <div>
+      {
+        JSON.stringify(data)
+      }
+      </div>
+    )
   }
 
   render() {
     console.log('render: ************************', 'lang=', this.props);
     return (
       <div className="left-right">
-        <h3>这里是接口1，数据显示1233123</h3>
+        <h3>这里是接口1，数据显示1</h3>
         {
           this.renderListApi1()
         }

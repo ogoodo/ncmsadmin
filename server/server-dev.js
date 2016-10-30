@@ -13,6 +13,20 @@ const onFinished = require('on-finished')
 /**
  * 开发使用
  */
+async function testt() {
+    return new Promise((reslove, reject) => {
+        setTimeout(() => {
+            console.log('async function =================================================11')
+            reslove(10)
+        }, 100)
+    })
+}
+
+async function testa() {
+    const ttasync = await testt()
+    console.log('async function =================================================22')
+}
+testa()
 
 config.initPath('development')
 process.env.NODE_ENV = 'development'
@@ -21,8 +35,14 @@ const webdir = config.OUT_PATH // path.join(__dirname, '../build/development')
 app.use(logger('dev'));
 app.use(function (req, res, next) {
     // 能夠重写成功
-    if (req.url.indexOf('.') === -1 && req.url.indexOf('__webpack_hmr') === -1) {
+    if (req.url.indexOf('.') === -1 &&
+        req.url.indexOf('__webpack_hmr') === -1 &&
+        req.url.indexOf('/mock/') === -1 // mock数据
+        ) {
+        console.log('重定向的url:', req.url)
         req.url = '/index.html'
+    } else {
+        console.log('没有重定向的url:', req.url)
     }
     next();
     //404后处理, 要编译成本地文件才行
@@ -35,9 +55,23 @@ app.use(function (req, res, next) {
             try {
                 const filename = path.join(webdir, req.url)
                 if (fs.existsSync(filename)) {
-                    const file = fs.readFileSync(filename, 'utf8')
-                    res.send(file)
+                    const doc = fs.readFileSync(filename, 'utf8')
+                    res.send(doc)
                     console.log(`发送重定向文件: ${filename}`)
+                }
+            } catch (err) {
+                console.error('\r\n\r\n error: server-dev.js', err)
+            }
+        } else if (req.url.indexOf('/mock/') === 0) {
+            try {
+                const filename = path.join(config.ROOT_PATH, req.url)
+                if (fs.existsSync(filename)) {
+                    const doc = fs.readFileSync(filename, 'utf8')
+                    // res.setHeader('Content-Type', 'application/json')
+                    res.contentType('application/json')
+                    // res.json({ file2:12 })
+                    res.json(JSON.parse(doc))
+                    console.log(`发送重定向mock文件: ${filename}`)
                 }
             } catch (err) {
                 console.error('\r\n\r\n error: server-dev.js', err)
@@ -79,4 +113,5 @@ console.log('调试服务器插件启动}}')
 
 app.listen(3001, function () {
   console.log('Server listening on http://localhost:3001, Ctrl+C to stop')
+  console.log('http://127.0.0.1:3001/config  里可以管理mock数据')
 })

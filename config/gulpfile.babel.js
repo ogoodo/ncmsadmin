@@ -10,7 +10,6 @@ import gulpif from 'gulp-if'
 import del from 'del' // rm -rf
 import webpack from 'webpack'
 import jsdoc from 'gulp-jsdoc3'
-import WebpackDevServer from 'webpack-dev-server'
 import config from './env.config.js'
 import program from 'commander'
 import run from 'gulp-run'
@@ -314,6 +313,20 @@ gulp.task('watch-transform', () => {
     .pipe(babel())
     .pipe(gulp.dest('lib'));
 })
+
+// 一个另外的方式执行命令行, 没验证, 备份待以后用
+// https://github.com/gulpjs/gulp/issues/1353#issuecomment-152829008
+// https://github.com/sun-zheng-an/gulp-shell/issues/55#issuecomment-162912664
+const temp = false
+if (temp) {
+    const spawn = require('child_process').spawn
+    gulp.task('test', function (cb) {
+        const ls = spawn('karma', ['start', 'karma.conf.js'], { stdio: 'inherit' })
+        ls.on('close', function (code) {
+            console.log(`child process exited with code ${code}`)
+        })
+    })
+}
 
 // gulp.task('webpack-dev-server', (callback) => {
 //   const webpackConfig  = _isDll ?
