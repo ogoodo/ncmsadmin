@@ -14,6 +14,7 @@ import WebpackDevServer from 'webpack-dev-server'
 import config from './env.config.js'
 import program from 'commander'
 import run from 'gulp-run'
+import shell from 'gulp-shell'
 
 let _nodeEnv = 'error-development'
 let _isDll = true // 生成dll文件, 默认每次都新生成, 避免用户dll不是最新
@@ -228,27 +229,50 @@ gulp.task('webpack:build', ['webpack:dll', 'do.dll.ejs.template'], (callback) =>
     return false;
 });
 
-gulp.task('run:static.server', ['webpack:build'], function() {
+
+gulp.task('run:static.server', ['webpack:build'], function(callback) {
     const output = path.join(config.BUILD_PATH, 'output')
     console.log('gulp启动服务器日志目录:', output)
     let cmmstr = ''
     if (_memoryServer) {
-        cmmstr = 'npm run start-dev'
+        if (_nodeEnv === 'development') {
+            cmmstr = 'npm run start-dev'
+        } else {
+            console.warn('启动服务器,请选择development、production、stg, 错误:', _nodeEnv)
+        }
+        // shell命令兼容性更好, gulp-run会热更新有问题
+        gulp.src('')
+        .pipe(shell([cmmstr], { cwd: config.ROOT_PATH }))
     } else if (_staticServer) {
         if (_nodeEnv === 'stg') {
             cmmstr = 'npm run start-stg'
         } else if (_nodeEnv === 'production') {
             cmmstr = 'npm run start-pro'
         } else {
-            console.warn('启动服务器,请选择development或production')
+            console.warn('启动服务器,请选择development、production、stg, 错误:', _nodeEnv)
         }
+        run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
+        .exec()
     } else {
         console.log('没有启动内存服务器也没有启动静态文件服务器')
     }
     if (cmmstr) {
-        return run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
-        .exec()
+        // .pipe(shell(['cd ..', 'npm run start-dev']))
+
+        // .pipe(gulp.dest(output))
+        // console.log('shell.task')
+        
+        // ], { cwd: '../' })
+
+
+        // return run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
+        // .exec()
+        // run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
+
+        // run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
+        // .exec()
     }
+    // return false
     // .pipe(gulp.dest(output)) // 这里怎么输出位置定位不准:by:chenxiaobo:2016.10.29
 })
 
@@ -286,7 +310,11 @@ gulp.task('make:jsdoc', function() {
 // 生成jsdoc帮助文档
 gulp.task('jsdoc', ['make:jsdoc'])
 
-gulp.task('runcmd', ['run:static.server'])
+// gulp.task('run:static.server3', ['webpack:build'], shell.task([
+//   'cd ..',
+//   'npm run start-dev'
+// ]))
+// gulp.task('runcmd', ['run:static.server'])
 
 // transform
 gulp.task('transform', () => {

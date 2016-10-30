@@ -1,4 +1,5 @@
 const express = require('express')
+const compression = require('compression')
 const path = require('path')
 const app = express()
 const logger = require('morgan')
@@ -20,7 +21,8 @@ console.log('  NODE_ENV:', program.nodeEnv)
 config.initPath(program.nodeEnv)
 const webdir = config.OUT_PATH
 
-app.use(logger('dev'));
+app.use(logger('dev'))
+app.use(compression())
 app.use(function (req, res, next) {
     // 能夠重写成功
     if (req.url.indexOf('.') === -1 && req.url.indexOf('__webpack_hmr') === -1) {

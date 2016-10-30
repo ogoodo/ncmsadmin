@@ -15,6 +15,7 @@ const onFinished = require('on-finished')
  */
 
 config.initPath('development')
+process.env.NODE_ENV = 'development'
 const webdir = config.OUT_PATH // path.join(__dirname, '../build/development')
 
 app.use(logger('dev'));
@@ -33,11 +34,13 @@ app.use(function (req, res, next) {
         ) {
             try {
                 const filename = path.join(webdir, req.url)
-                const file = fs.readFileSync(filename, 'utf8')
-                res.send(file)
-                console.log(`发送重定向文件: ${filename}`)
+                if (fs.existsSync(filename)) {
+                    const file = fs.readFileSync(filename, 'utf8')
+                    res.send(file)
+                    console.log(`发送重定向文件: ${filename}`)
+                }
             } catch (err) {
-                console.error('error: server-dev.js', err)
+                console.error('\r\n\r\n error: server-dev.js', err)
             }
         }
     } else {

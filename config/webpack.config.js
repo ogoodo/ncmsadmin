@@ -3,11 +3,12 @@
 
 console.warn('webpack.config.js********** process.env.NODE_ENV=', process.env.NODE_ENV)
 const isDevelopment = function () {
-    if (process.env.NODE_ENV.trim()==='production') {
+    const env = process.env.NODE_ENV || ''
+    if (env.trim()==='production') {
         return false
-    } else if (process.env.NODE_ENV.trim()==='stg') {
+    } else if (env.trim()==='stg') {
         return true
-    } else if (process.env.NODE_ENV.trim()==='development') {
+    } else if (env.trim()==='development') {
         return true
     } else {
         console.error('无此分支啊:', process.env.NODE_ENV)

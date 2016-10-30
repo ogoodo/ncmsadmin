@@ -69,7 +69,7 @@ class TestCxb extends Component {
     console.log('render: ************************', 'lang=', this.props);
     return (
       <div className="left-right">
-        <h3>这里是接口1，数据显示2</h3>
+        <h3>这里是接口1，数据显示1233123</h3>
         {
           this.renderListApi1()
         }

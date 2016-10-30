@@ -37,7 +37,7 @@ init.initPath = function(nodeEnv) {
     // 运行 npm run cmd的目录
     init.ROOT_PATH = path.join(__dirname, '..')
     // 项目所有输出文件都在这个BUILD目录里面, 包括临时文件
-    init.BUILD_PATH = path.join(init.ROOT_PATH, 'build')
+    init.BUILD_PATH = path.join(init.ROOT_PATH, '__build')
     init.OUT_PATH = path.join(init.BUILD_PATH, nodeEnv)
     init.DLL_PATH = path.join(init.OUT_PATH, 'dist/dll')
     console.log('项目的根目录: ===========================')

@@ -1,6 +1,8 @@
 /node_modules
 /node_modules*
 /build
+/__build
+/__build__
 /ncmsadmin 准备引入antd.rar
 /out
 /docs
