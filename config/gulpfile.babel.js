@@ -17,7 +17,7 @@ import run from 'gulp-run'
 import shell from 'gulp-shell'
 
 let _nodeEnv = 'error-development'
-let _isDll = true // 生成dll文件, 默认每次都新生成, 避免用户dll不是最新
+let _isDll = false // 生成dll文件, 默认每次都新生成, 避免用户dll不是最新
 let _isBuild = false // 打包到文件
 let _hasDll = false // 判断是否已经有生成dll了
 let _staticServer = false // 静态文件服务器 测试和生成验证用
@@ -26,11 +26,12 @@ let _memoryServer = false // 内存服务器, 开发用
 program
     .version('0.0.1')
     .usage('[options] [value ...]')
-    .option('--NODE_ENV, --nodeEnv <string>', 'a string argument')
+    .option('--NODE_ENV, --nodeEnv <string>', '没启用')
     .option('--dspr, --dspr <string>', 'a string argument')
-    .option('--dll, --dll <string>', '是否重新生成dll')
+    .option('--dll, --dll <string>', '没启用 是否重新生成dll')
 
 // 解析commandline arguments
+// http://witcheryne.iteye.com/blog/1196170
 program.parse(process.argv)
 console.log('命令行参数*****************:')
 console.log('  NODE_ENV:', program.nodeEnv) // 没启用
@@ -40,30 +41,19 @@ if (program.nodeEnv) {
     config.initPath(program.nodeEnv)
 }
 // 判断是否有存在DLL文件
+// 这个选项有dll的情况可以节省dll编译时间, 但dll变了用户可能dll结果不对
 {
     const dllFiles = getAllDllFiles()
     if (dllFiles) {
-        _hasDll = true;
+        _hasDll = true
     }
 }
-// 命令解析库 npm install commander --save-dev http://witcheryne.iteye.com/blog/1196170
-// const outCurInfo = false;
-// if (outCurInfo) {
-//     console.info('gulp运行目录: ', process.cwd())
-//     console.info('gulp运行参数: ', process.argv)
-//     const argv = process.argv
-//     argv.forEach((item) => {
-//         if (item.indexOf('--NODE_ENV=')===0) {
-//             const nodeenv = item.replace('--NODE_ENV=', '')
-//             console.info('gulp打包版本: ', nodeenv)
-//             process.env.NODE_ENV = nodeenv;
-//         }
-//     })
-// }
 
 // 获取用户选择的参数
 function getCmdArgs(callback) {
     const info = `
+    l 开发版 内存 不压缩代码 dll
+    m 生成版 内存 压缩代码   dll
     d 开发版 内存 不压缩代码
     s 测试版 文件 不压缩代码
     p 生成版 文件 压缩代码
@@ -78,35 +68,48 @@ function getCmdArgs(callback) {
     rl.on('line', (line) => {
         line = line.trim()
         console.log(`您选择了: ${line}`)
-        if (['l', 'd', 's', 'p', 'r', 'ld', 'ls', 'lp'].indexOf(line) === -1) {
+        // if (['l', 'd', 's', 'p', 'r', 'ld', 'ls', 'lp'].indexOf(line) === -1) {
+        if (['l', 'm', 'd', 's', 'p', 'r'].indexOf(line) === -1) {
             console.log('请选择正确的版本')
         } else {
             rl.close()
-            callback(line) // 如果 err 不是 null 和 undefined，流程会被结束掉，后面的任务不会被执行
+            callback(line)
         }
     })
 }
 
-gulp.task('user.select', (callback) => {
+gulp.task('input:user.select', (callback) => {
     function parserArgument(code) {
         switch (code) {
+            case 'l':
+                _nodeEnv = 'development'
+                _isDll = true
+                break
+            case 'm':
+                _nodeEnv = 'production'
+                _isDll = true
+                break
             case 'd':
                 _nodeEnv = 'development'
+                _isDll = true
                 _memoryServer = true
                 break
             case 's':
-                _isBuild = true
                 _nodeEnv = 'stg'
+                _isDll = true
+                _isBuild = true
                 _staticServer = true
                 break
             case 'p':
-                _isBuild = true
                 _nodeEnv = 'production'
+                _isDll = true
+                _isBuild = true
                 _staticServer = true
                 break
             case 'r':
-                _isBuild = true
                 _nodeEnv = 'production'
+                _isDll = true
+                _isBuild = true
                 break
             default:
                 console.error('未知code:', code)
@@ -131,11 +134,7 @@ gulp.task('user.select', (callback) => {
     }
 })
 
-gulp.task('clean:dll', ['user.select'], function (callback) {
-    // del([`${config.OUT_PATH}/**/*`], { force: true }, () => {
-    //     console.log('删除文件:', `${config.OUT_PATH}/**/*`)
-    //     callback()
-    // })
+gulp.task('clean:dll', ['input:user.select'], function (callback) {
     // 这里好像是同步的, 异步不行
     console.log('删除文件:', `${config.OUT_PATH}/**/*`)
     del([`${config.OUT_PATH}/**/*`], { force: true })
@@ -145,89 +144,87 @@ gulp.task('clean:dll', ['user.select'], function (callback) {
 });
 
 
-gulp.task('html', ['user.select', 'clean:dll'], function () {
+gulp.task('copy:html', ['input:user.select', 'clean:dll'], function () {
     return gulp
     .src(['../src/template/*.html'])
     .pipe(gulpif(!_isDll, gulp.dest(config.OUT_PATH)))
-});
+})
 
-gulp.task('copy:font', ['user.select', 'clean:dll'], function () {
+gulp.task('copy:font', ['input:user.select', 'clean:dll'], function () {
     return gulp
     .src(['../src/font/**'])
-    .pipe(gulp.dest(config.OUT_PATH+'/font'))
-    // .pipe(gulpif(!_isDll, gulp.dest(config.OUT_PATH)))
-});
+    .pipe(gulp.dest(path.join(config.OUT_PATH, 'font')))
+})
 
 function getAllDllFiles() {
-    let doc = '';
+    let doc = ''
     try {
-        const files = fs.readdirSync(config.DLL_PATH);
+        const files = fs.readdirSync(config.DLL_PATH)
         files.forEach(function (item) {
-            //if(item.indexOf('.js')>=0) {
             if (/^dll\..+\.js$/g.test(item)) {
-                doc += `<script src="/dist/dll/${item}"></script>\r\n`;
+                doc += `<script src="/dist/dll/${item}"></script>\r\n`
             }
-        }, this);
-        console.log('gulp:替换ejs模版文件名: ', doc);
+        }, this)
+        console.log('gulp:替换ejs模版文件名: ', doc)
     } catch (error) {
         // console.log()
     }
-    return doc;
+    return doc
 }
 
 
 
-gulp.task('webpack:dll', ['user.select', 'clean:dll'], (callback) => {
+gulp.task('webpack:dll', ['input:user.select', 'clean:dll'], (callback) => {
   if (!_isDll) {
       callback()
-      return;
+      return
   }
   const webpackConfig  = require('../config/webpack.config.dll.js')
   const myConfig = Object.create(webpackConfig);
     webpack(myConfig, (err, stats) => {
         if (err) {
-            throw new gutil.PluginError('webpack:build', err);
+            throw new gutil.PluginError('webpack:build', err)
         }
         gutil.log('[webpack:build]', stats.toString({
             colors: true
-        }));
-        callback();
-    });
-});
+        }))
+        callback()
+    })
+})
 
 /**
  * 生成dll后生成ejs模板, 将dll的js写入ejs模板
  */
-gulp.task('do.dll.ejs.template', ['user.select', 'webpack:dll'], function () {
+gulp.task('generate:dll.ejs.template', ['input:user.select', 'webpack:dll'], function () {
     if (!_isDll) {
-        return false;
+        return false
     } else {
-        const filenames = getAllDllFiles();
+        const filenames = getAllDllFiles()
         return gulp
         .src(['../src/template/*.ejs'])
         .pipe(gulpif(_isDll, replace(/<!--dll.js.file.replace-->/g, filenames)))
         .pipe(gulp.dest(path.join(config.OUT_PATH, 'template')))
     }
-});
+})
 
-gulp.task('webpack:build', ['webpack:dll', 'do.dll.ejs.template'], (callback) => {
+gulp.task('webpack:build', ['webpack:dll', 'generate:dll.ejs.template'], (callback) => {
     if (!_isBuild) {
-        callback();
-        return false;
+        callback()
+        return false
     }
     const webpackConfig  = require('../config/webpack.config.js')
-    const myConfig = Object.create(webpackConfig);
+    const myConfig = Object.create(webpackConfig)
     webpack(myConfig, (err, stats) => {
         if (err) {
-            throw new gutil.PluginError('webpack:build', err);
+            throw new gutil.PluginError('webpack:build', err)
         }
         gutil.log('[webpack:build]', stats.toString({
             colors: true
-        }));
-        callback();
-    });
-    return false;
-});
+        }))
+        callback()
+    })
+    return false
+})
 
 
 gulp.task('run:static.server', ['webpack:build'], function(callback) {
@@ -253,42 +250,27 @@ gulp.task('run:static.server', ['webpack:build'], function(callback) {
         }
         run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
         .exec()
+        // .pipe(gulp.dest(output)) // 这里怎么输出位置定位不准:by:chenxiaobo:2016.10.29
     } else {
         console.log('没有启动内存服务器也没有启动静态文件服务器')
     }
     if (cmmstr) {
-        // .pipe(shell(['cd ..', 'npm run start-dev']))
-
-        // .pipe(gulp.dest(output))
-        // console.log('shell.task')
-        
-        // ], { cwd: '../' })
-
-
-        // return run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
-        // .exec()
-        // run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
-
-        // run(cmmstr, { cwd: config.ROOT_PATH, verbosity: 3, silent: true })
-        // .exec()
     }
-    // return false
-    // .pipe(gulp.dest(output)) // 这里怎么输出位置定位不准:by:chenxiaobo:2016.10.29
 })
 
 // 执行 gulp prod 打包到dist目录， 部署直接部署dist目录即可
 gulp.task('prod', [
-    'user.select',
+    'input:user.select',
     'clean:dll',
-    'html',
+    'copy:html',
     'webpack:dll',
-    'do.dll.ejs.template',
+    'generate:dll.ejs.template',
     'copy:font',
     'webpack:build',
     'run:static.server'
-    ]);
+    ])
 //, 'transform', 'watch-transform'
-// gulp.task('prod', ['html', 'webpack:build']);//, 'transform', 'watch-transform'
+// gulp.task('prod', ['copy:html', 'webpack:build']);//, 'transform', 'watch-transform'
 
 
 /**
@@ -320,8 +302,8 @@ gulp.task('jsdoc', ['make:jsdoc'])
 gulp.task('transform', () => {
   return gulp.src('../server/**/*.js')
     .pipe(babel())
-    .pipe(gulp.dest('lib'));
-});
+    .pipe(gulp.dest('lib'))
+})
 
 // watch transform
 gulp.task('watch-transform', () => {
@@ -331,7 +313,7 @@ gulp.task('watch-transform', () => {
     }))
     .pipe(babel())
     .pipe(gulp.dest('lib'));
-});
+})
 
 // gulp.task('webpack-dev-server', (callback) => {
 //   const webpackConfig  = _isDll ?
