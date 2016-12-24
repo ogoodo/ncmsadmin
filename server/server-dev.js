@@ -48,14 +48,63 @@ app.use(function(req, res, next) {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept, X-Requested-With')
         res.setHeader('Access-Control-Allow-Credentials', true)
         res.end()
-    } if (req.method === 'POST') {
+    } else if (req.method === 'POST') {
         res.setHeader('Access-Control-Allow-Credentials', true)
         next()
     } else {
         next()
     }
 })
+// 反向代理
+function proxyFunc(req, res, next) {
+    // 参考: https://github.com/chimurai/http-proxy-middleware
+    delete require.cache[require.resolve('./proxy-list.js')];
+    return proxy({
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        pathRewrite: require('./proxy-list.js'), // 这个模式比较好, 能动态配置, js文件内可以写注释
+        // pathRewrite: JSON.parse(fs.readFileSync(path.join(__dirname, 'proxy-list.json'), 'utf8')),
+        // router: {
+        //     // when request.headers.host == 'dev.localhost:3000',
+        //     // override target 'http://www.example.org' to 'http://localhost:8000'
+        //     'dev.localhost:3000' : 'http://localhost:8000'
+        // },
+    })
+}
 // app.use('/mock', proxy({ target: 'http://localhost:3001' }))
+app.use('/mock', function(req, res, next) {
+    console.log('req.headers.host: ', req.headers.host)
+    console.log('req.headers.referer: ', req.headers.referer)
+    console.log('req.headers.origin: ', req.headers.origin)
+    // console.log('req: ', req)
+    if (req.headers.origin.indexOf(req.headers.host) >= 0) {
+        console.log('使用反向代理: ', req.url)
+        proxyFunc(req, res, next)
+    } else {
+        console.log('跳过反向代理: ', req.url)
+        next()
+    }
+})
+app.use('/mock', function(req, res, next) {
+    console.log(`进入app.use('/mack')分支(${req.method}): ${req.url}`)
+    try {
+        const filename = path.join(config.ROOT_PATH, 'mock', req.url)
+        if (fs.existsSync(filename)) {
+            const doc = fs.readFileSync(filename, 'utf8')
+            // res.setHeader('Content-Type', 'application/json')
+            res.contentType('application/json')
+            // res.json({ file2:12 })
+            res.json(JSON.parse(doc))
+            console.log(`发送重定向mock文件: ${filename}`)
+            console.log(`发送重定向mock内容: ${doc}`)
+        } else {
+            console.log(`无mock文件: ${filename}`)
+        }
+    } catch (err) {
+        console.error('\r\n\r\n error: server-dev.js', err)
+    }
+    res.end()
+})
 app.use(function (req, res, next) {
     // 能夠重写成功
     if (req.url.indexOf('.') === -1 &&
@@ -81,21 +130,6 @@ app.use(function (req, res, next) {
                     const doc = fs.readFileSync(filename, 'utf8')
                     res.send(doc)
                     console.log(`发送重定向文件: ${filename}`)
-                }
-            } catch (err) {
-                console.error('\r\n\r\n error: server-dev.js', err)
-            }
-        } else if (req.url.indexOf('/mock/') === 0) {
-            try {
-                const filename = path.join(config.ROOT_PATH, req.url)
-                if (fs.existsSync(filename)) {
-                    const doc = fs.readFileSync(filename, 'utf8')
-                    // res.setHeader('Content-Type', 'application/json')
-                    res.contentType('application/json')
-                    // res.json({ file2:12 })
-                    res.json(JSON.parse(doc))
-                    console.log(`发送重定向mock文件: ${filename}`)
-                    console.log(`发送重定向mock内容: ${doc}`)
                 }
             } catch (err) {
                 console.error('\r\n\r\n error: server-dev.js', err)

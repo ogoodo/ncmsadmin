@@ -1,0 +1,6 @@
+
+{
+    "^/mock/com/ogoodo/qryList.do": "/mock/com/ogoodo/test-proxy.do",
+    "^/api/old-path": "/api/new-path",
+    "^/api/remove/path": "/path"
+}

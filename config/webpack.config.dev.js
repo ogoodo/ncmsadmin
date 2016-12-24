@@ -21,9 +21,9 @@ wpconfig.plugins.push(
 )
 
 wpconfig.module.loaders.forEach(function(item) {
-        console.error(item.loaders)
     if (item.loaders && item.loaders[0].indexOf('babel') === 0) {
         item.loaders[0] = 'happypack/loader?id=happybabel'
+        console.error('happypack: ', item.loaders)
     }
 })
 
