@@ -6,8 +6,6 @@ const logger = require('morgan')
 const program = require('commander')
 const config = require('../config/env.config.js')
 
-const onFinished = require('on-finished')
-
 
 program
     .version('0.0.1')
@@ -21,7 +19,7 @@ console.log('  NODE_ENV:', program.nodeEnv)
 config.initPath(program.nodeEnv)
 const webdir = config.OUT_PATH
 
-app.use(logger('dev'))
+app.use(logger('production'))
 app.use(compression())
 app.use(function (req, res, next) {
     // 能夠重写成功

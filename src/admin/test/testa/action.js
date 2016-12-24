@@ -3,7 +3,6 @@ import * as PubSymbol from 'commPath/symbol.js';
 import constants from './constants.js';
 import { pageName } from './pageName.js';
 
-
 /**
  * 保留, 这项每个页面要有
  * 用来页面销毁的时候清理此页面相关的数据
@@ -56,7 +55,9 @@ export function testCallApiAction2(params, options) {
   }
 }
 
-
+/**
+ * 出发action调用到reducer不会掉接口
+ */
 export function testInnerAction3(params, options) {
   return (dispatch, getState) => {
     dispatch({

@@ -41,6 +41,7 @@ app.use(logger('dev'));
  * chrome接口的url: http://127.0.0.1:3001
  */
 app.use(function(req, res, next) {
+    console.log('访问的url: ', req.url)
     // console.error('method:', req.method)
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001')
     if (req.method === 'OPTIONS') {
@@ -55,12 +56,17 @@ app.use(function(req, res, next) {
         next()
     }
 })
-// 反向代理
+
+/**
+ * 反向代理
+ * 这里可以配置哪些url走服务器接口, 哪些走本地mock, 或者伙伴的机器
+ */
 function proxyFunc(req, res, next) {
     // 参考: https://github.com/chimurai/http-proxy-middleware
     delete require.cache[require.resolve('./proxy-list.js')];
     return proxy({
-        target: 'http://localhost:3001',
+        // target: 'http://127.0.0.1:3001', // 这里是要反向代理的api域名
+        target: 'http://localhost:3001', // 这里是要反向代理的api域名
         changeOrigin: true,
         pathRewrite: require('./proxy-list.js'), // 这个模式比较好, 能动态配置, js文件内可以写注释
         // pathRewrite: JSON.parse(fs.readFileSync(path.join(__dirname, 'proxy-list.json'), 'utf8')),
@@ -69,22 +75,31 @@ function proxyFunc(req, res, next) {
         //     // override target 'http://www.example.org' to 'http://localhost:8000'
         //     'dev.localhost:3000' : 'http://localhost:8000'
         // },
-    })
+    })(req, res, next)
 }
 // app.use('/mock', proxy({ target: 'http://localhost:3001' }))
-app.use('/mock', function(req, res, next) {
+app.use('/api', function(req, res, next) {
     console.log('req.headers.host: ', req.headers.host)
     console.log('req.headers.referer: ', req.headers.referer)
     console.log('req.headers.origin: ', req.headers.origin)
     // console.log('req: ', req)
-    if (req.headers.origin.indexOf(req.headers.host) >= 0) {
-        console.log('使用反向代理: ', req.url)
+    if (!req.headers.origin) {
+        console.log('使用反向代理(浏览器直接访问接口url): ', req.url)
+        proxyFunc(req, res, next)
+    } else if (req.headers.origin.indexOf(req.headers.host) >= 0) {
+        console.log('使用反向代理(接口和宿主url域名一致): ', req.url)
         proxyFunc(req, res, next)
     } else {
-        console.log('跳过反向代理: ', req.url)
-        next()
+        console.log('使用反向代理(接口和页面域名不一致): ', req.url)
+        proxyFunc(req, res, next)
+        // console.log('跳过反向代理: ', req.url)
+        // next()
     }
 })
+
+/**
+ * 本地mock数据
+ */
 app.use('/mock', function(req, res, next) {
     console.log(`进入app.use('/mack')分支(${req.method}): ${req.url}`)
     try {
