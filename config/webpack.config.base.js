@@ -5,6 +5,9 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const os = require('os')
+const HappyPack = require('happypack');
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 const cfg = require('../config/env.config.js')
 const envcfg = require('../config/env.config.js').server(process.env.NODE_ENV)
@@ -28,9 +31,7 @@ const commPath = path.resolve(ROOT_PATH, 'src/commons')
 const GPagesReducer = path.resolve(ROOT_PATH, 'src/store/pages.reducer.js')
 const eslintPath = path.resolve(ROOT_PATH, '.eslintrc')
 const testJsonPath = path.resolve(ROOT_PATH, 'test/json')
-const os = require('os')
-const HappyPack = require('happypack');
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+const HAPPY_PACK_PATH = path.resolve(cfg.BUILD_PATH, '.temp/.happyPack')
 //console.log('imgPath================================', imgPath)
 //const isDev = true;
 console.log(`webpack.config.base.js: ROOT_PATH=${ROOT_PATH}`)
@@ -262,14 +263,16 @@ const babelQuery = {
 }
 config.plugins.push(
     // 优化dev编译速度
+    // 参考: https://github.com/amireh/happypack
     new HappyPack({
         id: 'happybabel',
         // loaders: ['babel-loader'],
         loaders: [`babel?${JSON.stringify(babelQuery)}`],
         threadPool: happyThreadPool,
         cache: true,
-        verbose: true
-      })
+        verbose: true,
+        tempDir: HAPPY_PACK_PATH,
+    })
 )
 /**
  * 解决错误: Cannot define 'query' and multiple loaders in loaders list
