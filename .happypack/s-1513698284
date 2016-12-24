@@ -1,0 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+// 调用接口的url前缀
+var apiUrl = exports.apiUrl = 'http://127.0.0.1:3001/mock';

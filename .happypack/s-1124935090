@@ -1,0 +1,51 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _redux = require('redux');
+
+var _reducers = require('./modules/test/reducers');
+
+var _reducers2 = _interopRequireDefault(_reducers);
+
+var _reducers3 = require('./modules/PageB/reducers');
+
+var _reducers4 = _interopRequireDefault(_reducers3);
+
+var _dynamicReducer = require('./modules/dynamic.reducer.js');
+
+var _dynamicReducer2 = _interopRequireDefault(_dynamicReducer);
+
+var _GPagesReducer = require('GPagesReducer');
+
+var pagesReducer = _interopRequireWildcard(_GPagesReducer);
+
+var _symbol = require('commPath/symbol.js');
+
+var PubSymbol = _interopRequireWildcard(_symbol);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var tt = (0, _dynamicReducer2.default)('aa', 'bb');
+
+// 这样层级会多一层
+var rootReducer2 = (0, _redux.combineReducers)({
+    testModule: _reducers2.default,
+    PageBModule: _reducers4.default
+});
+var rootReducer = (0, _defineProperty3.default)({
+    testModule: _reducers2.default,
+    PageBModule: _reducers4.default,
+    tt: tt
+}, PubSymbol.PAGES, pagesReducer.pagesReducer);
+
+exports.default = rootReducer;
+module.exports = exports['default'];

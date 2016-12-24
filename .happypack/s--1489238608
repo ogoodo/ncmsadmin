@@ -1,0 +1,68 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+exports.default = configureStore;
+
+var _redux = require('redux');
+
+var _reactRouterRedux = require('react-router-redux');
+
+var _reduxThunk = require('redux-thunk');
+
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+var _reduxLogger = require('redux-logger');
+
+var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
+
+var _reducer = require('../reducer.js');
+
+var _reducer2 = _interopRequireDefault(_reducer);
+
+var _fetchMiddleware = require('./fetchMiddleware.js');
+
+var _fetchMiddleware2 = _interopRequireDefault(_fetchMiddleware);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//import reducers from '../components/reducers'
+// import reducers from '../modules/index.reducer.js'
+function configureStore(browserHistory, initialState) {
+    // Apply the middleware to the store
+    var middleware = (0, _reactRouterRedux.routerMiddleware)(browserHistory);
+    //applyMiddleware来自redux可以包装 store 的 dispatch
+    //thunk作用是使被 dispatch 的 function 会接收 dispatch 作为参数，并且可以异步调用它
+    var createStoreEx = (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default, middleware, (0, _fetchMiddleware2.default)(), (0, _reduxLogger2.default)()), window.devToolsExtension ? window.devToolsExtension() : function (f) {
+        return f;
+    })(_redux.createStore);
+
+    //const store = createStoreEx(reducers, initialState)
+    var obj1 = (0, _extends3.default)({}, _reducer2.default, {
+        routing: _reactRouterRedux.routerReducer
+    });
+    var obj2 = {
+        reducers: _reducer2.default,
+        routing: _reactRouterRedux.routerReducer
+    };
+    var store = createStoreEx((0, _redux.combineReducers)(obj1));
+
+    //热替换选项
+    // if (module.hot) {
+    //   // Enable Webpack hot module replacement for reducers
+    //   module.hot.accept('../components/reducers', () => {
+    //     const nextReducer = require('../components/reducers')
+    //     store.replaceReducer(nextReducer)
+    //   })
+    // }
+
+    return store;
+}
+//import { hashHistory, browserHistory, Router, Route, Link } from 'react-router'
+module.exports = exports['default'];

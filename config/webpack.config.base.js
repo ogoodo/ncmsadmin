@@ -28,6 +28,9 @@ const commPath = path.resolve(ROOT_PATH, 'src/commons')
 const GPagesReducer = path.resolve(ROOT_PATH, 'src/store/pages.reducer.js')
 const eslintPath = path.resolve(ROOT_PATH, '.eslintrc')
 const testJsonPath = path.resolve(ROOT_PATH, 'test/json')
+const os = require('os')
+const HappyPack = require('happypack');
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 //console.log('imgPath================================', imgPath)
 //const isDev = true;
 console.log(`webpack.config.base.js: ROOT_PATH=${ROOT_PATH}`)
@@ -257,6 +260,17 @@ const babelQuery = {
     presets: ['es2015', 'stage-0', 'react']
     //presets: ["es2015", "react"]
 }
+config.plugins.push(
+    // 优化dev编译速度
+    new HappyPack({
+        id: 'happybabel',
+        // loaders: ['babel-loader'],
+        loaders: [`babel?${JSON.stringify(babelQuery)}`],
+        threadPool: happyThreadPool,
+        cache: true,
+        verbose: true
+      })
+)
 /**
  * 解决错误: Cannot define 'query' and multiple loaders in loaders list
  * https://github.com/jsdf/webpack-combine-loaders

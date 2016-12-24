@@ -1,0 +1,32 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = require('redux');
+
+var _itemsReducer = require('./items/items.reducer.js');
+
+var _itemsReducer2 = _interopRequireDefault(_itemsReducer);
+
+var _filterReducer = require('./filter/filter.reducer.js');
+
+var _filterReducer2 = _interopRequireDefault(_filterReducer);
+
+var _CounterReducer = require('./counter/Counter.reducer.js');
+
+var _CounterReducer2 = _interopRequireDefault(_CounterReducer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var counter = (0, _CounterReducer2.default)('page', 'module');
+
+var rootReducer = (0, _redux.combineReducers)({
+    counter: counter,
+    items: _itemsReducer2.default,
+    filter: _filterReducer2.default
+});
+
+exports.default = rootReducer;
+module.exports = exports['default'];

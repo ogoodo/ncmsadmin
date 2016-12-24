@@ -1,0 +1,52 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+exports.default = generateAction;
+
+var _counterConstant = require('./counter.constant.js');
+
+var _counterConstant2 = _interopRequireDefault(_counterConstant);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function generateAction(pageName, moduleName) {
+  var constant = (0, _counterConstant2.default)('page', 'module');
+  var prefix = pageName + '.' + moduleName;
+
+  console.log(constant);
+
+  //reducer其实也是个方法而已,参数是state和action,返回值是新的state
+  function counter() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var action = arguments[1];
+
+    switch (action.type) {
+      case constant.INCREMENT_COUNTER:
+        return (0, _defineProperty3.default)({}, prefix, state + 1);
+      case constant.DECREMENT_COUNTER:
+        return state - 1;
+      default:
+        return state;
+    }
+  }
+  return counter;
+  // //reducer其实也是个方法而已,参数是state和action,返回值是新的state
+  // export default function counter(state = 0, action) {
+  //   switch (action.type) {
+  //     case constant.INCREMENT_COUNTER:
+  //       return {`${prefix}`: state + 1}
+  //     case constant.DECREMENT_COUNTER:
+  //       return state - 1
+  //     default:
+  //       return state
+  //   }
+  // }
+}
+module.exports = exports['default'];

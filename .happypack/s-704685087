@@ -1,0 +1,38 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.REMOVE_PAGE = exports.PAGES = exports.REQ_NOTICE = exports.SHOW_LOADER = exports.STATE = exports.FETCH = undefined;
+
+var _symbol = require('babel-runtime/core-js/symbol');
+
+var _symbol2 = _interopRequireDefault(_symbol);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * 配置redux及项目用到的符号变量
+ */
+// fetch调用接口使用
+var FETCH = exports.FETCH = (0, _symbol2.default)('FETCH ACTION');
+
+// fetch调用接口使用
+// 'request': 接口请求中, 'success': 接口调用成功, 'failure': 接口调用失败
+var STATE = exports.STATE = (0, _symbol2.default)('FETCH STATE');
+
+// ???这里要考虑其它特别动画否???
+// true:显示动画 false:不显示
+var SHOW_LOADER = exports.SHOW_LOADER = (0, _symbol2.default)('FETCH SHOW LOADER');
+
+// 请求阶段是否触发到redux, 如果触发会引起两次render会降低性能
+// true: 触发, false: 不触发(默认建议不触发)
+var REQ_NOTICE = exports.REQ_NOTICE = (0, _symbol2.default)('FETCH TRIGGER REQUERST NOTICE');
+
+// 用来将每个页面的action,reducer,constant归类在一个目录
+// 这里用符号combineReducers识别不了
+var PAGES = exports.PAGES = 'PAGES';
+// export const PAGES = Symbol('REDUX PAGES');
+
+// 页面跳转了之后, 清空redux里遗留的数据, 节约内存提高性能
+var REMOVE_PAGE = exports.REMOVE_PAGE = (0, _symbol2.default)('REMOVE PAGE DATA FROM REDUX');

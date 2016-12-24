@@ -1,0 +1,71 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+exports.removePage = removePage;
+exports.testCallApiAction1 = testCallApiAction1;
+exports.testCallApiAction2 = testCallApiAction2;
+exports.testInnerAction3 = testInnerAction3;
+
+var _symbol = require('commPath/symbol.js');
+
+var PubSymbol = _interopRequireWildcard(_symbol);
+
+var _constants = require('./constants.js');
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _pageName = require('./pageName.js');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * 保留, 这项每个页面要有
+ * 用来页面销毁的时候清理此页面相关的数据
+ */
+function removePage() {
+  return function (dispatch, getState) {
+    var _dispatch;
+
+    return dispatch((_dispatch = {}, (0, _defineProperty3.default)(_dispatch, PubSymbol.REMOVE_PAGE, true), (0, _defineProperty3.default)(_dispatch, 'pageName', _pageName.pageName), (0, _defineProperty3.default)(_dispatch, 'type', _pageName.pageName + '>' + _constants2.default.removePage), _dispatch));
+  };
+}
+
+/**
+ * @param {object} params 调用接口的入参, 具体数据结构看后端接口文档
+ * @param {object} options 如果要带部分数据给接口调用完之后一起处理, 可以通过这里传递
+ */
+function testCallApiAction1(params, options) {
+  return function (dispatch, getState) {
+    var _dispatch2;
+
+    return dispatch((_dispatch2 = {}, (0, _defineProperty3.default)(_dispatch2, PubSymbol.FETCH, true), (0, _defineProperty3.default)(_dispatch2, PubSymbol.SHOW_LOADER, false), (0, _defineProperty3.default)(_dispatch2, PubSymbol.REQ_NOTICE, true), (0, _defineProperty3.default)(_dispatch2, 'pageName', _pageName.pageName), (0, _defineProperty3.default)(_dispatch2, 'type', _pageName.pageName + '>' + _constants2.default.testCallApiAction1), (0, _defineProperty3.default)(_dispatch2, 'url', '/com/ogoodo/qryList.do'), (0, _defineProperty3.default)(_dispatch2, 'requestData', params), (0, _defineProperty3.default)(_dispatch2, 'requestOptions', options), _dispatch2));
+  };
+}
+
+/**
+ * 说明同 testcxbAction1
+ */
+function testCallApiAction2(params, options) {
+  return function (dispatch, getState) {
+    var _dispatch3;
+
+    dispatch((_dispatch3 = {}, (0, _defineProperty3.default)(_dispatch3, PubSymbol.FETCH, true), (0, _defineProperty3.default)(_dispatch3, PubSymbol.SHOW_LOADER, false), (0, _defineProperty3.default)(_dispatch3, PubSymbol.REQ_NOTICE, false), (0, _defineProperty3.default)(_dispatch3, 'pageName', _pageName.pageName), (0, _defineProperty3.default)(_dispatch3, 'type', _pageName.pageName + '>' + _constants2.default.testCallApiAction2), (0, _defineProperty3.default)(_dispatch3, 'url', '/com/ogoodo/getList.do'), (0, _defineProperty3.default)(_dispatch3, 'requestData', params), (0, _defineProperty3.default)(_dispatch3, 'requestOptions', options), _dispatch3));
+  };
+}
+
+function testInnerAction3(params, options) {
+  return function (dispatch, getState) {
+    var _dispatch4;
+
+    dispatch((_dispatch4 = {}, (0, _defineProperty3.default)(_dispatch4, PubSymbol.FETCH, false), (0, _defineProperty3.default)(_dispatch4, 'pageName', _pageName.pageName), (0, _defineProperty3.default)(_dispatch4, 'type', _pageName.pageName + '>' + _constants2.default.testInnerAction3), (0, _defineProperty3.default)(_dispatch4, 'requestData', params), (0, _defineProperty3.default)(_dispatch4, 'requestOptions', options), _dispatch4));
+  };
+}

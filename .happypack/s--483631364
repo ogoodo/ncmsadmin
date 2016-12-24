@@ -1,0 +1,121 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _extends5 = require('babel-runtime/helpers/extends');
+
+var _extends6 = _interopRequireDefault(_extends5);
+
+exports.pagesReducer = pagesReducer;
+exports.addPages = addPages;
+exports.removePages = removePages;
+
+var _symbol = require('commPath/symbol.js');
+
+var PubSymbol = _interopRequireWildcard(_symbol);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initalState = false;
+// 动态存储所有页面所有接口的reducer
+/**
+ * @author chenxiaobo
+ */
+var _pagesReducer = {};
+
+/**
+ * 检查fetch接口状态是不是正确的
+ */
+function checkCallbackStateName(action, actionState) {
+  if (['request', 'success', 'failure'].indexOf(actionState) < 0) {
+    if (action[PubSymbol.FETCH] === true) {
+      console.error('无此分支, 请确认源码是否符合规范', actionState);
+    }
+  }
+}
+
+/**
+ * @param {object} action
+ * @param {Symbol} action[PubSymbol.FETCH] 要进入到此函数处理, 必须带此字段
+ */
+function pagesReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
+  var action = arguments[1];
+
+  // console.log('pages.reducer.js >>>=========', action.type);
+  var pageName = action.pageName;
+
+  if (!action.hasOwnProperty(PubSymbol.FETCH)) {
+    if (__DEV__) {
+      if (_pagesReducer.hasOwnProperty(pageName)) {
+        console.error('\u9875' + pageName + '\u5FC5\u987B\u5305\u542BPubSymbol.FETCH\u624D\u80FD\u6B63\u786E\u5904\u7406');
+      }
+    }
+    return state;
+  }
+  if (_pagesReducer.hasOwnProperty(pageName)) {
+    // 清除页面在redux里的资源
+    if (action.hasOwnProperty(PubSymbol.REMOVE_PAGE)) {
+      var newState = (0, _extends6.default)({}, state, (0, _defineProperty3.default)({}, pageName, null));
+      delete newState[pageName];
+      return newState;
+    }
+    var pageReducerObj = _pagesReducer[pageName];
+    var apiName = action.type.substr(action.type.indexOf('>') + 1);
+    if (pageReducerObj.hasOwnProperty(apiName)) {
+      var pageOldState = state[pageName] || {};
+      var apiOldState = pageOldState[apiName] || {};
+      var apiReducerObj = pageReducerObj[apiName];
+      var actionState = action[PubSymbol.STATE];
+      checkCallbackStateName(action, actionState);
+      var apiNewState = {};
+      if (apiReducerObj.hasOwnProperty(actionState)) {
+        // 这里更加状态调用reducer里传过来的函数,如:'request', 'success', 'failure'
+        apiNewState = apiReducerObj[actionState](apiOldState, action);
+      } else if (action[PubSymbol.FETCH] === false) {
+        // 没调接口的, 就是浏览器内部调用action, 其实就是fetch为false的部分
+        apiNewState = apiReducerObj.inner(apiOldState, action);
+      }
+      return (0, _extends6.default)({}, state, (0, _defineProperty3.default)({}, pageName, (0, _extends6.default)({}, pageOldState, (0, _defineProperty3.default)({}, apiName, apiNewState))));
+    } else {
+      console.warn('\u6CA1\u6709\u5904\u7406' + pageName + '\u9875\u91CC' + apiName + '\u63A5\u53E3\u7684reducer');
+    }
+  }
+  return state;
+}
+
+/**
+ * 动态增加reducer
+ * @param {string} pageName 每个页面的唯一ID, 建议用路由
+ * @param {object}   callbackObj 包含页面多个接口回调对象的对象
+ * @param {object}   callbackObj.apiName 接口的回调对象
+ * @param {function} callbackObj.apiName.request 接口发送请求后回调函数
+ * @param {function} callbackObj.apiName.success 接口调用成功回调函数
+ * @param {function} callbackObj.apiName.failure 接口调用失败回调函数
+ */
+function addPages(pageName, callbackObj) {
+  if (_pagesReducer.hasOwnProperty(pageName)) {
+    console.error('已经有此pages的name了, 不能重复!', pageName);
+  }
+  _pagesReducer[pageName] = callbackObj;
+}
+
+/**
+ * 页面卸载时调用清理资源
+ */
+function removePages(pageName) {
+  console.log('testcxbPages.reducer >>>removePages==================');
+  if (_pagesReducer.hasOwnProperty(pageName)) {
+    delete _pagesReducer[pageName];
+  } else {
+    console.error('无此pages的name了', pageName);
+  }
+}

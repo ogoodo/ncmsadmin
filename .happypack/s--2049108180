@@ -1,0 +1,23 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = filter;
+
+var _counterConstant = require('../counter/counter.constant.js');
+
+var initialFilterItem = '';
+
+function filter() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialFilterItem;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _counterConstant.FILTER_ITEM:
+            return action.filterItem;
+        default:
+            return state;
+    }
+}
+module.exports = exports['default'];

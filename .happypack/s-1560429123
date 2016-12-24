@@ -1,0 +1,142 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _pageName = require('./pageName');
+
+var _reducer = require('./reducer.js');
+
+var reducers = _interopRequireWildcard(_reducer);
+
+var _GPagesReducer = require('GPagesReducer');
+
+var pagesReducer = _interopRequireWildcard(_GPagesReducer);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// class Main2 extends React.Component {
+//   render() {
+//     console.log('this.props.children:')
+//     return (
+//       <div>
+//       发生的方式发生22222222
+//       </div>
+//     )
+//   }
+// }
+// module.exports = Main2
+
+
+var TestCxb = function (_Component) {
+  (0, _inherits3.default)(TestCxb, _Component);
+
+  function TestCxb(props, context) {
+    (0, _classCallCheck3.default)(this, TestCxb);
+
+    var _this = (0, _possibleConstructorReturn3.default)(this, (TestCxb.__proto__ || (0, _getPrototypeOf2.default)(TestCxb)).call(this, props, context));
+
+    console.log('TestCxb->constructor');
+    // console.log('TestCxb.constructor', reducers, pagesReducer);
+    pagesReducer.addPages(_pageName.pageName, reducers);
+    _this.state = {
+      employeeId: ''
+    };
+    return _this;
+  }
+
+  (0, _createClass3.default)(TestCxb, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      // 调用接口
+      var data = { key: 'test', pageNo: 1, pageSize: 10 };
+      this.props.actions.testCallApiAction1(data).then(function () {
+        console.log('调用接口1, 成功了, 这里可以做相应处理!');
+      }).catch(function () {
+        console.warn('调用接口1, 异常或者返回错误!');
+      });
+
+      // 内部action
+      this.props.actions.testInnerAction3({ test: '仅作测试' });
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      console.log('componentWillUnmount: ', _pageName.pageName);
+      // 清除page在redux里挂载的数据
+      this.props.actions.removePage();
+      // 清除处理此页面接口用的reducer引用, 让浏览器能垃圾回收
+      pagesReducer.removePages(_pageName.pageName);
+    }
+  }, {
+    key: 'renderListApi1',
+    value: function renderListApi1() {
+      if (!this.props.api || !this.props.api.testCallApiAction1) {
+        return false;
+      }
+      var data = this.props.api.testCallApiAction1.data;
+      return _react2.default.createElement(
+        'div',
+        null,
+        (0, _stringify2.default)(data)
+      );
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      console.log('render: ************************', 'lang=', this.props);
+      return _react2.default.createElement(
+        'div',
+        { className: 'left-right' },
+        _react2.default.createElement(
+          'h3',
+          null,
+          '\u8FD9\u91CC\u662F\u63A5\u53E31\uFF0C\u6570\u636E\u663E\u793A1'
+        ),
+        this.renderListApi1()
+      );
+    }
+  }]);
+  return TestCxb;
+}(_react.Component);
+
+TestCxb.propTypes = {
+  api: _react.PropTypes.object.isRequired,
+  actions: _react.PropTypes.object.isRequired
+};
+
+exports.default = TestCxb;
+// module.export = TestCxb;
+
+module.exports = exports['default'];
