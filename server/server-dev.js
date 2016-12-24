@@ -6,6 +6,8 @@ const webpack = require('webpack')
 const app = express()
 const logger = require('morgan')
 const fs = require('fs')
+const opn = require('opn')
+const proxy = require('http-proxy-middleware')
 const config = require('../config/env.config.js')
 
 const onFinished = require('on-finished')
@@ -13,26 +15,47 @@ const onFinished = require('on-finished')
 /**
  * 开发使用
  */
-async function testt() {
-    return new Promise((reslove, reject) => {
-        setTimeout(() => {
-            console.log('async function =================================================11')
-            reslove(10)
-        }, 100)
-    })
-}
+// async function testt() {
+//     return new Promise((reslove, reject) => {
+//         setTimeout(() => {
+//             console.log('async function =================================================11')
+//             reslove(10)
+//         }, 100)
+//     })
+// }
 
-async function testa() {
-    const ttasync = await testt()
-    console.log('async function =================================================22')
-}
-testa()
+// async function testa() {
+//     const ttasync = await testt()
+//     console.log('async function =================================================22')
+// }
+// testa()
 
 config.initPath('development')
 process.env.NODE_ENV = 'development'
 const webdir = config.OUT_PATH // path.join(__dirname, '../build/development')
 
 app.use(logger('dev'));
+/**
+ * ajax跨域处理
+ * chrome首页的url: http://localhost:3001
+ * chrome接口的url: http://127.0.0.1:3001
+ */
+app.use(function(req, res, next) {
+    // console.error('method:', req.method)
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001')
+    if (req.method === 'OPTIONS') {
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept, X-Requested-With')
+        res.setHeader('Access-Control-Allow-Credentials', true)
+        res.end()
+    } if (req.method === 'POST') {
+        res.setHeader('Access-Control-Allow-Credentials', true)
+        next()
+    } else {
+        next()
+    }
+})
+// app.use('/mock', proxy({ target: 'http://localhost:3001' }))
 app.use(function (req, res, next) {
     // 能夠重写成功
     if (req.url.indexOf('.') === -1 &&
@@ -72,6 +95,7 @@ app.use(function (req, res, next) {
                     // res.json({ file2:12 })
                     res.json(JSON.parse(doc))
                     console.log(`发送重定向mock文件: ${filename}`)
+                    console.log(`发送重定向mock内容: ${doc}`)
                 }
             } catch (err) {
                 console.error('\r\n\r\n error: server-dev.js', err)
@@ -114,4 +138,5 @@ console.log('调试服务器插件启动}}')
 app.listen(3001, function () {
   console.log('Server listening on http://localhost:3001, Ctrl+C to stop')
   console.log('http://127.0.0.1:3001/config  里可以管理mock数据')
+  opn('http://localhost:3001/admin/test/testa')
 })
