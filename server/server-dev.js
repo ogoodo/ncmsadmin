@@ -66,15 +66,32 @@ function proxyFunc(req, res, next) {
     delete require.cache[require.resolve('./proxy-list.js')];
     return proxy({
         // target: 'http://127.0.0.1:3001', // 这里是要反向代理的api域名
-        target: 'http://localhost:3001', // 这里是要反向代理的api域名
+        target: 'http://localhost:3018', // 这里是要反向代理的api域名
         changeOrigin: true,
-        pathRewrite: require('./proxy-list.js'), // 这个模式比较好, 能动态配置, js文件内可以写注释
+        // toProxy: false,
+        // prependPath: false,
+        // ignorePath: true,
+        pathRewrite: require('./proxy-list.js').pathRewrite, // 这个模式比较好, 能动态配置, js文件内可以写注释
+        router: require('./proxy-list.js').router,
         // pathRewrite: JSON.parse(fs.readFileSync(path.join(__dirname, 'proxy-list.json'), 'utf8')),
         // router: {
         //     // when request.headers.host == 'dev.localhost:3000',
         //     // override target 'http://www.example.org' to 'http://localhost:8000'
-        //     'dev.localhost:3000' : 'http://localhost:8000'
+        //     'dev.localhost:3000'         : 'http://localhost:8000',
+        //     'integration.localhost:3000' : 'http://localhost:8001',    // host only
+        //     'staging.localhost:3000'     : 'http://localhost:8002',    // host only
+        //     'localhost:3000/api'         : 'http://localhost:8003',    // host + path
+        //     '/rest'                      : 'http://localhost:8004',    // path only
+        //     '/api/com/ogoodo/qryList.do' : 'http://localhost:3001/mock/com/ogoodo/test-proxy.do',
         // },
+        onError(err, req2, res2) {
+            res2.writeHead(500, {
+                'Content-Type': 'application/json'
+            });
+            const json = { code: 444, msg: '反向代理错误, 有可能是代理的域名不能访问' }
+            // res2.json(json) // 这样发送回报错
+            res2.end(JSON.stringify(json))
+        }
     })(req, res, next)
 }
 // app.use('/mock', proxy({ target: 'http://localhost:3001' }))
@@ -97,29 +114,29 @@ app.use('/api', function(req, res, next) {
     }
 })
 
-/**
- * 本地mock数据
- */
-app.use('/mock', function(req, res, next) {
-    console.log(`进入app.use('/mack')分支(${req.method}): ${req.url}`)
-    try {
-        const filename = path.join(config.ROOT_PATH, 'mock', req.url)
-        if (fs.existsSync(filename)) {
-            const doc = fs.readFileSync(filename, 'utf8')
-            // res.setHeader('Content-Type', 'application/json')
-            res.contentType('application/json')
-            // res.json({ file2:12 })
-            res.json(JSON.parse(doc))
-            console.log(`发送重定向mock文件: ${filename}`)
-            console.log(`发送重定向mock内容: ${doc}`)
-        } else {
-            console.log(`无mock文件: ${filename}`)
-        }
-    } catch (err) {
-        console.error('\r\n\r\n error: server-dev.js', err)
-    }
-    res.end()
-})
+// /**
+//  * 本地mock数据
+//  */
+// app.use('/mock', function(req, res, next) {
+//     console.log(`进入app.use('/mack')分支(${req.method}): ${req.url}`)
+//     try {
+//         const filename = path.join(config.ROOT_PATH, 'mock', req.url)
+//         if (fs.existsSync(filename)) {
+//             const doc = fs.readFileSync(filename, 'utf8')
+//             // res.setHeader('Content-Type', 'application/json')
+//             res.contentType('application/json')
+//             // res.json({ file2:12 })
+//             res.json(JSON.parse(doc))
+//             console.log(`发送重定向mock文件: ${filename}`)
+//             console.log(`发送重定向mock内容: ${doc}`)
+//         } else {
+//             console.log(`无mock文件: ${filename}`)
+//         }
+//     } catch (err) {
+//         console.error('\r\n\r\n error: server-dev.js', err)
+//     }
+//     res.end()
+// })
 app.use(function (req, res, next) {
     // 能夠重写成功
     if (req.url.indexOf('.') === -1 &&
@@ -189,3 +206,69 @@ app.listen(3001, function () {
   console.log('http://127.0.0.1:3001/config  里可以管理mock数据')
   opn('http://localhost:3001/admin/test/testa')
 })
+
+
+/**
+ * 发送接口数据
+ */
+function sendProxyApi(req, res, next) {
+    console.log(`进入app.use('/mack')分支(${req.method}): ${req.url}`)
+    try {
+        const filename = path.join(config.ROOT_PATH, 'mock', req.url)
+        if (fs.existsSync(filename)) {
+            const doc = fs.readFileSync(filename, 'utf8')
+            // res.setHeader('Content-Type', 'application/json')
+            res.contentType('application/json')
+            // res.json({ file2:12 })
+            const json = JSON.parse(doc)
+            json.__proxyMsg__ = {
+                proxyUrl: `[${req.method}]${req.headers.host}${req.originalUrl}`,
+            }
+            res.json(json)
+            console.log(`发送重定向mock文件: ${filename}`)
+            console.log(`发送重定向mock内容: ${doc}`)
+            return true;
+        } else {
+            console.log(`无mock文件: ${filename}`)
+        }
+    } catch (err) {
+        console.error('\r\n\r\n error: server-dev.js', err)
+    }
+    return false;
+    // res.end()
+}
+
+const appApiA = express()
+appApiA.use(logger('dev-api11'));
+appApiA.use('/mock/', function(req, res, next) {
+    console.log('DEV-API11访问的url: ', req.url)
+    const b = sendProxyApi(req, res, next)
+    if (!b) {
+        next()
+    }
+})
+appApiA.use(function(req, res, next) {
+    res.contentType('application/json')
+    res.json({ code: 444, msg: '本地无此代理' })
+})
+appApiA.listen(3011, function () {
+  console.log('API Server listening on http://localhost:3011, Ctrl+C to stop')
+})
+
+const appApiB = express()
+appApiB.use(logger('dev-api12'));
+appApiB.use('/mock/', function(req, res, next) {
+    console.log('DEV-API12访问的url: ', req.url)
+    const b = sendProxyApi(req, res, next)
+    if (!b) {
+        next()
+    }
+})
+appApiB.use(function(req, res, next) {
+    res.contentType('application/json')
+    res.json({ code: 444, msg: '本地无此代理' })
+})
+appApiB.listen(3012, function () {
+  console.log('API Server listening on http://localhost:3011, Ctrl+C to stop')
+})
+

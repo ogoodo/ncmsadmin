@@ -2,6 +2,6 @@
     "data": {
         "name": "qryList.do"
     },
-    "responseCode": 10000,
-    "responseMsg": "测试消息"
+    "code": 10000,
+    "msg": "测试消息"
 }

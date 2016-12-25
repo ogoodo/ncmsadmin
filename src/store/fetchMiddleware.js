@@ -70,13 +70,13 @@ export default function fetchMiddleware(client) {
           callNext('failure', err);
           reject(err);
           Modal.error({ title : '调接口异常!' })
-        } else if (body.responseCode === 10000) {
+        } else if (body.code === 10000) {
           resolve(body);
           callNext('success', body);
         } else {
           callNext('failure', body);
           reject(body);
-          Modal.error({ title : '服务器出错!', content : body.responseMsg })
+          Modal.error({ title : '服务器出错!', content : body.msg })
         }
       });
     });

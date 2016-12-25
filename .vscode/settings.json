@@ -14,8 +14,9 @@
 
     // search.exclude 用来忽略搜索的文件夹
     "search.exclude": {  
-        "**/node_modules": true,  
-        "**/bower_components": true  
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "__build": true
     },  
   
     // files.exclude 用来忽略工程打开的文件夹
