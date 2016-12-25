@@ -208,31 +208,56 @@ app.listen(3001, function () {
 })
 
 
+function getMockFilename(req) {
+    const filename = path.join(config.ROOT_PATH, req.originalUrl)
+    return filename
+}
+function proxyInfo(req) {
+    const info = {
+        proxyUrl: `[${req.method}]${req.headers.host}${req.originalUrl}`,
+        filename: getMockFilename(req),
+    }
+    return info
+}
+function sendProxyError(req, res, msg) {
+    res.writeHead(500, {
+        'Content-Type': 'application/json'
+    });
+    const json = {
+        code: 444,
+        msg: msg || '反向代理错误',
+        __proxyMsg__: proxyInfo(req),
+    }
+    // res2.json(json) // 这样发送回报错
+    res.end(JSON.stringify(json))
+}
 /**
  * 发送接口数据
  */
 function sendProxyApi(req, res, next) {
     console.log(`进入app.use('/mack')分支(${req.method}): ${req.url}`)
-    try {
-        const filename = path.join(config.ROOT_PATH, 'mock', req.url)
-        if (fs.existsSync(filename)) {
+    // const filename = path.join(config.ROOT_PATH, 'mock', req.url)
+    // const filename = path.join(config.ROOT_PATH, 'mock', req.originalUrl)
+    const filename = getMockFilename(req)
+    if (fs.existsSync(filename)) {
+        try {
             const doc = fs.readFileSync(filename, 'utf8')
             // res.setHeader('Content-Type', 'application/json')
             res.contentType('application/json')
             // res.json({ file2:12 })
             const json = JSON.parse(doc)
-            json.__proxyMsg__ = {
-                proxyUrl: `[${req.method}]${req.headers.host}${req.originalUrl}`,
-            }
+            json.__proxyMsg__ = proxyInfo(req)
             res.json(json)
             console.log(`发送重定向mock文件: ${filename}`)
             console.log(`发送重定向mock内容: ${doc}`)
             return true;
-        } else {
-            console.log(`无mock文件: ${filename}`)
+        } catch (err) {
+            console.error('\r\n\r\n error: server-dev.js', err)
+            sendProxyError(req, res, err)
         }
-    } catch (err) {
-        console.error('\r\n\r\n error: server-dev.js', err)
+    } else {
+        console.log(`无mock文件: ${filename}`)
+        sendProxyError(req, res, '本地mock文件没有')
     }
     return false;
     // res.end()
@@ -244,12 +269,11 @@ appApiA.use('/mock/', function(req, res, next) {
     console.log('DEV-API11访问的url: ', req.url)
     const b = sendProxyApi(req, res, next)
     if (!b) {
-        next()
+        // next()
     }
 })
 appApiA.use(function(req, res, next) {
-    res.contentType('application/json')
-    res.json({ code: 444, msg: '本地无此代理' })
+    sendProxyError(req, res, '本地mock反向代理转发过来的path要以/mock开头')
 })
 appApiA.listen(3011, function () {
   console.log('API Server listening on http://localhost:3011, Ctrl+C to stop')
@@ -261,12 +285,11 @@ appApiB.use('/mock/', function(req, res, next) {
     console.log('DEV-API12访问的url: ', req.url)
     const b = sendProxyApi(req, res, next)
     if (!b) {
-        next()
+        // next()
     }
 })
 appApiB.use(function(req, res, next) {
-    res.contentType('application/json')
-    res.json({ code: 444, msg: '本地无此代理' })
+    sendProxyError(req, res, '本地mock反向代理转发过来的path要以/mock开头')
 })
 appApiB.listen(3012, function () {
   console.log('API Server listening on http://localhost:3011, Ctrl+C to stop')
