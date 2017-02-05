@@ -236,8 +236,6 @@ function sendProxyError(req, res, msg) {
  */
 function sendProxyApi(req, res, next) {
     console.log(`进入app.use('/mack')分支(${req.method}): ${req.url}`)
-    // const filename = path.join(config.ROOT_PATH, 'mock', req.url)
-    // const filename = path.join(config.ROOT_PATH, 'mock', req.originalUrl)
     const filename = getMockFilename(req)
     if (fs.existsSync(filename)) {
         try {
