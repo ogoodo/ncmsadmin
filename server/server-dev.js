@@ -159,8 +159,9 @@ app.use(function (req, res, next) {
             try {
                 const filename = path.join(webdir, req.url)
                 if (fs.existsSync(filename)) {
-                    const doc = fs.readFileSync(filename, 'utf8')
-                    res.send(doc)
+                    res.sendFile(filename);
+                    // const doc = fs.readFileSync(filename, 'utf8')
+                    // res.send(doc)
                     console.log(`发送重定向文件: ${filename}`)
                 }
             } catch (err) {
